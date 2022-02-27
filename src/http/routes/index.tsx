@@ -1,9 +1,29 @@
 import React from 'react';
+import { Route, Routes as Switch, BrowserRouter } from 'react-router-dom';
+import MainHeader from '../../components/MainHeader';
+import About from '../../pages/About/About';
+import Cart from '../../pages/Cart/Cart';
+import Home from '../../pages/HomePage/Home';
+import Login from '../../pages/Login/Login';
+import NotFound from '../../pages/NotFound/NotFound';
+import Products from '../../pages/Products/Products';
+import Register from '../../pages/Register/Register';
 
-const Routes: React.FC = () => {
-  return <div>Routes</div>
-}
+const Routes: React.FC = () => (
+  <BrowserRouter>
+    <MainHeader />
+    <Switch>
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="*" element={<NotFound />} />
+    </Switch>
+  </BrowserRouter>
+
+);
 
 export default Routes;
-
-
