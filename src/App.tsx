@@ -1,19 +1,35 @@
 import React from 'react';
-import { CssBaseline } from '@mui/material';
+import { Provider } from 'react-redux';
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import { store } from './redux/store';
 import Routes from './http/routes';
 import './styles/global.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { ContentContainer, FullContainer } from './styles/global';
 import { CustomContainer, GlobalStyle } from './styles/globalStyle';
 
+const themeLight = createTheme({
+  palette: {
+    background: {
+      default: 'rgba(99, 210, 232, 0.5)',
+    },
+  },
+});
 const App: React.FC = () => (
-  <CustomContainer>
-    <GlobalStyle />
-    <Routes />
-  </CustomContainer>
+
+  <Provider store={store}>
+    <ThemeProvider theme={themeLight}>
+      <CustomContainer>
+        <CssBaseline>
+          <GlobalStyle />
+          <Routes />
+        </CssBaseline>
+      </CustomContainer>
+    </ThemeProvider>
+
+  </Provider>
 );
 
 export default App;

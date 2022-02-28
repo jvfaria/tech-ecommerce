@@ -2,15 +2,17 @@ import { TabContext, TabList } from '@mui/lab';
 import {
   Avatar, Grid, Tooltip,
 } from '@mui/material';
-import { blue, blueGrey } from '@mui/material/colors';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/backgrounds/TechLogoBackground.png';
+import { IState } from '../../redux/store';
 import {
   CustomTab, StyledBadge, WhiteShoppingCartOutlinedIcon,
 } from './styles';
 
 const MainHeader: React.FC = () => {
+  const cartCounter = useSelector<IState, number>(state => state.cart.counter);
   const navigate = useNavigate();
   const [value, setValue] = useState(localStorage.getItem('Selected::navbar') || 'home');
 
@@ -48,8 +50,8 @@ const MainHeader: React.FC = () => {
 
       <Grid item xs={2} md={3} style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Link to="/cart" onClick={wipeNavTabIndicator}>
-          <StyledBadge badgeContent={4} color="primary">
-            <Tooltip title="4 itens" arrow>
+          <StyledBadge badgeContent={cartCounter} color="primary">
+            <Tooltip title={cartCounter === 1 ? `${cartCounter} item no carrinho` : `${cartCounter} itens no carrinho`} arrow>
               <Avatar sx={{ bgcolor: '#4fa8ba' }}>
                 <WhiteShoppingCartOutlinedIcon />
               </Avatar>

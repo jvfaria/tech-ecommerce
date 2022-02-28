@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes as Switch, BrowserRouter } from 'react-router-dom';
+import Catalog from '../../components/Catalog';
 import MainHeader from '../../components/MainHeader';
 import About from '../../pages/About/About';
 import Cart from '../../pages/Cart/Cart';
@@ -21,6 +22,7 @@ const Routes: React.FC = () => (
       <Route path="/register" element={<Register />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/catalog" element={<Catalog />} />
     </Switch>
   </BrowserRouter>
 

@@ -53,11 +53,19 @@
           "ts": "never",
           "tsx": "never"
         }
+      ],
+      "quotes": [
+        "error",
+        "single",
+        {"avoidEscape": true, "allowTemplateLiterals": false}
       ]
     },
     "settings": {
       "import/resolver": {
-        "typescript": {}
+        "typescript": {},
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+        }
       }
     }
 }
