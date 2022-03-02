@@ -1,16 +1,20 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
+  Alert,
+  AlertTitle,
   Button,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   Checkbox,
+  Snackbar,
   Typography,
 } from '@mui/material';
 import { AddShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Link } from 'react-router-dom';
 import { IProductCardProps } from './types';
 import { ImageWrapper, PriceSpan } from './styles';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
@@ -21,9 +25,32 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps) => {
   const dispatch = useDispatch();
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const handleAddToCart = useCallback((newProduct: IProduct) => {
     dispatch(addProductToCart(newProduct));
+
+    setOpenSnackbar(true);
   }, [dispatch]);
+
+  const handleNavbarIndicator = useCallback(() => {
+    localStorage.setItem('Selected::navbar', '');
+
+    setOpenSnackbar(true);
+  }, []);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
+  // const wipeNavTabIndicator = () => {
+  //   setValue('');
+  //   localStorage.setItem('Selected::navbar', '');
+  // };
 
   return (
     <>
@@ -66,6 +93,15 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
           <Button variant="outlined" startIcon={<AddShoppingCart />} onClick={() => handleAddToCart(product)}>Carrinho</Button>
           <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: '#FD1D1Dcc' }} />} />
         </CardActions>
+
+        <Snackbar open={openSnackbar} onClose={handleClose} autoHideDuration={2000}>
+          <Alert severity="success" onClose={handleClose}>
+            <AlertTitle>Successo</AlertTitle>
+            Item adicionado no carrinho —
+            {' '}
+            <Link onClick={handleNavbarIndicator} style={{ textDecoration: 'none', color: '#2e7d32' }} to="/cart"><strong>Ver carrinho</strong></Link>
+          </Alert>
+        </Snackbar>
       </Card>
 
     </>

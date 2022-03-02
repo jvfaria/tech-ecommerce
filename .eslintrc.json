@@ -28,6 +28,7 @@
         "prettier"
     ],
     "rules": {
+      "linebreak-style": "off",
       "no-use-before-define": "off",
       "arrow-parens": "off",
       "react/prop-types" : "off",

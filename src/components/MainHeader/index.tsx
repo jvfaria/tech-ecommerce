@@ -5,7 +5,6 @@ import {
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/backgrounds/TechLogoBackground.png';
 import { IState } from '../../redux/store';
 import {
   CustomTab, StyledBadge, WhiteShoppingCartOutlinedIcon,
@@ -14,7 +13,7 @@ import {
 const MainHeader: React.FC = () => {
   const cartCounter = useSelector<IState, number>(state => state.cart.counter);
   const navigate = useNavigate();
-  const [value, setValue] = useState(localStorage.getItem('Selected::navbar') || 'home');
+  const [value, setValue] = useState(localStorage.getItem('Selected::navbar') || '');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -23,8 +22,8 @@ const MainHeader: React.FC = () => {
   };
 
   const wipeNavTabIndicator = () => {
-    setValue('');
-    localStorage.setItem('Selected::navbar', '');
+    setValue('cart');
+    localStorage.setItem('Selected::navbar', 'cart');
   };
 
   return (
@@ -35,11 +34,11 @@ const MainHeader: React.FC = () => {
       alignItems="center"
     >
       <Grid item xs={12} md={3}>
-        <img src={logo} alt="logo" style={{ maxWidth: '287px' }} />
+        <img src="/assets/backgrounds/TechLogoBackground.png" alt="logo" style={{ maxWidth: '287px' }} />
       </Grid>
 
       <Grid item xs={10} md={6}>
-        <TabContext value={value}>
+        <TabContext value={localStorage.getItem('Selected::navbar') || ''}>
           <TabList centered sx={{ color: '#6BD4E9' }} TabIndicatorProps={{ style: { color: '#181A18', background: '#6BD4E9' } }} onChange={handleChange}>
             <CustomTab label="HOME" value="home" />
             <CustomTab label="PRODUTOS" value="products" />

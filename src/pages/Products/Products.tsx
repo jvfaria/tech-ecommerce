@@ -6,7 +6,7 @@ import { ProductContainer } from './styles';
 
 const Products: React.FC = () => (
   <ProductContainer>
-    <Typography variant="h2" sx={{ fontSize: '3.25rem', textAlign: 'left', marginBottom: '4rem' }}>Catálogo de produtos</Typography>
+    <Typography variant="h2" sx={{ fontSize: '2.75rem', textAlign: 'left', marginBottom: '4rem' }}>Catálogo de produtos</Typography>
     <Grid
       container
       direction="row"
