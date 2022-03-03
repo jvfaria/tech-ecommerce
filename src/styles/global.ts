@@ -1,31 +1,25 @@
-import { createGlobalStyle } from "styled-components";
+import styled from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    outline: 0;
-    margin: 0;
-    box-sizing: border-box;
-    padding: 0;
-  }
+export const FullContainer = styled('div')`
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  background: rgba(99, 210, 232, 0.3);
+  z-index: 0;
+  /* margin: 40px auto; */
+`;
 
-  body {
-    -webkit-font-smoothing: antialiased;
-    background: #e6e6e6;
-    color: #fff;
-  }
+export const ContentContainer = styled('div')`
+  width: 80%;
+  height: 100vh;
+  padding-top: 40px;
+  margin: 0 auto;
+`;
 
-  body, input, button {
-    font-family: 'Roboto', serif;
-    font-size: 16px;
-  }
-
-  button {
-    cursor: pointer;
-  }
-
-  h1,h2,h3 {
-    font-weight: 500;
-  }
-`
-
-export default GlobalStyle;
+// export const CustomContainer = styled('div')`
+//   width: 80%;
+//   height: 100vh;
+//   margin: 40px auto;
+//   background-color: #63d2e8cc;
+// `;

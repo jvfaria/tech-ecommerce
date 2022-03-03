@@ -4,10 +4,10 @@
         "es2021": true
     },
     "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended",
-        "airbnb",
-        "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:react/recommended",
+      "airbnb",
+      "plugin:@typescript-eslint/recommended"
     ],
     "globals": {
       "Atomics": "readonly",
@@ -23,11 +23,12 @@
     },
     "plugins": [
         "react",
-        "react-hooks",
         "@typescript-eslint",
+        "react-hooks",
         "prettier"
     ],
     "rules": {
+      "linebreak-style": "off",
       "no-use-before-define": "off",
       "arrow-parens": "off",
       "react/prop-types" : "off",
@@ -53,12 +54,19 @@
           "ts": "never",
           "tsx": "never"
         }
+      ],
+      "quotes": [
+        "error",
+        "single",
+        {"avoidEscape": true, "allowTemplateLiterals": false}
       ]
     },
     "settings": {
       "import/resolver": {
-        "typescript": {}
+        "typescript": {},
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+        }
       }
     }
-
 }
