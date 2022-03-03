@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import { BrowserRouter } from 'react-router-dom';
 import { store } from './redux/store';
 import Routes from './http/routes';
 import './styles/global.css';
@@ -20,15 +21,17 @@ const themeLight = createTheme({
 const App: React.FC = () => (
 
   <Provider store={store}>
+
     <ThemeProvider theme={themeLight}>
       <CustomContainer>
         <CssBaseline>
           <GlobalStyle />
-          <Routes />
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
         </CssBaseline>
       </CustomContainer>
     </ThemeProvider>
-
   </Provider>
 );
 

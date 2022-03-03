@@ -1,62 +1,56 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import {
-  Alert,
-  AlertTitle,
   Button,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   Checkbox,
-  Snackbar,
   Typography,
 } from '@mui/material';
-import { AddShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import {
+  AddShoppingCart, Block, Favorite, FavoriteBorder,
+} from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Link } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import { IProductCardProps } from './types';
-import { ImageWrapper, PriceSpan } from './styles';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
-import { addProductToCart } from '../../redux/modules/Cart/actions';
-import { IProduct } from '../../redux/modules/Cart/types';
+import { addProductToCartRequest } from '../../redux/modules/Cart/actions';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { ImageWrapper, PriceSpan } from './styles';
+import { IState } from '../../redux/store';
 
 const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps) => {
+  const hasFailedAddToCart = useSelector<IState, boolean>(
+    state => state.cart.productWithoutStock.includes(product.id as never),
+  );
+
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const handleAddToCart = useCallback(() => {
+    dispatch(addProductToCartRequest(product));
 
-  const handleAddToCart = useCallback((newProduct: IProduct) => {
-    dispatch(addProductToCart(newProduct));
-
-    setOpenSnackbar(true);
-  }, [dispatch]);
-
-  const handleNavbarIndicator = useCallback(() => {
-    localStorage.setItem('Selected::navbar', '');
-
-    setOpenSnackbar(true);
-  }, []);
-
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
+    if (hasFailedAddToCart) {
+      enqueueSnackbar('Estoque indisponível !', {
+        variant: 'error',
+      });
+    } else {
+      enqueueSnackbar('Produto adicionado ao carrinho', {
+        variant: 'success',
+      });
     }
-
-    setOpenSnackbar(false);
-  };
-
-  // const wipeNavTabIndicator = () => {
-  //   setValue('');
-  //   localStorage.setItem('Selected::navbar', '');
-  // };
+  }, [dispatch, enqueueSnackbar, hasFailedAddToCart, product]);
 
   return (
     <>
-      <Card sx={{
-        minWidth: 168, maxWidth: 300, maxHeight: 460,
-      }}
+      <Card
+        key={product.id}
+        sx={{
+          minWidth: 168, maxWidth: 300, maxHeight: 460,
+        }}
+
       >
 
         <CardActionArea>
@@ -90,18 +84,21 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
           padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         }}
         >
-          <Button variant="outlined" startIcon={<AddShoppingCart />} onClick={() => handleAddToCart(product)}>Carrinho</Button>
-          <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: '#FD1D1Dcc' }} />} />
-        </CardActions>
+          {
+          hasFailedAddToCart ? (
 
-        <Snackbar open={openSnackbar} onClose={handleClose} autoHideDuration={2000}>
-          <Alert severity="success" onClose={handleClose}>
-            <AlertTitle>Successo</AlertTitle>
-            Item adicionado no carrinho —
-            {' '}
-            <Link onClick={handleNavbarIndicator} style={{ textDecoration: 'none', color: '#2e7d32' }} to="/cart"><strong>Ver carrinho</strong></Link>
-          </Alert>
-        </Snackbar>
+            <>
+              <Button variant="outlined" disabled startIcon={<Block />}>SEM ESTOQUE</Button>
+            </>
+          )
+            : (
+              <>
+                <Button variant="outlined" startIcon={<AddShoppingCart />} onClick={handleAddToCart}>Carrinho</Button>
+                <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: '#FD1D1Dcc' }} />} />
+              </>
+            )
+        }
+        </CardActions>
       </Card>
 
     </>

@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Grid,
 } from '@mui/material';
-import { api } from '../../services/api';
+import { useSnackbar } from 'notistack';
 import ProductCard from '../ProductCard';
 import { IProduct } from '../../redux/modules/Cart/types';
+import { ICatalogState } from '../../redux/modules/Catalog/types';
 
-const Catalog: React.FC = () => {
-  const [catalog, setCatalog] = useState<IProduct[]>([]);
-
-  useEffect(() => {
-    api.get('/products').then(response => setCatalog(response.data)).catch(err => console.error(err));
-  }, []);
+const Catalog: React.FC<ICatalogState> = ({ products }: ICatalogState) => {
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Grid
@@ -21,7 +18,7 @@ const Catalog: React.FC = () => {
       columnSpacing={{ xs: 1, sm: 2, md: 4 }}
     >
       {
-        catalog && catalog.map(product => (
+        products && products.map((product: IProduct) => (
           <Grid item md={4} sm={4} xs={6} key={product.id}>
             <ProductCard product={product} />
           </Grid>
