@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Clear, Search } from '@mui/icons-material';
 import {
-  Grid, Typography, TextField, IconButton,
+  Grid, Typography, TextField, IconButton, InputAdornment,
 } from '@mui/material';
 import { connect, useDispatch } from 'react-redux';
 import { getProductsCatalogRequest } from '../../redux/modules/Catalog/actions';
@@ -48,33 +48,51 @@ const Products: React.FC<IProductsProps> = ({ products }: IProductsProps) => {
 
   return (
     <ProductContainer>
-      <Typography variant="h2" sx={{ fontSize: '2.75rem', textAlign: 'left', marginBottom: '4rem' }}>Catálogo de produtos</Typography>
-
-      <div style={{
-        paddingBottom: '1rem', width: '100%', display: 'flex', alignItems: 'center',
-      }}
+      <Typography
+        variant="h2"
+        sx={{
+          fontSize: '2.75rem',
+          textAlign: 'left',
+          marginTop: '4rem',
+          marginBottom: '4rem',
+          borderRadius: '5px',
+          background: '#003A4D',
+          padding: '10px',
+          color: '#fff',
+        }}
       >
-        <TextField
-          sx={{
-            width: '100%',
-            background: 'white',
-          }}
-          value={search}
-          onChange={handleSearch}
-          id="outlined-basic"
-          label="Pesquisar produto"
-        />
-        {
-          search.length === 0 ? (<Search sx={{ position: 'relative', right: '50px' }} />)
-            : (
-              <IconButton sx={{ position: 'relative', right: '50px' }} onClick={clearSearch}>
-                <Clear />
-                {' '}
-              </IconButton>
-            )
+        Catálogo de produtos
+      </Typography>
+
+      <TextField
+        sx={{
+          width: '100%',
+          background: '#fff',
+          marginBottom: '2rem',
+        }}
+        value={search}
+        onChange={handleSearch}
+        id="outlined-basic"
+        label="Pesquisar produto"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="start">
+              {
+                search.length === 0 ? (<Search />)
+                  : (
+                    <IconButton onClick={clearSearch}>
+                      <Clear />
+                    </IconButton>
+                  )
+              }
+            </InputAdornment>
+          ),
+        }}
+      />
+      {
+
         }
 
-      </div>
       <Grid
         container
         direction="row"

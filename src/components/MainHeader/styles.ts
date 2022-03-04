@@ -23,17 +23,12 @@ export const CustomTabCart = materialStyled(Tab)<TabProps>(() => ({
 
 }));
 
-export const WhiteShoppingCartOutlinedIcon = styled(ShoppingCartOutlinedIcon)`
-  && {
-    color: #fff;
-  }
-`;
-
 export const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   '& .MuiBadge-badge': {
-    right: -2,
+    right: 7,
     top: 13,
     border: '2px solid white',
     padding: '0 4px',
+    backgroundColor: '#FF8E3D',
   },
 }));

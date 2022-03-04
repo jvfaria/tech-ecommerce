@@ -14,7 +14,7 @@ import { CustomContainer, GlobalStyle } from './styles/globalStyle';
 const themeLight = createTheme({
   palette: {
     background: {
-      default: 'rgba(99, 210, 232, 0.5)',
+      default: '#e3e3e3',
     },
   },
 });

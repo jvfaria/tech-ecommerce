@@ -1,13 +1,15 @@
+import { ShoppingCartOutlined } from '@mui/icons-material';
 import { TabContext, TabList } from '@mui/lab';
 import {
-  Avatar, Grid, Tooltip,
+  Avatar, Grid, IconButton, Tooltip,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Home from '../../pages/HomePage/Home';
 import { IState } from '../../redux/store';
 import {
-  CustomTab, StyledBadge, WhiteShoppingCartOutlinedIcon,
+  CustomTab, StyledBadge,
 } from './styles';
 
 export interface ICounterProps {
@@ -36,6 +38,10 @@ const MainHeader: React.FC = () => {
     localStorage.setItem('Selected::navbar', 'cart');
   };
 
+  const handleNavigate = useCallback((path: string) => {
+    navigate(path);
+  }, [navigate]);
+
   return (
     <Grid
       container
@@ -49,11 +55,11 @@ const MainHeader: React.FC = () => {
 
       <Grid item xs={10} md={6}>
         <TabContext value={localStorage.getItem('Selected::navbar') || actualURLPath}>
-          <TabList centered sx={{ color: '#6BD4E9' }} TabIndicatorProps={{ style: { color: '#181A18', background: '#6BD4E9' } }} onChange={handleChange}>
-            <CustomTab label="HOME" value="home" />
-            <CustomTab label="PRODUTOS" value="products" />
-            <CustomTab label="SOBRE" value="about" />
-            <CustomTab label="CARRINHO" value="cart" />
+          <TabList centered sx={{ color: '#6BD4E9' }} TabIndicatorProps={{ style: { color: '#181A18', background: '#003A4D' } }} onChange={handleChange}>
+            <CustomTab label="HOME" value="home" onClick={() => handleNavigate('/home')} />
+            <CustomTab label="PRODUTOS" value="products" onClick={() => handleNavigate('/products')} />
+            <CustomTab label="SOBRE" value="about" onClick={() => handleNavigate('/about')} />
+            <CustomTab label="CARRINHO" value="cart" onClick={() => handleNavigate('/cart')} />
           </TabList>
         </TabContext>
       </Grid>
@@ -65,9 +71,10 @@ const MainHeader: React.FC = () => {
               title={storagedCounter === 1 ? `${storagedCounter} item no carrinho` : `${storagedCounter} itens no carrinho`}
               arrow
             >
-              <Avatar sx={{ bgcolor: '#4fa8ba' }}>
-                <WhiteShoppingCartOutlinedIcon />
-              </Avatar>
+              <IconButton>
+                <ShoppingCartOutlined fontSize="large" sx={{ color: '#003A4D' }} />
+              </IconButton>
+
             </Tooltip>
           </StyledBadge>
         </Link>

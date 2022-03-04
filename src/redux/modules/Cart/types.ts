@@ -6,6 +6,7 @@ export interface IProduct {
   price: number;
   quantity: number;
   img: string;
+  featured: boolean;
 }
 export interface ICartItem {
   product: IProduct;

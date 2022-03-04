@@ -34,6 +34,7 @@ export const cartReducer: Reducer<ICartState> = (
           quantity: 1,
         });
       }
+
       break;
     }
 
@@ -41,7 +42,6 @@ export const cartReducer: Reducer<ICartState> = (
       if (!draft.productWithoutStock.includes(action.payload.productId as never)) {
         draft.productWithoutStock.push(action.payload.productId as never);
       }
-
       break;
     }
 

@@ -80,7 +80,8 @@
       "brand": "Asus",
       "description": "IPS, Wide, 144Hz e Adaptive Sync",
       "price": 2299.34,
-      "img": "asus.jpg"
+      "img": "asus.jpg",
+      "featured": true
     },
 
     {
@@ -89,7 +90,8 @@
       "brand": "SAMSUNG",
       "description": "Monitor curvo samsung 24 polegadas",
       "price": 1589.90,
-      "img": "src/assets/products/samsungCard.jpg"
+      "img": "src/assets/products/samsungCard.jpg",
+      "featured": false
     },
 
     {
@@ -98,7 +100,8 @@
       "brand": "LG",
       "description": "Monitor TV LG 32' Wide 60Hz",
       "price": 3198.00,
-      "img": "monitorLg.jpg"
+      "img": "monitorLg.jpg",
+      "featured": true
     },
 
     {
@@ -107,7 +110,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 2500.00,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -116,7 +120,8 @@
       "brand": "ACER",
       "description": "Monitor Acer Nitro painel IPS 165Hz, Full HD",
       "price": 834.99,
-      "img": "acerNitro.jpg"
+      "img": "acerNitro.jpg",
+      "featured": true
     },
 
     {
@@ -125,7 +130,8 @@
       "brand": "AOC",
       "description": "Curvo, 240Hz, Full HD",
       "price": 1800.24,
-      "img": "AOC.jpg"
+      "img": "AOC.jpg",
+      "featured": true
     },
 
     {
@@ -134,7 +140,8 @@
       "brand": "SAMSUNG",
       "description": "LED, Curvo, Wide, 240 Hz, Full HD, G-Sync, HDMI/DisplayPort",
       "price": 3000.00,
-      "img": "odissey.jpg"
+      "img": "odissey.jpg",
+      "featured": true
     },
 
     {
@@ -143,7 +150,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 2123.50,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -152,7 +160,8 @@
       "brand": "",
       "description": "Nono produto criado",
       "price": 1.50,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -161,7 +170,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 1200.50,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -170,7 +180,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 5.50,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -179,7 +190,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 4.50,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -188,7 +200,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 3.50,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -197,7 +210,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 7.10,
-      "img": ""
+      "img": "",
+      "featured": false
     },
 
     {
@@ -206,7 +220,8 @@
       "brand": "",
       "description": "Quarto produto criado",
       "price": 900.00,
-      "img": ""
+      "img": "",
+      "featured": false
     }
   ],
 

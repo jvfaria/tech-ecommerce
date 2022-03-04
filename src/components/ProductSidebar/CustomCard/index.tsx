@@ -63,10 +63,26 @@ const CustomCard: React.FC = () => {
   return (
     <>
       <CardContent>
-        <Typography gutterBottom variant="subtitle2" sx={{ fontSize: '1.80rem' }}>
-          Filtrar
-        </Typography>
+        <div style={{
+          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-beetwen',
+        }}
+        >
+          <div style={{
+            width: '100%',
+          }}
+          >
+            <Typography gutterBottom variant="subtitle2" sx={{ fontSize: '1.80rem' }}>
+              Filtrar
+            </Typography>
+          </div>
+          <div style={{
+            width: '50%',
+          }}
+          >
+            <span style={{ textAlign: 'right', width: '100%' }}>1500 produtos</span>
 
+          </div>
+        </div>
         <Subtitle gutterBottom variant="subtitle1">
           Categoria
         </Subtitle>
