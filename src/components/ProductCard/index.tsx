@@ -48,7 +48,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
       <Card
         key={product.id}
         sx={{
-          minWidth: 168, maxWidth: 300, maxHeight: 460,
+          maxHeight: 460,
         }}
 
       >

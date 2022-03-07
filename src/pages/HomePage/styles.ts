@@ -13,7 +13,7 @@ export const MediaCaption = materialStyled(Typography)(() => ({
   textOverflow: 'ellipsis',
   backgroundColor: 'rgba(0, 0, 0, 0.6)',
   position: 'absolute',
-  bottom: 34,
+  bottom: 40,
   padding: '15px',
   color: '#fff',
   width: '100%',
@@ -40,3 +40,12 @@ export const PriceSpan = styled('span')`
   color: #FF8E3D;
   font-size: 1.5rem;
 `;
+
+export const CustomGridScroll = materialStyled(Grid)<GridProps>(() => ({
+  flexGrow: 1,
+  display: 'flex',
+  height: '600px',
+  flexDirection: 'column',
+  minHeight: 0,
+  paddingTop: '2.5rem',
+}));

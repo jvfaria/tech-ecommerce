@@ -16,4 +16,5 @@ export interface ICartState {
   items: ICartItem[];
   productWithoutStock: [];
   counter: number;
+  total: number;
 }

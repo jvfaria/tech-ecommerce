@@ -1,12 +1,11 @@
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { TabContext, TabList } from '@mui/lab';
 import {
-  Avatar, Grid, IconButton, Tooltip,
+  Grid, IconButton, Tooltip,
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Home from '../../pages/HomePage/Home';
 import { IState } from '../../redux/store';
 import {
   CustomTab, StyledBadge,
@@ -50,7 +49,7 @@ const MainHeader: React.FC = () => {
       alignItems="center"
     >
       <Grid item xs={12} md={3}>
-        <img src="/assets/backgrounds/TechLogoBackground.png" alt="logo" style={{ maxWidth: '287px' }} />
+        <img src="/assets/techecommerce.png" alt="logo" style={{ maxWidth: '287px' }} />
       </Grid>
 
       <Grid item xs={10} md={6}>
@@ -68,7 +67,7 @@ const MainHeader: React.FC = () => {
         <Link to="/cart" onClick={wipeNavTabIndicator}>
           <StyledBadge badgeContent={storagedCounter || cartCounter} color="primary">
             <Tooltip
-              title={storagedCounter === 1 ? `${storagedCounter} item no carrinho` : `${storagedCounter} itens no carrinho`}
+              title={cartCounter === 1 ? `${cartCounter} item no carrinho` : `${cartCounter} itens no carrinho`}
               arrow
             >
               <IconButton>
