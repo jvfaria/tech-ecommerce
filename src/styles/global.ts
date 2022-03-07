@@ -5,7 +5,6 @@ export const FullContainer = styled('div')`
   height: 100vh;
   padding: 0;
   margin: 0;
-  background: rgba(99, 210, 232, 0.3);
   z-index: 0;
   /* margin: 40px auto; */
 `;

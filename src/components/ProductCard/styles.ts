@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const PriceSpan = styled('span')`
   font-weight: 600;
-  color: #003A4D;
-  font-size: 1.6rem;
+  color: #FF8E3D;
+  font-size: 1.2rem;
 `;
 
 export const ImageWrapper = styled.div`

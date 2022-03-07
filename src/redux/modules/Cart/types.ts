@@ -6,6 +6,7 @@ export interface IProduct {
   price: number;
   quantity: number;
   img: string;
+  featured: boolean;
 }
 export interface ICartItem {
   product: IProduct;
@@ -13,5 +14,7 @@ export interface ICartItem {
 }
 export interface ICartState {
   items: ICartItem[];
+  productWithoutStock: [];
   counter: number;
+  total: number;
 }

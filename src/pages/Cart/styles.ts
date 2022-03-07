@@ -3,7 +3,12 @@ import styled from 'styled-components';
 export const CartContainer = styled('div')`
   max-width: 80%;
   height: 100vh;
-  margin: 3.0rem auto;
+  margin: 0 auto;
+
+  @media screen and (max-width: 600px) {
+    max-width: 100%;
+
+  }
 `;
 
 export const ButtonFinishContainer = styled('div')`
