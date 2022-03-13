@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 import { IProductCardProps } from './types';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
 import { addProductToCartRequest } from '../../redux/modules/Cart/actions';
@@ -26,6 +27,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
     state => state.cart.productWithoutStock.includes(product.id as never),
   );
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -43,6 +45,10 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
     }
   }, [dispatch, enqueueSnackbar, hasFailedAddToCart, product]);
 
+  const handleOverviewProduct = useCallback(() => {
+    navigate(`/product/${product.id}`);
+  }, [navigate, product.id]);
+
   return (
     <>
       <Card
@@ -53,7 +59,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
 
       >
 
-        <CardActionArea>
+        <CardActionArea onClick={handleOverviewProduct}>
           <ImageWrapper>
             <LazyLoadImage
               src={`/assets/${product.img}`}

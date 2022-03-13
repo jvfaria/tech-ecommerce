@@ -90,7 +90,7 @@ const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
               <AddShoppingCart color="primary" fontSize="medium" />
             </IconButton>
 
-            <Link to="/cart" style={{ textDecoration: 'none', marginLeft: '3rem' }}>
+            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', marginLeft: '3rem' }}>
               <Button variant="text">Ver produto</Button>
             </Link>
           </div>
