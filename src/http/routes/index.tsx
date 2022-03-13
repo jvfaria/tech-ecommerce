@@ -6,6 +6,7 @@ import Cart from '../../pages/Cart/Cart';
 import Home from '../../pages/HomePage/Home';
 import Login from '../../pages/Login/Login';
 import NotFound from '../../pages/NotFound/NotFound';
+import ProductOverview from '../../pages/ProductOverview/ProductOverview';
 import Products from '../../pages/Products/Products';
 import Register from '../../pages/Register/Register';
 
@@ -21,7 +22,7 @@ const Routes: React.FC = () => (
       <Route path="/register" element={<Register />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="/catalog" element={<Catalog />} /> */}
+      <Route path="/product/:id" element={<ProductOverview />} />
     </Switch>
   </>
 
