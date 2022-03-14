@@ -5,6 +5,7 @@ import com.techecommerce.api.dtos.UserCreateDTO;
 import com.techecommerce.api.exceptions.EmailExistsException;
 import com.techecommerce.api.exceptions.ResourceNotFoundException;
 import com.techecommerce.api.exceptions.UserNotFoundException;
+import com.techecommerce.api.models.Role;
 import com.techecommerce.api.models.User;
 import com.techecommerce.api.repositories.UserRepository;
 import com.techecommerce.api.transformers.UserTransformer;
@@ -41,11 +42,9 @@ public class UserService implements UserDetailsService {
         if(this.usernameExists(userDTO.getUsername())) {
             throw new EmailExistsException("Username já existente ! Escolha um que ainda não foi utilizado.");
         }
-
         User user = userTransformer.toEntity(userDTO);
         user.setUsername(userDTO.getUsername().toUpperCase(Locale.ROOT));
         user.setPassword(passwordEncoder.getEncoder().encode(userDTO.getPassword()));
-
         return userRepository.save(user);
     }
 

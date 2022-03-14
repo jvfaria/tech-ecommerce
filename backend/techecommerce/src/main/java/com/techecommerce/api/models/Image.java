@@ -1,7 +1,5 @@
 package com.techecommerce.api.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,20 +11,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "images")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.READ_ONLY)
-    private Long id;
+public class Image extends GenericEntity {
     @Column
     private String name;
+    private String filename;
+
+    @OneToOne(mappedBy = "image")
+    private Product product;
 }

@@ -34,7 +34,7 @@ public class UserController {
     final UserRepository userRepository;
     final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("List all Users")
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -42,14 +42,14 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Find User by ID")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) throws UserNotFoundException {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Find User by email")
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException {
@@ -65,7 +65,7 @@ public class UserController {
         return ResponseEntity.created(location).body(createdUser);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Delete existent User")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) throws ResourceNotFoundException {

@@ -7,26 +7,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
+import java.util.UUID;
 
-@Entity
-@Table(name = "roles")
-@Getter
-@Setter
+@MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+@Getter
+@Setter
+public abstract class GenericEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.READ_ONLY)
-    private Long id;
-    @Column
-    private String name;
+    private UUID id;
 }
