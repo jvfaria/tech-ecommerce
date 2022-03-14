@@ -1,4 +1,4 @@
-import { IProduct } from '../Cart/types';
+import { IProduct } from '../../Cart/types';
 
 export interface ICatalogState {
   products: IProduct[]

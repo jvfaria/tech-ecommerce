@@ -20,7 +20,7 @@ import { useSnackbar } from 'notistack';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { MediaCaption, PriceSpan } from './styles';
 import { IState } from '../../redux/store';
-import { getProductsCatalogRequest } from '../../redux/modules/Catalog/actions';
+import { Creators } from '../../redux/modules/Catalog/ducks/index';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
 import FeaturedProductsCard from '../../components/FeaturedProductsCard';
@@ -37,7 +37,7 @@ const carouselItems = [
   },
 
   {
-    id: 4, img: '/assets/acerNotebook.png', title: 'Kit Gamer Acer Nitro 5 AN517-52-50RS', price: 5242.99,
+    id: 3, img: '/assets/acernotebook.png', title: 'Kit Gamer Acer Nitro 5 AN517-52-50RS', price: 5242.99,
   },
 ];
 const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
@@ -45,7 +45,7 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
   const [featuredProducts, setFeaturedProducts] = useState<IProduct[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const fetchProductsCatalog = useCallback(async () => {
-    await dispatch(getProductsCatalogRequest());
+    await dispatch(Creators.getProductsCatalogRequest());
   }, [dispatch]);
 
   useEffect(() => {
@@ -224,6 +224,7 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
 };
 
 function mapStateToProps(state: IState) {
+  const { getProductsCatalogRequest } = Creators;
   return {
     getProductsCatalogRequest,
     products: state.catalog.products,

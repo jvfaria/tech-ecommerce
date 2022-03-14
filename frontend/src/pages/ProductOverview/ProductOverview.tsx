@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductOverviewCard from '../../components/ProductOverviewCard';
 import { IProduct } from '../../redux/modules/Cart/types';
-import { getProductsCatalogRequest } from '../../redux/modules/Catalog/actions';
+import { Creators } from '../../redux/modules/Catalog/ducks/index';
 import { IState } from '../../redux/store';
 
 type ProductParams = {
@@ -24,7 +24,7 @@ const ProductOverview: React.FC<IProductOverviewProps> = ({ products }: IProduct
   useEffect(() => {
     if (id) {
       if (loadedProducts.length === 0) {
-        dispatch(getProductsCatalogRequest());
+        dispatch(Creators.getProductsCatalogRequest());
         setExistentProduct(findProduct(parseInt(id, 10), 'dispatch'));
       } else {
         setExistentProduct(findProduct(parseInt(id, 10), 'loaded'));
@@ -37,7 +37,7 @@ const ProductOverview: React.FC<IProductOverviewProps> = ({ products }: IProduct
           return products.find(product => product.id === productId);
         }
         case 'loaded': {
-          return loadedProducts.find(product => product.id === productId);
+          return loadedProducts.find((product: { id: number; }) => product.id === productId);
         }
         default: {
           return {} as IProduct;
@@ -53,6 +53,7 @@ const ProductOverview: React.FC<IProductOverviewProps> = ({ products }: IProduct
 };
 
 function mapStateToProps(state: IState) {
+  const { getProductsCatalogRequest } = Creators;
   return {
     getProductsCatalogRequest,
     products: state.catalog.products,
