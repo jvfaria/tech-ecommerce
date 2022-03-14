@@ -1,0 +1,11 @@
+.idea/.gitignore
+.idea/.name
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/tech-ecommerce.iml
+.idea/vcs.xml
+.idea/libraries/*
+.idea/libraries/**
