@@ -20,7 +20,7 @@ import { useSnackbar } from 'notistack';
 import { ICartItem } from '../../../redux/modules/Cart/types';
 import { formatNumberCurrency } from '../../../utils/FormatNumberCurrency';
 import { CustomTextField } from './styles';
-import { addProductToCartRequest, removeProductFromCart } from '../../../redux/modules/Cart/actions';
+import { Creators as CreateAction } from '../../../redux/modules/Cart/ducks/index';
 import { PriceSpan } from '../../../pages/HomePage/styles';
 
 interface ICartProductProps {
@@ -33,7 +33,7 @@ const TableCollapse: React.FC<ICartProductProps> = ({ cartProduct }: ICartProduc
   const dispatch = useDispatch();
 
   const handleDecrementQuantity = useCallback(() => {
-    dispatch(removeProductFromCart(cartProduct.product));
+    dispatch(CreateAction.removeProductFromCart(cartProduct.product));
   }, [cartProduct.product, dispatch]);
 
   const handleIncrementQuantity = useCallback(() => {
@@ -42,7 +42,7 @@ const TableCollapse: React.FC<ICartProductProps> = ({ cartProduct }: ICartProduc
       return;
     }
 
-    dispatch(addProductToCartRequest(cartProduct.product));
+    dispatch(CreateAction.addProductToCartRequest(cartProduct.product));
   }, [cartProduct, dispatch, enqueueSnackbar]);
   return (
     <>

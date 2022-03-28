@@ -5,19 +5,17 @@ import {
 import { api } from '../../../services/api';
 import { IState } from '../../store';
 import {
-  addProductToCartFail, addProductToCartRequest, addProductToCartSuccess,
-} from './actions';
-import { ADD_PRODUCT_TO_CART_REQUEST } from './actionTypes';
+  Creators as CreateAction, Types,
+} from './ducks';
 
-type ActionType = ReturnType<typeof addProductToCartRequest>
+type ActionType = ReturnType<typeof CreateAction.addProductToCartRequest>
 
 interface IStockResponse {
   id: number;
   quantity: number;
 }
 
-function* checkProductStock({ payload }: ActionType): any {
-  const { product } = payload;
+function* checkProductStock({ product }: ActionType): any {
   const currentQuantity: number = yield select(
     (state: IState) => state.cart.items.find(item => item.product.id === product.id)?.quantity ?? 0,
   );
@@ -25,12 +23,12 @@ function* checkProductStock({ payload }: ActionType): any {
   const availableStockResponse: AxiosResponse<IStockResponse> = yield call(api.get, `stock/${product.id}`);
 
   if (availableStockResponse.data.quantity > currentQuantity) {
-    yield put(addProductToCartSuccess(product));
+    yield put(CreateAction.addProductToCartSuccess(product));
   } else {
-    yield put(addProductToCartFail(product.id));
+    yield put(CreateAction.addProductToCartFail(product.id));
   }
 }
 
 export default all([
-  takeLatest(ADD_PRODUCT_TO_CART_REQUEST, checkProductStock),
+  takeLatest(Types.ADD_PRODUCT_TO_CART_REQUEST, checkProductStock),
 ]);

@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductOverviewCard from '../../components/ProductOverviewCard';
 import { IProduct } from '../../redux/modules/Cart/types';
-import { Creators } from '../../redux/modules/Catalog/ducks/index';
+import { Creators as CreateAction } from '../../redux/modules/Catalog/ducks/index';
 import { IState } from '../../redux/store';
 
 type ProductParams = {
@@ -24,7 +24,7 @@ const ProductOverview: React.FC<IProductOverviewProps> = ({ products }: IProduct
   useEffect(() => {
     if (id) {
       if (loadedProducts.length === 0) {
-        dispatch(Creators.getProductsCatalogRequest());
+        dispatch(CreateAction.getProductsCatalogRequest());
         setExistentProduct(findProduct(parseInt(id, 10), 'dispatch'));
       } else {
         setExistentProduct(findProduct(parseInt(id, 10), 'loaded'));
@@ -53,7 +53,7 @@ const ProductOverview: React.FC<IProductOverviewProps> = ({ products }: IProduct
 };
 
 function mapStateToProps(state: IState) {
-  const { getProductsCatalogRequest } = Creators;
+  const { getProductsCatalogRequest } = CreateAction;
   return {
     getProductsCatalogRequest,
     products: state.catalog.products,

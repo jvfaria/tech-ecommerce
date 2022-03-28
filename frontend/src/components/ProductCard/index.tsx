@@ -17,10 +17,10 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { IProductCardProps } from './types';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
-import { addProductToCartRequest } from '../../redux/modules/Cart/actions';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { ImageWrapper, PriceSpan } from './styles';
 import { IState } from '../../redux/store';
+import { Creators as CreateAction } from '../../redux/modules/Cart/ducks';
 
 const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps) => {
   const hasFailedAddToCart = useSelector<IState, boolean>(
@@ -32,7 +32,8 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
   const { enqueueSnackbar } = useSnackbar();
 
   const handleAddToCart = useCallback(() => {
-    dispatch(addProductToCartRequest(product));
+    const a = dispatch(CreateAction.addProductToCartRequest(product));
+    console.log(a);
 
     if (hasFailedAddToCart) {
       enqueueSnackbar('Estoque indisponível !', {

@@ -20,7 +20,7 @@ import { useSnackbar } from 'notistack';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { MediaCaption, PriceSpan } from './styles';
 import { IState } from '../../redux/store';
-import { Creators } from '../../redux/modules/Catalog/ducks/index';
+import { Creators as CreateAction } from '../../redux/modules/Catalog/ducks/index';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
 import FeaturedProductsCard from '../../components/FeaturedProductsCard';
@@ -45,7 +45,7 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
   const [featuredProducts, setFeaturedProducts] = useState<IProduct[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const fetchProductsCatalog = useCallback(async () => {
-    await dispatch(Creators.getProductsCatalogRequest());
+    await dispatch(CreateAction.getProductsCatalogRequest());
   }, [dispatch]);
 
   useEffect(() => {
@@ -224,7 +224,7 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
 };
 
 function mapStateToProps(state: IState) {
-  const { getProductsCatalogRequest } = Creators;
+  const { getProductsCatalogRequest } = CreateAction;
   return {
     getProductsCatalogRequest,
     products: state.catalog.products,

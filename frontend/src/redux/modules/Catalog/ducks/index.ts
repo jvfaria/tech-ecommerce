@@ -1,18 +1,22 @@
 import produce from 'immer';
 import { AnyAction } from 'redux';
-import { createActions, createReducer } from 'reduxsauce';
+import { createActions, createTypes } from 'reduxsauce';
+
+export const INITIAL_STATE = {
+  products: [],
+};
+
+export default createTypes(`
+  GET_PRODUCTS_CATALOG_REQUEST
+  GET_PRODUCTS_CATALOG_SUCCESS
+  GET_PRODUCTS_CATALOG_FAIL
+`);
 
 export const { Types, Creators } = createActions({
   getProductsCatalogRequest: [],
   getProductsCatalogSuccess: ['products'],
   getProductsCatalogFail: [],
 });
-
-export const INITIAL_STATE = {
-  products: [],
-};
-
-console.log(Types, Creators);
 
 const getProductsCatalogSuccess = (
   state = INITIAL_STATE, action: AnyAction,
@@ -21,7 +25,6 @@ const getProductsCatalogSuccess = (
     draft.products.push(...action.products as never[]);
   }
 });
-
 // map our action types to our reducer functions
 export const HANDLERS = {
   [Types.GET_PRODUCTS_CATALOG_SUCCESS]: getProductsCatalogSuccess,

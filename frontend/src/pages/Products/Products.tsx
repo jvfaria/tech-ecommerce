@@ -10,7 +10,7 @@ import ProductSidebar from '../../components/ProductSidebar';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { IState } from '../../redux/store';
 import Catalog from '../../components/Catalog';
-import { Creators } from '../../redux/modules/Catalog/ducks/index';
+import { Creators as CreateAction } from '../../redux/modules/Catalog/ducks/index';
 
 interface IProductsProps {
   products: IProduct[],
@@ -24,7 +24,8 @@ const Products: React.FC<IProductsProps> = ({ products }: IProductsProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(Creators.getProductsCatalogRequest());
+    const a = dispatch(CreateAction.getProductsCatalogRequest());
+    console.log(a);
     setFilteredProductData(products);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -130,7 +131,7 @@ const Products: React.FC<IProductsProps> = ({ products }: IProductsProps) => {
 };
 
 function mapStateToProps(state: IState) {
-  const { getProductsCatalogRequest } = Creators;
+  const { getProductsCatalogRequest } = CreateAction;
 
   return {
     getProductsCatalogRequest,

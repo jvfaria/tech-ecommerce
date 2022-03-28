@@ -48,7 +48,7 @@ const MainHeader: React.FC = () => {
       spacing={3}
       alignItems="center"
     >
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={3} sx={{ width: '100vw' }}>
         <img src="/assets/techecommerce.png" alt="logo" style={{ maxWidth: '287px' }} />
       </Grid>
 

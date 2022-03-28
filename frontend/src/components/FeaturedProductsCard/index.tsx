@@ -8,7 +8,7 @@ import React from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addProductToCartRequest } from '../../redux/modules/Cart/actions';
+import { Creators as CreateAction } from '../../redux/modules/Cart/ducks';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
 import { PriceSpan } from '../ProductCard/styles';
@@ -86,7 +86,7 @@ const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
               icon={<FavoriteBorder color="action" fontSize="medium" />}
               checkedIcon={<Favorite sx={{ color: '#FD1D1Dcc' }} />}
             />
-            <IconButton sx={{ marginLeft: '1.5rem' }} aria-label="cart" onClick={() => dispatch(addProductToCartRequest(product))}>
+            <IconButton sx={{ marginLeft: '1.5rem' }} aria-label="cart" onClick={() => dispatch(CreateAction.addProductToCartRequest(product))}>
               <AddShoppingCart color="primary" fontSize="medium" />
             </IconButton>
 

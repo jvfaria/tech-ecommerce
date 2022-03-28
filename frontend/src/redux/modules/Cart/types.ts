@@ -1,13 +1,3 @@
-export interface IProduct {
-  id: number;
-  brand: string;
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  img: string;
-  featured: boolean;
-}
 export interface ICartItem {
   product: IProduct;
   quantity: number
@@ -17,4 +7,15 @@ export interface ICartState {
   productWithoutStock: [];
   counter: number;
   total: number;
+}
+
+export interface IProduct {
+  id: number;
+  brand: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  img: string;
+  featured: boolean;
 }
