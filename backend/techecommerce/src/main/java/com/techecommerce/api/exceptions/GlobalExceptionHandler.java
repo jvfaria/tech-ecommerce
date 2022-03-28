@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailExistsException.class)
-    public ResponseEntity handleException(EmailExistsException exception, HttpServletRequest request) {
+    public ResponseEntity<ErrorDetails> handleException(EmailExistsException exception, HttpServletRequest request) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -26,11 +26,25 @@ public class GlobalExceptionHandler {
                 exception.getMessage()
         );
 
-        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CategoryNameExistsException.class)
+    public ResponseEntity<ErrorDetails> handleException(CategoryNameExistsException exception, HttpServletRequest request) {
+        LocalDateTime now = LocalDateTime.now();
+        ErrorDetails errorDetails = new ErrorDetails(
+                now,
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
+                request.getRequestURL().toString(),
+                exception.getMessage()
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity handleException(ResourceNotFoundException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(ResourceNotFoundException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -39,11 +53,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity handleException(UserNotFoundException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(UserNotFoundException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -52,11 +66,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UsernameExistsException.class)
-    public ResponseEntity handleException(UsernameExistsException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(UsernameExistsException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -65,11 +79,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity handleException(UsernameNotFoundException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(UsernameNotFoundException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -78,11 +92,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity handleException(BadCredentialsException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(BadCredentialsException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -91,11 +105,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity handleException(IllegalArgumentException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(IllegalArgumentException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -104,11 +118,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity handleException(AccessDeniedException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(AccessDeniedException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -117,11 +131,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity handleException(ExpiredJwtException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(ExpiredJwtException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -130,11 +144,11 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MalformedJwtException.class)
-    public ResponseEntity handleException(MalformedJwtException exception, HttpServletRequest req) {
+    public ResponseEntity<ErrorDetails> handleException(MalformedJwtException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
@@ -143,6 +157,6 @@ public class GlobalExceptionHandler {
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
     }
 }
