@@ -69,8 +69,8 @@ const Cart: React.FC = () => {
         }
 
         <ButtonFinishContainer>
-          <Button variant="contained" color="info">Comprar +</Button>
-          <Button sx={{ marginLeft: '20px' }} variant="contained" color="success">Fechar</Button>
+          <Button variant="contained" color="info">Continuar comprando</Button>
+          <Button sx={{ marginLeft: '20px' }} variant="contained" color="success">Fechar compra</Button>
         </ButtonFinishContainer>
       </CartContainer>
     </Box>

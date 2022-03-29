@@ -14,10 +14,13 @@ import { CustomContainer, GlobalStyle } from './styles/globalStyle';
 const themeLight = createTheme({
   palette: {
     background: {
-      default: '#e3e3e3',
+      default: 'rgba(232, 232, 232, 0.8)',
     },
   },
 });
+
+// rgb(4, 11, 27) dark mode background
+
 const App: React.FC = () => (
 
   <Provider store={store}>

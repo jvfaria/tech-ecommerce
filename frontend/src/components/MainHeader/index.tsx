@@ -1,6 +1,7 @@
-import { ShoppingCartOutlined } from '@mui/icons-material';
+import { FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import { TabContext, TabList } from '@mui/lab';
 import {
+  Avatar,
   Grid, IconButton, Tooltip,
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -33,8 +34,12 @@ const MainHeader: React.FC = () => {
     navigate(`/${newValue}`);
   };
 
+  const goToNavTabIndicator = useCallback((path: string) => {
+    localStorage.setItem('Selected::navbar', path);
+  }, []);
+
   const wipeNavTabIndicator = () => {
-    localStorage.setItem('Selected::navbar', 'cart');
+    localStorage.setItem('Selected::navbar', '');
   };
 
   const handleNavigate = useCallback((path: string) => {
@@ -57,29 +62,48 @@ const MainHeader: React.FC = () => {
           <TabList centered sx={{ color: '#6BD4E9' }} TabIndicatorProps={{ style: { color: '#181A18', background: '#003A4D' } }} onChange={handleChange}>
             <CustomTab label="HOME" value="home" onClick={() => handleNavigate('/home')} />
             <CustomTab label="PRODUTOS" value="products" onClick={() => handleNavigate('/products')} />
-            <CustomTab label="SOBRE" value="about" onClick={() => handleNavigate('/about')} />
             <CustomTab label="CARRINHO" value="cart" onClick={() => handleNavigate('/cart')} />
+            <CustomTab label="LOGIN" value="about" onClick={() => handleNavigate('/login')} />
           </TabList>
         </TabContext>
       </Grid>
 
-      <Grid item xs={2} md={3} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Link to="/cart" onClick={wipeNavTabIndicator}>
-          <StyledBadge badgeContent={storagedCounter || cartCounter} color="primary">
-            <Tooltip
-              title={cartCounter === 1 ? `${cartCounter} item no carrinho` : `${cartCounter} itens no carrinho`}
-              arrow
-            >
+      <Grid container item xs={2} md={3} spacing={2} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Grid item direction="row">
+          <Link to="/favourites" onClick={wipeNavTabIndicator}>
+            <Tooltip title="Produtos favoritos" arrow>
               <IconButton>
-                <ShoppingCartOutlined fontSize="large" sx={{ color: '#003A4D' }} />
+                <FavoriteBorderRounded sx={{ color: '#003A4D', fontSize: '1.8rem' }} />
               </IconButton>
-
             </Tooltip>
-          </StyledBadge>
-        </Link>
 
+          </Link>
+
+        </Grid>
+        <Grid item>
+          <Link to="/cart" onClick={() => goToNavTabIndicator('/cart')}>
+            <StyledBadge badgeContent={storagedCounter || cartCounter} color="primary">
+              <Tooltip
+                title={cartCounter === 1 ? `${cartCounter} item no carrinho` : `${cartCounter} itens no carrinho`}
+                arrow
+              >
+                <IconButton>
+                  <ShoppingCartOutlined sx={{ color: '#003A4D', fontSize: '1.8rem' }} />
+                </IconButton>
+
+              </Tooltip>
+            </StyledBadge>
+          </Link>
+        </Grid>
+
+        <Grid item direction="row">
+          <Link to="/login" onClick={() => goToNavTabIndicator('/login')}>
+            <Tooltip title="Faça seu login ou cadastre-se" arrow>
+              <Avatar src="/broken-image.jpg" />
+            </Tooltip>
+          </Link>
+        </Grid>
       </Grid>
-
     </Grid>
 
   );

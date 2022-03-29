@@ -3,7 +3,6 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 import { styled as materialStyled } from '@mui/material/styles';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 export const CustomTab = styled(Tab)`
   && {
