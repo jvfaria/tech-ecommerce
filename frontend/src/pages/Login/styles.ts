@@ -12,3 +12,11 @@ export const LoginContainer = styled('div')`
 
   }
 `;
+
+export const FormWrapper = styled('form')`
+  width: 70%;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
+`;

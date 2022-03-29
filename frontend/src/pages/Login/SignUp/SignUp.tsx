@@ -4,6 +4,7 @@ import {
 import { useFormik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
+import { FormWrapper } from '../styles';
 
 const validationSchema = Yup.object({
   username: Yup
@@ -38,7 +39,7 @@ const SignUp: React.FC = () => {
   return (
     <>
       <Typography variant="h5" sx={{ color: '#003A4D', paddingBottom: '1.5rem' }}>QUERO ME CADASTRAR</Typography>
-      <form style={{ width: '80%' }} onSubmit={formik.handleSubmit}>
+      <FormWrapper onSubmit={formik.handleSubmit}>
         <Grid container direction="column" rowSpacing={2}>
           <Grid item>
             <TextField
@@ -100,7 +101,7 @@ const SignUp: React.FC = () => {
         <Button fullWidth sx={{ marginTop: '1rem', height: '3rem' }} type="submit" color="primary" variant="contained">
           Cadastrar
         </Button>
-      </form>
+      </FormWrapper>
     </>
   );
 };

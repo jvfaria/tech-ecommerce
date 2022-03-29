@@ -6,7 +6,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
-import { LoginContainer } from './styles';
+import { FormWrapper, LoginContainer } from './styles';
 import SignUp from './SignUp/SignUp';
 
 const validationSchema = Yup.object({
@@ -67,21 +67,21 @@ const Login: React.FC = () => {
           </Typography>
         </Grid>
 
-        <Grid container item columnSpacing={2} sx={{ padding: '8rem' }}>
+        <Grid container item columnSpacing={2} sx={{ padding: '2rem', marginTop: '6rem' }}>
           <Grid
             container
             item
             lg={6}
-            md={6}
+            md={12}
             xs={12}
-            sm="auto"
+            sm={12}
             sx={{
               width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start',
             }}
           >
             <Typography variant="h5" sx={{ color: '#003A4D', paddingBottom: '1.5rem' }}>JÁ POSSUO CADASTRO</Typography>
 
-            <form style={{ width: '80%' }} onSubmit={formik.handleSubmit}>
+            <FormWrapper onSubmit={formik.handleSubmit}>
               <Grid container direction="column" rowSpacing={2}>
                 <Grid item>
                   <TextField
@@ -114,7 +114,7 @@ const Login: React.FC = () => {
               <Button fullWidth sx={{ marginTop: '1rem', height: '3rem' }} type="submit" color="success" variant="contained">
                 Entrar
               </Button>
-            </form>
+            </FormWrapper>
             <Link to="/" style={{ color: '#8a8a8a', marginTop: '2.2rem', fontWeight: 'bold' }}>
               <span>Esqueci minha senha</span>
             </Link>
@@ -125,9 +125,9 @@ const Login: React.FC = () => {
             container
             item
             lg={6}
-            md={6}
+            md={12}
             xs={12}
-            sm="auto"
+            sm={12}
             sx={{
               width: '100%',
               display: 'flex',
