@@ -124,8 +124,9 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
 
                 {
               carouselItems.map(item => (
-                <>
+                <Grid key={item.id}>
                   <LazyLoadImage
+                    key={item.id}
                     style={{
                       width: '100%', height: 'auto', borderRadius: '5px', maxHeight: '621.25px',
                     }}
@@ -146,7 +147,7 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
                       <PriceSpan>{formatNumberCurrency(item.price)}</PriceSpan>
                     </MediaCaption>
                   </Link>
-                </>
+                </Grid>
               ))
 
             }

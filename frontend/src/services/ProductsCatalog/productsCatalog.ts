@@ -1,3 +1,3 @@
 import { api } from '../api';
 
-export const getProductsCatalog = () => api.get('/products');
+export const getProductsCatalogAxiosRequest = () => api.get('/products');

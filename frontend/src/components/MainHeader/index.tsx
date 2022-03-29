@@ -38,10 +38,6 @@ const MainHeader: React.FC = () => {
     localStorage.setItem('Selected::navbar', path);
   }, []);
 
-  const wipeNavTabIndicator = () => {
-    localStorage.setItem('Selected::navbar', '');
-  };
-
   const handleNavigate = useCallback((path: string) => {
     navigate(path);
   }, [navigate]);
@@ -58,7 +54,7 @@ const MainHeader: React.FC = () => {
       </Grid>
 
       <Grid item xs={10} md={6}>
-        <TabContext value={localStorage.getItem('Selected::navbar') || actualURLPath}>
+        <TabContext value={localStorage.getItem('Selected::navbar') || '/home'}>
           <TabList centered sx={{ color: '#6BD4E9' }} TabIndicatorProps={{ style: { color: '#181A18', background: '#003A4D' } }} onChange={handleChange}>
             <CustomTab label="HOME" value="home" onClick={() => handleNavigate('/home')} />
             <CustomTab label="PRODUTOS" value="products" onClick={() => handleNavigate('/products')} />
@@ -70,7 +66,7 @@ const MainHeader: React.FC = () => {
 
       <Grid container item xs={2} md={3} spacing={2} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <Grid item direction="row">
-          <Link to="/favourites" onClick={wipeNavTabIndicator}>
+          <Link to="/favourites" onClick={() => goToNavTabIndicator('/')}>
             <Tooltip title="Produtos favoritos" arrow>
               <IconButton>
                 <FavoriteBorderRounded sx={{ color: '#003A4D', fontSize: '1.8rem' }} />

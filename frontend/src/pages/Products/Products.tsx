@@ -24,8 +24,7 @@ const Products: React.FC<IProductsProps> = ({ products }: IProductsProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const a = dispatch(CreateAction.getProductsCatalogRequest());
-    console.log(a);
+    dispatch(CreateAction.getProductsCatalogRequest());
     setFilteredProductData(products);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

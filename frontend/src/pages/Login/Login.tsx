@@ -69,6 +69,7 @@ const Login: React.FC = () => {
 
         <Grid container item columnSpacing={2} sx={{ padding: '8rem' }}>
           <Grid
+            container
             item
             lg={6}
             md={6}
@@ -121,6 +122,7 @@ const Login: React.FC = () => {
           </Grid>
 
           <Grid
+            container
             item
             lg={6}
             md={6}

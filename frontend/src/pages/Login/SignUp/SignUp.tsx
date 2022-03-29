@@ -24,8 +24,8 @@ const SignUp: React.FC = () => {
   const formik = useFormik({
     initialValues: {
       username: '',
-      email: '',
-      password: '',
+      signUpEmail: '',
+      signUpPassword: '',
       confirmPassword: '',
     },
 
@@ -44,8 +44,8 @@ const SignUp: React.FC = () => {
             <TextField
               sx={{ bgcolor: '#FFF' }}
               fullWidth
-              id="user"
-              name="user"
+              id="username"
+              name="username"
               label="Nome de usuário"
               variant="outlined"
               value={formik.values.username}
@@ -57,13 +57,13 @@ const SignUp: React.FC = () => {
             <TextField
               sx={{ bgcolor: '#FFF' }}
               fullWidth
-              id="email"
-              name="email"
+              id="signUpEmail"
+              name="signUpEmail"
               label="Email"
               variant="outlined"
-              value={formik.values.email}
+              value={formik.values.signUpEmail}
               onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
+              error={formik.touched.signUpEmail && Boolean(formik.errors.signUpEmail)}
             />
           </Grid>
 
@@ -71,14 +71,14 @@ const SignUp: React.FC = () => {
             <TextField
               sx={{ bgcolor: '#FFF' }}
               fullWidth
-              id="password"
-              name="password"
+              id="signUpPassword"
+              name="signUpPassword"
               label="Senha"
               variant="outlined"
               type="password"
-              value={formik.values.password}
+              value={formik.values.signUpPassword}
               onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
+              error={formik.touched.signUpPassword && Boolean(formik.errors.signUpPassword)}
             />
           </Grid>
 
