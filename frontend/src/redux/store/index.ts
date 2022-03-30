@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
+import { IAuthState } from '../modules/Auth/types';
 import { IBrandState } from '../modules/Brands/types';
 import { ICartState } from '../modules/Cart/types';
 import { ICatalogState } from '../modules/Catalog/types/types';
@@ -13,6 +14,7 @@ export interface IState {
   catalog: ICatalogState;
   brands: IBrandState;
   categories: ICategoryState;
+  auth: IAuthState;
 }
 
 const sagaMiddlewares = createSagaMiddleware();
