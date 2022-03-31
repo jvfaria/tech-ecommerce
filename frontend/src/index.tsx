@@ -23,9 +23,7 @@ const dismissSnackbarOnClose = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <SnackbarProvider
-      maxSnack={3}
-    >
+    <SnackbarProvider maxSnack={3} preventDuplicate>
       <App />
     </SnackbarProvider>
   </React.StrictMode>,

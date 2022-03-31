@@ -6,13 +6,11 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux';
 import { FormWrapper, LoginContainer } from './styles';
 import SignUp from './SignUp/SignUp';
 import { Creators as CreateAuthAction } from '../../redux/modules/Auth/ducks';
 import { ISnackbar } from '../../redux/modules/Snackbar/ducks';
-import { IState } from '../../redux/store';
 import SnackbarComponent from '../../components/SnackbarComponent';
 
 const validationSchema = Yup.object({
@@ -30,7 +28,7 @@ interface ISnackbarProps {
   snackbars : ISnackbar[];
 }
 
-const Login: React.FC<ISnackbarProps> = ({ snackbars }: ISnackbarProps) => {
+const Login: React.FC<ISnackbarProps> = () => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -43,8 +41,6 @@ const Login: React.FC<ISnackbarProps> = ({ snackbars }: ISnackbarProps) => {
 
     onSubmit: (values) => {
       dispatch(CreateAuthAction.getUserLoginRequest(values.email, values.password));
-      console.log('notification dispatch', snackbars);
-      // enqueueSnackbar(snack.snackbar.message, { variant: 'success' });
     },
   });
 
@@ -159,6 +155,4 @@ const Login: React.FC<ISnackbarProps> = ({ snackbars }: ISnackbarProps) => {
   );
 };
 
-const mapStateToProps = (state: IState) => ({ snackbars: state.snackbars.snackbars });
-
-export default connect(mapStateToProps)(Login);
+export default Login;
