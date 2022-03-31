@@ -3,31 +3,27 @@ import ReactDOM from 'react-dom';
 import { SnackbarProvider } from 'notistack';
 import { IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import { v4 as uuidv4 } from 'uuid';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Creators as SnackbarCreators } from './redux/modules/Snackbar/ducks';
+
+import { store } from './redux/store/index';
 
 const notistackRef: RefObject<any> = React.createRef();
-const onClickDismiss = (key: any) => () => {
+const dismissSnackbar = (key: string) => () => {
   notistackRef.current.closeSnackbar(key);
+  store.dispatch(SnackbarCreators.closeSnackbar(key));
+  console.log('key', key);
+};
+
+const dismissSnackbarOnClose = () => {
+  console.log('event', notistackRef.current);
 };
 
 ReactDOM.render(
   <React.StrictMode>
-    <SnackbarProvider
-      ref={notistackRef}
-      maxSnack={3}
-      action={(key: any) => (
-        <IconButton sx={{ padding: '12px, 0, 0, 0', width: '100%', height: '100%' }} onClick={onClickDismiss(key)}>
-          <Close />
-        </IconButton>
-      )}
-      anchorOrigin={
-        {
-          vertical: 'top',
-          horizontal: 'left',
-        }
-      }
-    >
+    <SnackbarProvider maxSnack={3} preventDuplicate>
       <App />
     </SnackbarProvider>
   </React.StrictMode>,

@@ -6,8 +6,12 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { FormWrapper, LoginContainer } from './styles';
 import SignUp from './SignUp/SignUp';
+import { Creators as CreateAuthAction } from '../../redux/modules/Auth/ducks';
+import { ISnackbar } from '../../redux/modules/Snackbar/ducks';
+import SnackbarComponent from '../../components/SnackbarComponent';
 
 const validationSchema = Yup.object({
   email: Yup
@@ -16,11 +20,17 @@ const validationSchema = Yup.object({
     .required('Email é obrigatório'),
   password: Yup
     .string()
-    .min(8, 'Senha deve possuir um mínimo de 8 caracteres')
+    .min(4, 'Senha deve possuir um mínimo de 4 caracteres')
     .required('Senha é obrigatória'),
 });
 
-const Login: React.FC = () => {
+interface ISnackbarProps {
+  snackbars : ISnackbar[];
+}
+
+const Login: React.FC<ISnackbarProps> = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -30,12 +40,13 @@ const Login: React.FC = () => {
     validationSchema,
 
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      dispatch(CreateAuthAction.getUserLoginRequest(values.email, values.password));
     },
   });
 
   return (
     <Box flexGrow={1}>
+      <SnackbarComponent />
       <LoginContainer>
         <Grid
           item
