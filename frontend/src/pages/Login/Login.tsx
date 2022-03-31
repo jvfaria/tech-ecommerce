@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 import { FormWrapper, LoginContainer } from './styles';
 import SignUp from './SignUp/SignUp';
 import { Creators as CreateAuthAction } from '../../redux/modules/Auth/ducks';
-import { ISnackbar } from '../../redux/modules/Snackbar/ducks';
 import SnackbarComponent from '../../components/SnackbarComponent';
 
 const validationSchema = Yup.object({
@@ -24,11 +23,7 @@ const validationSchema = Yup.object({
     .required('Senha é obrigatória'),
 });
 
-interface ISnackbarProps {
-  snackbars : ISnackbar[];
-}
-
-const Login: React.FC<ISnackbarProps> = () => {
+const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
