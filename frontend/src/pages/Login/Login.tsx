@@ -6,10 +6,14 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { FormWrapper, LoginContainer } from './styles';
 import SignUp from './SignUp/SignUp';
-import { Creators as CreateAction } from '../../redux/modules/Auth/ducks';
+import { Creators as CreateAuthAction } from '../../redux/modules/Auth/ducks';
+import { ISnackbar } from '../../redux/modules/Snackbar/ducks';
+import { IState } from '../../redux/store';
+import SnackbarComponent from '../../components/SnackbarComponent';
 
 const validationSchema = Yup.object({
   email: Yup
@@ -22,8 +26,13 @@ const validationSchema = Yup.object({
     .required('Senha é obrigatória'),
 });
 
-const Login: React.FC = () => {
+interface ISnackbarProps {
+  snackbars : ISnackbar[];
+}
+
+const Login: React.FC<ISnackbarProps> = ({ snackbars }: ISnackbarProps) => {
   const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -33,12 +42,15 @@ const Login: React.FC = () => {
     validationSchema,
 
     onSubmit: (values) => {
-      dispatch(CreateAction.getUserLoginRequest(values.email, values.password));
+      dispatch(CreateAuthAction.getUserLoginRequest(values.email, values.password));
+      console.log('notification dispatch', snackbars);
+      // enqueueSnackbar(snack.snackbar.message, { variant: 'success' });
     },
   });
 
   return (
     <Box flexGrow={1}>
+      <SnackbarComponent />
       <LoginContainer>
         <Grid
           item
@@ -147,4 +159,6 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state: IState) => ({ snackbars: state.snackbars.snackbars });
+
+export default connect(mapStateToProps)(Login);

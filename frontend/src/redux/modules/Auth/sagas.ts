@@ -4,6 +4,7 @@ import {
 } from 'redux-saga/effects';
 import { getAuthAxiosRequest } from '../../../services/Auth/auth';
 import { Creators as CreateAction, Types } from './ducks';
+import { Creators as CreateSnackbarAction } from '../Snackbar/ducks';
 
 type ActionType = ReturnType<typeof CreateAction.getUserLoginRequest>
 
@@ -19,12 +20,12 @@ function* getUserLogin({ email, password }: ActionType): any {
       getAuthAxiosRequest, email, password,
     );
 
-    console.log('RESPONSE:', response);
-
     yield put(CreateAction.getUserLoginSuccess(response.data));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Login efetuado com sucesso !', variant: 'success' }));
   } catch (error) {
     console.log('Authentication error');
     yield put(CreateAction.getUserLoginFail('Authentication error'));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Erro ao tentar fazer login !', variant: 'error' }));
   }
 }
 

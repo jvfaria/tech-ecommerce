@@ -27,6 +27,8 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
+  console.log('categories', categories);
+
   useEffect(() => {
     dispatch(CreateBrandActions.getBrandsRequest());
     dispatch(CreateCategoryActions.getCategoriesRequest());
@@ -64,7 +66,7 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
         </Subtitle>
         <FormGroup>
           {
-            categories
+            categories.length !== 0
               ? categories.map(category => (
                 <FormControlLabel
                   key={category.id}
@@ -81,7 +83,7 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
         </Subtitle>
         <FormGroup>
           {
-            brands
+            brands.length !== 0
               ? brands.map(brand => (
                 <FormControlLabel
                   key={brand.id}

@@ -8,6 +8,8 @@ import { ICatalogState } from '../modules/Catalog/types/types';
 import { ICategoryState } from '../modules/Categories/types';
 import rootReducer from '../modules/rootReducer';
 import rootSaga from '../modules/rootSaga';
+import { ISnackbar } from '../modules/Snackbar/ducks';
+import { ISnackbarState } from '../modules/Snackbar/types';
 
 export interface IState {
   cart: ICartState;
@@ -15,6 +17,7 @@ export interface IState {
   brands: IBrandState;
   categories: ICategoryState;
   auth: IAuthState;
+  snackbars: ISnackbarState;
 }
 
 const sagaMiddlewares = createSagaMiddleware();
