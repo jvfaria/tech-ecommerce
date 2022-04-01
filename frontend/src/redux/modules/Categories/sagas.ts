@@ -7,6 +7,7 @@ import {
 } from 'redux-saga/effects';
 import { getCategoriesAxiosRequest } from '../../../services/Categories/categories';
 import { Creators as CreateAction, Types } from './ducks';
+import { Creators as CreateSnackbarAction } from '../Snackbar/ducks';
 import { ICategory } from './types';
 
 function* getCategories(): any {
@@ -15,6 +16,7 @@ function* getCategories(): any {
     yield put(CreateAction.getCategoriesSuccess(response.data));
   } catch (error) {
     yield put(CreateAction.getCategoriesFail(error));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Erro ao carregar categorias', variant: 'error' }));
   }
 }
 

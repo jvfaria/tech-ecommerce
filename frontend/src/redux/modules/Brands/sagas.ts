@@ -7,6 +7,7 @@ import {
 } from 'redux-saga/effects';
 import { getBrandsAxiosRequest } from '../../../services/Brands/brands';
 import { Creators as CreateAction, Types } from './ducks';
+import { Creators as CreateSnackbarAction } from '../Snackbar/ducks';
 import { IBrand } from './types';
 
 function* getBrands(): any {
@@ -15,6 +16,7 @@ function* getBrands(): any {
     yield put(CreateAction.getBrandsSuccess(response.data));
   } catch (error) {
     yield put(CreateAction.getBrandsFail(error));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Erro ao carregar marcas', variant: 'error' }));
   }
 }
 

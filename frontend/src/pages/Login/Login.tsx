@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 import { FormWrapper, LoginContainer } from './styles';
 import SignUp from './SignUp/SignUp';
 import { Creators as CreateAuthAction } from '../../redux/modules/Auth/ducks';
-import SnackbarComponent from '../../components/SnackbarComponent';
 
 const validationSchema = Yup.object({
   email: Yup
@@ -41,7 +40,6 @@ const Login: React.FC = () => {
 
   return (
     <Box flexGrow={1}>
-      <SnackbarComponent />
       <LoginContainer>
         <Grid
           item

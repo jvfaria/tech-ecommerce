@@ -26,7 +26,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/categories")
+@RequestMapping("v1/api/categories")
 @Api(tags = "Category")
 public class CategoryController {
     private final CategoryService categoryService;
@@ -58,15 +58,15 @@ public class CategoryController {
     @PreAuthorize("permitAll()")
     @ApiOperation("List all categories")
     @GetMapping
-    public ResponseEntity<List<Category>> findAllCategories() {
-        return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<CategoryDTO>> findAllCategories() {
+        return ResponseEntity.ok().body(categoryService.findAll());
     }
 
     @PreAuthorize("permitAll()")
     @ApiOperation("Find category by id")
     @GetMapping("/{id}")
-    public ResponseEntity<Category> findById(@PathVariable UUID id) throws ResourceNotFoundException {
-        return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> findById(@PathVariable String id) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(categoryService.findById(id));
     }
 
 //    @PreAuthorize("permitAll()")

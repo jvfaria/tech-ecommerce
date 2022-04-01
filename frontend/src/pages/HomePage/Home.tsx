@@ -1,32 +1,25 @@
 import React, {
-  useCallback, useEffect, useState,
+  useEffect, useState,
 } from 'react';
-import {
-  Grid,
-  Typography,
-  Box,
-  Card,
-} from '@mui/material';
-import Carousel from 'react-material-ui-carousel';
-
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Link } from 'react-router-dom';
-import {
-  Recommend,
-  StarBorderPurple500,
-} from '@mui/icons-material';
 import { connect, useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { MediaCaption, PriceSpan } from './styles';
-import { IState } from '../../redux/store';
-import { Creators as CreateAction } from '../../redux/modules/Catalog/ducks/index';
+import { Recommend, StarBorderPurple500 } from '@mui/icons-material';
+import {
+  Box, Grid, Typography, Card,
+} from '@mui/material';
+import Scrollbars from 'react-custom-scrollbars';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import Carousel from 'react-material-ui-carousel';
+import { Link } from 'react-router-dom';
 import { IProduct } from '../../redux/modules/Cart/types';
-import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
+import { Creators as CreateAction } from '../../redux/modules/Catalog/ducks/index';
+import { IState } from '../../redux/store';
 import FeaturedProductsCard from '../../components/FeaturedProductsCard';
+import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
+import { MediaCaption, PriceSpan } from './styles';
 
 interface IHomeProps {
-  products: IProduct[];
+  featuredProducts: IProduct[] | undefined;
 }
 const carouselItems = [
   {
@@ -40,21 +33,27 @@ const carouselItems = [
     id: 3, img: '/assets/acernotebook.png', title: 'Kit Gamer Acer Nitro 5 AN517-52-50RS', price: 5242.99,
   },
 ];
-const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
+const Home: React.FC<IHomeProps> = ({ featuredProducts }: IHomeProps) => {
   const dispatch = useDispatch();
-  const [featuredProducts, setFeaturedProducts] = useState<IProduct[]>([]);
-  const { enqueueSnackbar } = useSnackbar();
-  const fetchProductsCatalog = useCallback(async () => {
-    await dispatch(CreateAction.getProductsCatalogRequest());
-  }, [dispatch]);
+  // const fetchFeaturedProductsCatalog = useCallback(async () => {
+  //   const a = await dispatch(CreateAction.getProductsCatalogRequest());
+  //   console.log('products request:', a);
+  // }, [dispatch]);
 
   useEffect(() => {
-    fetchProductsCatalog();
+    dispatch(CreateAction.getFeaturedProductsCatalogRequest());
+    // dispatch(CreateAction.getProductsCatalogRequest());
+  }, [dispatch]);
 
-    Promise.resolve(fetchProductsCatalog()).then(
-      () => setFeaturedProducts(products.filter(product => product.featured === true)),
-    ).catch(() => enqueueSnackbar('Erro ao carregar produtos em destaque', { variant: 'error' }));
-  }, [enqueueSnackbar, fetchProductsCatalog, products]);
+  // useEffect(() => {
+  //   dispatch(CreateAction.getFeaturedProductsCatalogRequest());
+  //   // fetchProductsCatalog();
+
+  //   // Promise.resolve(fetchProductsCatalog()).then(
+  //   //   () => setFeaturedProducts(products.filter(product => product.featured === true)),
+  //   // ).catch(() =>
+  //   enqueueSnackbar('Erro ao carregar produtos em destaque', { variant: 'error' }));
+  // }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -200,18 +199,18 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
               xs={12}
               md={12}
               sm={12}
-              sx={{ marginTop: '2.5rem', height: '1200px', overflow: 'hidden' }}
+              sx={{
+                marginTop: '2.5rem', marginBottom: '2.5rem', height: '1100px', overflow: 'hidden',
+              }}
             >
               <Scrollbars style={{
-                position: 'relative', right: '-2px', height: '1600px', maxHeight: '100%',
+                position: 'relative', right: '-2px', maxHeight: '90%',
               }}
               >
                 {
 
-                featuredProducts.map(product => (
-                  <Grid container item xs={12}>
-                    <FeaturedProductsCard product={product} />
-                  </Grid>
+                featuredProducts && featuredProducts.map(product => (
+                  <FeaturedProductsCard key={product.id} product={product} />
                 ))
 
               }
@@ -225,10 +224,10 @@ const Home: React.FC<IHomeProps> = ({ products }: IHomeProps) => {
 };
 
 function mapStateToProps(state: IState) {
-  const { getProductsCatalogRequest } = CreateAction;
+  const { getFeaturedProductsCatalogRequest } = CreateAction;
   return {
-    getProductsCatalogRequest,
-    products: state.catalog.products,
+    getFeaturedProductsCatalogRequest,
+    featuredProducts: state.catalog.featuredProducts,
   };
 }
 

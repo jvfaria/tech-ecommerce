@@ -11,11 +11,16 @@ export interface ICartState {
 
 export interface IProduct {
   id: number;
-  brand: string;
+  brand: {
+    name: string;
+  }
+  category: {
+    name: string;
+  }
   name: string;
   description: string;
   price: number;
   quantity: number;
-  img: string;
   featured: boolean;
+  img: string;
 }

@@ -43,6 +43,10 @@ public class ProductService {
        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
+    public List<Product> findByFeaturedTrue() {
+       return productRepository.findByFeaturedTrue();
+    }
+
     public Product create(ProductDTO productDTO) throws ResourceNotFoundException {
         var existentCategory = categoryRepository.findByName(productDTO.getCategory().getName().toUpperCase(Locale.ROOT)).orElseThrow(
                 () -> new ResourceNotFoundException(INVALID_CATEGORY));

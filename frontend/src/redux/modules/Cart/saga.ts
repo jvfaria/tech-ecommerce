@@ -7,6 +7,9 @@ import { IState } from '../../store';
 import {
   Creators as CreateAction, Types,
 } from './ducks';
+import {
+  Creators as CreateSnackbarAction,
+} from '../Snackbar/ducks';
 
 type ActionType = ReturnType<typeof CreateAction.addProductToCartRequest>
 
@@ -20,12 +23,13 @@ function* checkProductStock({ product }: ActionType): any {
     (state: IState) => state.cart.items.find(item => item.product.id === product.id)?.quantity ?? 0,
   );
 
-  const availableStockResponse: AxiosResponse<IStockResponse> = yield call(api.get, `stock/${product.id}`);
+  const availableStockResponse: AxiosResponse<IStockResponse> = yield call(api.get, `/stock/${product.id}`);
 
   if (availableStockResponse.data.quantity > currentQuantity) {
     yield put(CreateAction.addProductToCartSuccess(product));
   } else {
     yield put(CreateAction.addProductToCartFail(product.id));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: `Erro ao verificar estoque ${product.name}`, variant: 'error' }));
   }
 }
 
