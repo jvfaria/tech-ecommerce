@@ -47,6 +47,9 @@ public class Product extends GenericEntity {
     @Nullable
     private Image image;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    Stock stock;
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id")
     private Category category;

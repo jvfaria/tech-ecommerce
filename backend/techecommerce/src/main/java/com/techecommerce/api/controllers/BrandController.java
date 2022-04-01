@@ -29,7 +29,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/brands")
+@RequestMapping("v1/api/brands")
 @Api(tags = "Brand")
 public class BrandController {
     private final BrandService brandService;
@@ -37,7 +37,7 @@ public class BrandController {
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Create a new brand")
     @PostMapping
-    public ResponseEntity<Brand> createCategory(@RequestBody BrandDTO brandDTO) throws BrandNameExistsException {
+    public ResponseEntity<Brand> createBrand(@RequestBody BrandDTO brandDTO) throws BrandNameExistsException {
         Brand createdCategory = brandService.create(brandDTO);
         URI location = URI.create(String.format("categories/%s", brandDTO.getId()));
         return ResponseEntity.created(location).body(createdCategory);
@@ -46,14 +46,14 @@ public class BrandController {
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Update brand's name")
     @PutMapping
-    public ResponseEntity<Brand> updateCategory(@RequestBody BrandDTO brandDTO) throws ResourceNotFoundException, BrandNameExistsException {
+    public ResponseEntity<Brand> updateBrand(@RequestBody BrandDTO brandDTO) throws ResourceNotFoundException, BrandNameExistsException {
         return new ResponseEntity<>(brandService.update(brandDTO), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Delete a brand")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Brand> deleteCategory(@PathVariable UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Brand> deleteBrand(@PathVariable UUID id) throws ResourceNotFoundException {
         brandService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -61,14 +61,14 @@ public class BrandController {
     @PreAuthorize("permitAll()")
     @ApiOperation("List all brands")
     @GetMapping
-    public ResponseEntity<List<Brand>> findAllCategories() {
-        return new ResponseEntity<>(brandService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<BrandDTO>> findAllBrands() {
+        return ResponseEntity.ok().body(brandService.findAll());
     }
 
     @ApiOperation("Find brand by id")
     @GetMapping("/{id}")
-    public ResponseEntity<Brand> findById(@PathVariable UUID id) throws ResourceNotFoundException {
-        return new ResponseEntity<>(brandService.findById(id), HttpStatus.OK);
+    public ResponseEntity<BrandDTO> findById(@PathVariable String id) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(brandService.findById(id));
     }
 //
 //    @ApiOperation("Find brand by name")

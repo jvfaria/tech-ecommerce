@@ -49,12 +49,13 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> findAll() {
+        return categoryTransformer.toDTO(categoryRepository.findAll());
     }
 
-    public Category findById(UUID id) throws ResourceNotFoundException {
-        return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    public CategoryDTO findById(String id) throws ResourceNotFoundException {
+        var existentCategory = categoryRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        return categoryTransformer.toDTO(existentCategory);
     }
     public Category findByName(String name) throws ResourceNotFoundException {
         return categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Category not found"));

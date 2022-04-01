@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDTO {
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID id;
     private String name;
     private String description;
@@ -25,4 +25,5 @@ public class ProductDTO {
     private BrandDTO brand;
     private CategoryDTO category;
     private ImageDTO image;
+    private StockDTO stock;
 }

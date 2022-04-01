@@ -54,12 +54,13 @@ public class BrandService {
         brandRepository.deleteById(id);
     }
 
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+    public List<BrandDTO> findAll() {
+        return brandTransformer.toDTO(brandRepository.findAll());
     }
 
-    public Brand findById(UUID id) throws ResourceNotFoundException {
-        return brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found"));
+    public BrandDTO findById(String id) throws ResourceNotFoundException {
+        var existentBrand = brandRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException("Brand not found"));
+        return brandTransformer.toDTO(existentBrand);
     }
     public Brand findByName(String name) throws ResourceNotFoundException {
         return brandRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Brand not found"));

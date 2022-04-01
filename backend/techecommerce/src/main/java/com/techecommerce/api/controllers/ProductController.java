@@ -27,7 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/products")
+@RequestMapping("v1/api/products")
 @Api(tags = "Products")
 public class ProductController {
     private final ProductService productService;
@@ -37,6 +37,12 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDTO>> listAllProducts() {
         return ResponseEntity.ok().body(productTransformer.toDTO(productService.findAll()));
+    }
+
+    @ApiOperation("Find all featured products")
+    @GetMapping("/featured")
+    public ResponseEntity<List<ProductDTO>> listAllFeaturedProductById() {
+        return ResponseEntity.ok().body(productTransformer.toDTO(productService.findByFeaturedTrue()));
     }
 
     @ApiOperation("Find a product by id")

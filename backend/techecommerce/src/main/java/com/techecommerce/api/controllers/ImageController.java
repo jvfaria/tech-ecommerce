@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/images")
+@RequestMapping("v1/api/images")
 @Api(tags = "Images")
 public class ImageController {
 }
