@@ -19,6 +19,7 @@ interface IFeaturedProductsCard {
 const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
   { product } : IFeaturedProductsCard,
 ) => {
+  console.log('produto:', product);
   const dispatch = useDispatch();
 
   return (
@@ -33,9 +34,8 @@ const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
         overflowX: 'auto',
       }}
     >
-      <Box key={product.id} sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1 }}>
         <CardContent
-          key={product.id}
           sx={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: '1 0 auto',
           }}
@@ -54,7 +54,7 @@ const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
               {product.name}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-              {product.brand}
+              {product.brand.name}
             </Typography>
             <PriceSpan style={{ fontSize: '1.2rem' }}>{formatNumberCurrency(product.price)}</PriceSpan>
           </div>

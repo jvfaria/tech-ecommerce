@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 import { IAuthState } from '../modules/Auth/types';
 import { IBrandState } from '../modules/Brands/types';
 import { ICartState } from '../modules/Cart/types';
-import { ICatalogState } from '../modules/Catalog/types/types';
+import { ICatalogState } from '../modules/Catalog/types';
 import { ICategoryState } from '../modules/Categories/types';
 import rootReducer from '../modules/rootReducer';
 import rootSaga from '../modules/rootSaga';

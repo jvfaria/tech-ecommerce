@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import ProductCard from '../ProductCard';
 import { IProduct } from '../../redux/modules/Cart/types';
-import { ICatalogState } from '../../redux/modules/Catalog/types/types';
+import { ICatalogState } from '../../redux/modules/Catalog/types';
 
 const Catalog: React.FC<ICatalogState> = ({ products }: ICatalogState) => (
   <Grid
