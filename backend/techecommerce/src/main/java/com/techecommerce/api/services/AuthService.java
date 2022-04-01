@@ -1,5 +1,6 @@
 package com.techecommerce.api.services;
 
+import com.techecommerce.api.exceptions.BadCredentialsException;
 import com.techecommerce.api.exceptions.UserNotFoundException;
 import com.techecommerce.api.dtos.LoginUserDTO;
 import com.techecommerce.api.models.User;
@@ -30,9 +31,13 @@ public class AuthService {
             log.error("User not found", UserNotFoundException.class);
             throw new UserNotFoundException("Incorrect login credentials");
         }
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), login.getPassword())
-        );
+        Authentication auth = null;
+        try {
+            auth = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), login.getPassword()));
+        } catch (Exception e) {
+            throw new BadCredentialsException("Incorrect login credentials");
+        }
 
         SecurityContextHolder.getContext().setAuthentication(auth);
         return auth;

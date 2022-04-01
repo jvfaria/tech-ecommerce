@@ -52,9 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (MalformedJwtException e) {
                 logger.error(JwtUtil.MALFORMED_JWT, e);
             }
-        } else {
-            logger.warn(JwtUtil.BEARER_HEADER_NOT_FOUND);
         }
+//        else {
+//            logger.warn(JwtUtil.BEARER_HEADER_NOT_FOUND);
+//        }
 
         if(!Objects.isNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
             UserDetails userDetails = null;

@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         paths.add("/v1/api/brands");
         paths.add("/v1/api/brands/**");
         paths.add("/v1/api/categories/**");
+        paths.add("/v1/api/products/**");
         paths.add("/v1/users");
         paths.add("/configuration/ui");
         paths.add("/**/swagger-resources/**");

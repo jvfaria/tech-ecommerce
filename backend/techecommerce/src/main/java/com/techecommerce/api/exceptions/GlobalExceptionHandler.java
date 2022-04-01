@@ -48,12 +48,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -61,12 +61,13 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(errorDetails,HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UsernameExistsException.class)
@@ -74,12 +75,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -87,12 +88,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -100,12 +101,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -113,12 +114,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -126,12 +127,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
@@ -139,12 +140,12 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MalformedJwtException.class)
@@ -152,11 +153,11 @@ public class GlobalExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         ErrorDetails errorDetails = new ErrorDetails(
                 now,
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 req.getRequestURL().toString(),
                 exception.getMessage()
         );
-        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 }
