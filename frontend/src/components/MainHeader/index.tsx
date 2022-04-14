@@ -28,8 +28,6 @@ const MainHeader: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  console.log(auth);
-
   useEffect(() => {
     const counterStr = localStorage.getItem('Cart-redux::counter');
     if (counterStr) {
@@ -152,7 +150,7 @@ const MainHeader: React.FC = () => {
                   aria-expanded={open ? 'true' : undefined}
                   onClick={handleClick}
                 >
-                  <Avatar src={avatar || '/broken-image.png'} />
+                  <Avatar src={avatar || '/broken-image.png'} sx={{ bgcolor: '#2e7d32', outline: '2px solid #2e7d32' }} />
                 </IconButton>
                 <Menu
                   id="basic-menu"

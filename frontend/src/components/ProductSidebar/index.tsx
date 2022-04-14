@@ -85,10 +85,10 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
           }}
           >
             <span style={{
-              fontWeight: 500, fontSize: '0.7rem', color: '#7f858d',
+              fontWeight: 500, fontSize: '0.8rem', color: '#7f858d',
             }}
             >
-              {`${totalProducts} produtos cadastrados`}
+              {`${totalProducts} produtos`}
             </span>
 
           </div>

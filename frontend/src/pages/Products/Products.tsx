@@ -16,6 +16,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import ProductSidebar from '../../components/ProductSidebar';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { IState } from '../../redux/store';
@@ -28,37 +29,48 @@ interface IProductsProps {
   filteredProducts: IProduct[],
 }
 
+interface IValuesProps {
+  filters: {
+    productName: string;
+  }
+}
+
 const Products: React.FC<IProductsProps> = (
-  { products, filteredProducts }: IProductsProps,
+  { products }: IProductsProps,
 ) => {
-  const [search, setSearch] = useState('');
-  // const [filteredProductData, setFilteredProductData] = useState<IProduct[]>([]);
+  const [initialProducts, setInitialProducts] = useState<IProduct[]>([]);
   const { isLoading } = useSelector((state:IState) => state.loading);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(CreateLoadingAction.loadingRequest());
     dispatch(CreateCatalogAction.getProductsCatalogRequest());
 
-    // setFilteredProductData(products);
+    setInitialProducts(products);
+  }, [dispatch, products]);
+
+  const formik = useFormik({
+    initialValues: {
+      productName: '',
+    },
+
+    onSubmit: (values) => {
+      dispatch(CreateLoadingAction.loadingRequest());
+      handleSubmit({
+        filters: {
+          productName: values.productName,
+        },
+      });
+    },
+    validateOnBlur: false,
+    validateOnChange: false,
+  });
+
+  const handleSubmit = useCallback((values: IValuesProps) => {
+    setTimeout(() => {
+      dispatch(CreateCatalogAction.getProductsByFiltersRequest(values.filters));
+    }, 1000);
   }, [dispatch]);
-
-  const handleSearch = useCallback((event: {target: {value: string}}) => {
-    setSearch(event.target.value);
-
-    // if (event.target.value.length === 0 || search.length === 0) {
-    //   setFilteredProductData(products);
-    //   return;
-    // }
-    // const filterProducts = products
-    //   .filter(product => product.name.toLowerCase().includes(search.toLowerCase()));
-
-    // setFilteredProductData(filterProducts);
-  }, []);
-
-  const clearSearch = useCallback(() => {
-    setSearch('');
-    // setFilteredProductData(products);
-  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -82,31 +94,36 @@ const Products: React.FC<IProductsProps> = (
           Catálogo de produtos
         </Typography>
 
-        <TextField
-          sx={{
-            width: '100%',
-            background: '#fff',
-            marginBottom: '2rem',
-          }}
-          value={search}
-          onChange={handleSearch}
-          id="outlined-basic"
-          label="Pesquisar produto"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start">
-                {
-                search.length === 0 ? (<Search />)
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            sx={{
+              width: '100%',
+              background: '#fff',
+              marginBottom: '2rem',
+            }}
+            fullWidth
+            id="productName"
+            name="productName"
+            label="Pesquisar produto"
+            value={formik.values.productName}
+            onChange={formik.handleChange}
+            error={formik.touched.productName && Boolean(formik.errors.productName)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  {
+                formik.values.productName.length === 0 ? (<Search />)
                   : (
-                    <IconButton onClick={clearSearch}>
+                    <IconButton onClick={() => formik.resetForm()}>
                       <Clear />
                     </IconButton>
                   )
               }
-              </InputAdornment>
-            ),
-          }}
-        />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </form>
         <Grid
           container
           direction="row"
@@ -120,36 +137,38 @@ const Products: React.FC<IProductsProps> = (
           <Grid item lg={9} md={9} xs={12}>
             {
               isLoading
-              && (
-                <div style={{
-                  margin: '0 auto',
-                  width: '100%',
-                  height: '50vh',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                >
-                  <CircularProgress color="primary" sx={{ fontSize: '5rem' }} />
-                </div>
-              )
+                ? (
+                  <div style={{
+                    margin: '0 auto',
+                    width: '100%',
+                    height: '50vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  >
+                    <CircularProgress color="primary" sx={{ fontSize: '5rem' }} />
+                  </div>
+                )
+                : (
+                  <>
+                    <Catalog products={products} />
+
+                    <Stack spacing={2} sx={{ position: 'relative', bottom: 120 }}>
+                      <Pagination
+                        count={10}
+                        renderItem={(item) => (
+                          <PaginationItem
+                            components={{ previous: ArrowBack, next: ArrowForward }}
+                            {...item}
+                          />
+                        )}
+                      />
+                    </Stack>
+                  </>
+                )
             }
-            {
-            filteredProducts.length === 0
-              ? <Catalog products={products} />
-              : <Catalog products={filteredProducts} />
-            }
-            <Stack spacing={2} sx={{ position: 'relative', bottom: 120 }}>
-              <Pagination
-                count={10}
-                renderItem={(item) => (
-                  <PaginationItem
-                    components={{ previous: ArrowBack, next: ArrowForward }}
-                    {...item}
-                  />
-                )}
-              />
-            </Stack>
+
           </Grid>
         </Grid>
       </>

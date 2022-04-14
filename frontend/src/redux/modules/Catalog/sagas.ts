@@ -7,6 +7,7 @@ import {
   getProductByIdAxiosRequest,
   getProductsByBrandAxiosRequest,
   getProductsByCategoryAxiosRequest,
+  getProductsByFiltersAxiosRequest,
   getProductsCatalogAxiosRequest,
 } from '../../../services/ProductsCatalog/productsCatalog';
 import { Creators as CreateAction, Types } from './ducks/index';
@@ -17,6 +18,7 @@ import { IFeaturedProductsCatalogResponse, IProductsCatalogResponse } from './ty
 type ActionGetProductId = ReturnType<typeof CreateAction.getProductByIdRequest>
 type ActionTypeCategory = ReturnType<typeof CreateAction.getProductsByCategoryRequest>
 type ActionTypeBrand = ReturnType<typeof CreateAction.getProductsByBrandRequest>
+type ActionTypeProductsByName = ReturnType<typeof CreateAction.getProductsByNameRequest>
 
 function* getProducts() {
   try {
@@ -81,6 +83,19 @@ function* getProductById({ product }: ActionGetProductId) {
   }
 }
 
+function* getProductsByFilters({ filters }: ActionTypeProductsByName) {
+  try {
+    const response: AxiosResponse<IProductsCatalogResponse> = yield call(
+      getProductsByFiltersAxiosRequest, filters,
+    );
+    console.log(response);
+    yield put(CreateAction.getProductsByFiltersSuccess(response.data));
+    yield put(CreateLoadingAction.loadingSuccess());
+  } catch (error) {
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Erro ao pesquisar produto', variant: 'error' }));
+  }
+}
+
 export default all([
   takeLatest(Types.GET_PRODUCTS_CATALOG_REQUEST, getProducts),
   takeLatest(Types.GET_FEATURED_PRODUCTS_CATALOG_REQUEST, getFeaturedProducts),
@@ -89,4 +104,6 @@ export default all([
   takeLatest(Types.GET_PRODUCTS_BY_BRAND_REQUEST, getFilteredProductsByBrand),
 
   takeEvery(Types.GET_PRODUCT_BY_ID_REQUEST, getProductById),
+
+  takeEvery(Types.GET_PRODUCTS_BY_FILTERS_REQUEST, getProductsByFilters),
 ]);

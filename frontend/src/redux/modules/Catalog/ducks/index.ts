@@ -5,7 +5,7 @@ import { IProduct } from '../../Cart/types';
 
 export const INITIAL_STATE = {
   products: [] as IProduct[],
-  featuredProducts: [],
+  featuredProducts: [] as IProduct[],
   filteredProducts: [] as IProduct[],
   selectedProduct: {
     product: {} as IProduct,
@@ -25,6 +25,10 @@ export default createTypes(`
   GET_PRODUCTS_BY_CATEGORY_REQUEST
   GET_PRODUCTS_BY_CATEGORY_SUCCESS
   GET_PRODUCTS_BY_CATEGORY_FAIL
+
+  GET_PRODUCTS_BY_FILTERS_REQUEST
+  GET_PRODUCTS_BY_FILTERS_SUCCESS
+  GET_PRODUCTS_BY_FILTERS_FAIL
 
   GET_PRODUCTS_BY_BRAND_REQUEST
   GET_PRODUCTS_BY_BRAND_SUCCESS
@@ -48,6 +52,10 @@ export const { Types, Creators } = createActions({
   getProductByIdSuccess: ['product'],
   getProductByIdError: [],
 
+  getProductsByFiltersRequest: ['filters'],
+  getProductsByFiltersSuccess: ['products'],
+  getProductsByFiltersFail: [],
+
   getFeaturedProductsCatalogRequest: [],
   getFeaturedProductsCatalogSuccess: ['featuredProducts'],
   getFeaturedProductsCatalogFail: [],
@@ -70,7 +78,7 @@ const getProductsCatalogSuccess = (
   state = INITIAL_STATE, action: AnyAction,
 ) => produce(state, (draft) => {
   if (state.products.length === 0) {
-    draft.products.push(...action.products as never[]);
+    draft.products.push(...action.products);
   }
 });
 
@@ -78,62 +86,37 @@ const getFeaturedProductsCatalogSuccess = (
   state = INITIAL_STATE, action: AnyAction,
 ) => produce(state, (draft) => {
   if (state.featuredProducts.length === 0) {
-    draft.featuredProducts.push(...action.featuredProducts as never[]);
+    draft.featuredProducts.push(...action.featuredProducts);
   }
 });
 
 const getProductsByCategorySuccess = (
   state = INITIAL_STATE, action: AnyAction,
 ) => produce(state, (draft) => {
-  // const toRemove = draft.products.filter(
-  //   item => !action.products.find((i: any) => item.id === i.id),
-  // );
-  // const a = draft.products.splice(0, toRemove.length, ...toRemove);
-  // const b = draft.products.filter(item => a.find((i:any) => i.id !== item.id));
-  // // eslint-disable-next-line no-param-reassign
-  // draft.products = b;
   const ids = draft.products.map((product: IProduct) => product.id);
-  const a = action.products.filter(
+  const newArray = action.products.filter(
     (item: IProduct) => ids.includes(item.id),
   );
-  if (a.length === 0) {
+  if (newArray.length === 0) {
     draft.products.push(...action.products);
   } else {
     // eslint-disable-next-line no-param-reassign
-    draft.products = a;
+    draft.products = newArray;
   }
-
-  // console.log('to remove', toRemove);
-  // if (toRemove.length === 0) {
-  //   draft.products.push(...action.products);
-  // }
 });
 
 const getProductsByBrandSuccess = (
   state = INITIAL_STATE, action: AnyAction,
 ) => produce(state, (draft) => {
-  console.log(action.products);
-  // const toRemove = draft.products.filter(
-  //   item => !action.products.find((i: any) => item.id === i.id),
-  // );
-  // const a = draft.products.splice(0, toRemove.length, ...toRemove);
-  // const b = draft.products.filter(item => a.find((i:any) => i.id !== item.id));
-  // // eslint-disable-next-line no-param-reassign
-  // draft.products = b;
   const ids = draft.products.map((product: IProduct) => product.id);
-  console.log(ids);
-  const a = action.products.filter(
+  const newArray = action.products.filter(
     (item: IProduct) => ids.includes(item.id),
   );
-
-  console.log('a', a);
-
-  if (a.length === 0) {
-    console.log('alength: 0');
+  if (newArray.length === 0) {
     draft.products.push(...action.products);
   } else {
     // eslint-disable-next-line no-param-reassign
-    draft.products = a;
+    draft.products = newArray;
   }
 });
 
@@ -160,13 +143,24 @@ const uncheckProductsByBrand = (
 const getProductByIdSuccess = (
   state = INITIAL_STATE, action: AnyAction,
 ) => produce(state, (draft) => {
-  console.log('draftaction', action);
   // eslint-disable-next-line no-param-reassign
   draft.selectedProduct.product = { ...action.product };
 
   // eslint-disable-next-line no-param-reassign
   draft.selectedProduct.isLoading = false;
 });
+
+const getProductsByFiltersSuccess = (
+  state = INITIAL_STATE, action: AnyAction,
+) => produce(state, (draft) => {
+  if (state.products.length === 0) {
+    draft.products.push(...action.products);
+  } else {
+    // eslint-disable-next-line no-param-reassign
+    draft.products = action.products;
+  }
+});
+
 // map our action types to our reducer functions
 export const HANDLERS = {
   [Types.GET_PRODUCTS_CATALOG_SUCCESS]: getProductsCatalogSuccess,
@@ -182,5 +176,7 @@ export const HANDLERS = {
   [Types.UNCHECK_PRODUCTS_BY_BRAND]: uncheckProductsByBrand,
 
   [Types.GET_PRODUCT_BY_ID_SUCCESS]: getProductByIdSuccess,
+
+  [Types.GET_PRODUCTS_BY_FILTERS_SUCCESS]: getProductsByFiltersSuccess,
 
 };
