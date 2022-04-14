@@ -4,7 +4,7 @@ import com.techecommerce.api.exceptions.FileStorageException;
 import com.techecommerce.api.exceptions.ResourceNotFoundException;
 import com.techecommerce.api.models.UploadFileResponse;
 import com.techecommerce.api.services.FileStorageService;
-import com.techecommerce.api.services.ImageService;
+import com.techecommerce.api.services.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,36 +26,35 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URI;
 
+@Api(tags = "User info")
 @RestController
+@RequestMapping("v1/api/user-info")
 @RequiredArgsConstructor
-@RequestMapping("v1/api/images")
-@Api(tags = "Images")
 @Slf4j
-public class ImageController {
-    private final ImageService imageService;
-
+public class UserInfoController {
+    private final UserInfoService userInfoService;
     @Autowired
     FileStorageService fileStorageService;
 
-    @ApiOperation("Upload product image")
-    @PostMapping("/product/upload/{productId}")
-    public ResponseEntity<UploadFileResponse> uploadUserAvatar(@PathVariable String productId, @RequestParam("file") MultipartFile imageFile) throws FileStorageException, ResourceNotFoundException {
+    @ApiOperation("Upload user avatar")
+    @PostMapping("/avatar/upload")
+    public ResponseEntity<UploadFileResponse> uploadUserAvatar(@RequestParam("file") MultipartFile imageFile) throws FileStorageException {
         String fileName = fileStorageService.storeFile(imageFile);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/v1/api/images/products/downloadFile/")
+                .path("/v1/api/user-info/downloadFile/")
                 .path(fileName)
                 .toUriString();
 
-        imageService.addProductImage(productId, fileDownloadUri, fileName);
         return new ResponseEntity<>(new UploadFileResponse(fileName, fileDownloadUri,
                 imageFile.getContentType(), imageFile.getSize()), HttpStatus.CREATED);
     }
 
     @ApiOperation("Get file user avatar")
-    @GetMapping("products/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadProductImage(@PathVariable String fileName, HttpServletRequest request) throws FileStorageException {
+    @GetMapping("/downloadFile/{fileName:.+}")
+    public ResponseEntity<Resource> downloadAvatar(@PathVariable String fileName, HttpServletRequest request) throws FileStorageException {
         Resource resource = fileStorageService.loadFileAsResource(fileName);
 
         String contentType = null;
@@ -73,5 +72,11 @@ public class ImageController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @ApiOperation("Get user avatar filename")
+    @GetMapping("/avatar/{userId}")
+    public ResponseEntity<String> getAvatarFilename(@PathVariable String userId) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(userInfoService.getUserAvatarFilenameByUserId(userId));
     }
 }

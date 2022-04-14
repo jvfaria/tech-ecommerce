@@ -1,7 +1,6 @@
 package com.techecommerce.api.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,17 +11,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "images")
+@Table(name = "user_info")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Image extends GenericEntity {
+public class UserInfo extends GenericEntity {
+    @Column
+    private String avatar;
     @Column
     private String name;
-    private String filepath;
-
-    @OneToOne(mappedBy = "image")
-    private Product product;
+    @Column
+    private String cpf;
+    @OneToOne(mappedBy = "userInfo")
+    User user;
 }

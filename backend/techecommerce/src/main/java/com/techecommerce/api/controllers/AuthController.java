@@ -13,10 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +38,19 @@ public class AuthController {
     public ResponseEntity<AuthToken> generateToken(@RequestBody LoginUserDTO login) throws UserNotFoundException {
         Authentication auth = authService.authManagerAuthenticate(login);
         final String token = jwtTokenProvider.generateToken(auth);
-        return new ResponseEntity<>(new AuthToken(token), HttpStatus.OK);
+        String username = null;
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        }
+
+        var authToken = AuthToken.builder()
+                .token(token)
+                .username(username)
+                .authorities(auth.getAuthorities()
+                        .stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .build();
+
+        return new ResponseEntity<>(authToken, HttpStatus.OK);
     }
 }

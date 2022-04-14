@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -41,14 +42,36 @@ public class ProductController {
 
     @ApiOperation("Find all featured products")
     @GetMapping("/featured")
-    public ResponseEntity<List<ProductDTO>> listAllFeaturedProductById() {
+    public ResponseEntity<List<ProductDTO>> listAllFeaturedProducts() {
         return ResponseEntity.ok().body(productTransformer.toDTO(productService.findByFeaturedTrue()));
+    }
+
+    @ApiOperation("Find all products by category name")
+    @GetMapping("/category/{categoryName}")
+    public ResponseEntity<List<ProductDTO>> listProductsByCategory(@PathVariable String categoryName) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(productTransformer.toDTO(productService.findByCategoryName(categoryName)));
+    }
+
+    @ApiOperation("Find all products by brand name")
+    @GetMapping("/brand/{brandName}")
+    public ResponseEntity<List<ProductDTO>> listProductsByBrand(@PathVariable String brandName) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(productTransformer.toDTO(productService.findByBrandName(brandName)));
     }
 
     @ApiOperation("Find a product by id")
     @GetMapping("/{id}")
-    public ResponseEntity<Product> listProductById(@RequestParam UUID id) throws ResourceNotFoundException {
-        return ResponseEntity.ok().body(productService.findById(id));
+    public ResponseEntity<ProductDTO> listProductById(@PathVariable String id) throws ResourceNotFoundException {
+        var existentProduct = productService.findById(id);
+        if(Objects.isNull(existentProduct)) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+        return ResponseEntity.ok().body(productTransformer.toDTO(existentProduct));
+    }
+
+    @ApiOperation("Get total products number")
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalProducts() {
+        return ResponseEntity.ok().body(productService.countAll());
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
@@ -67,4 +90,5 @@ public class ProductController {
         var updatedProduct = productService.update(productDTO, id);
         return ResponseEntity.ok().body(updatedProduct);
     }
+    
 }
