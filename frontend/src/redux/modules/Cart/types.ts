@@ -10,17 +10,25 @@ export interface ICartState {
 }
 
 export interface IProduct {
-  id: number;
+  id: string;
   brand: {
     name: string;
   }
   category: {
     name: string;
   }
+  stock: {
+    quantity: number;
+  }
   name: string;
   description: string;
   price: number;
-  quantity: number;
   featured: boolean;
-  img: string;
+  image: IImage;
+}
+
+export interface IImage {
+  id: string;
+  name: string;
+  filepath: string;
 }

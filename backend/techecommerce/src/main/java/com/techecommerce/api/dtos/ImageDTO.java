@@ -13,5 +13,5 @@ public class ImageDTO {
     @JsonIgnore
     private UUID id;
     private String name;
-    private String filename;
+    private String filepath;
 }

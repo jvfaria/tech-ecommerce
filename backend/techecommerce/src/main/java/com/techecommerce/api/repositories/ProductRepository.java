@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findByFeaturedTrue();
+    List<Product> findByCategoryName(String categoryName);
+    List<Product> findByBrandName(String brandName);
 }

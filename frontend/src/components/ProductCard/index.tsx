@@ -13,7 +13,6 @@ import {
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { IProductCardProps } from './types';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
@@ -29,22 +28,10 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleAddToCart = useCallback(() => {
-    const a = dispatch(CreateAction.addProductToCartRequest(product));
-    console.log(a);
-
-    if (hasFailedAddToCart) {
-      enqueueSnackbar('Estoque indisponível !', {
-        variant: 'error',
-      });
-    } else {
-      enqueueSnackbar('Produto adicionado ao carrinho', {
-        variant: 'success',
-      });
-    }
-  }, [dispatch, enqueueSnackbar, hasFailedAddToCart, product]);
+    dispatch(CreateAction.addProductToCartRequest(product));
+  }, [dispatch, product]);
 
   const handleOverviewProduct = useCallback(() => {
     navigate(`/product/${product.id}`);
@@ -61,9 +48,18 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }: IProductCardProps
       >
 
         <CardActionArea onClick={handleOverviewProduct}>
+          <span style={{
+            padding: '10px', color: '#7f858d', position: 'absolute', right: 10, zIndex: '1',
+          }}
+          >
+            {`(${product.stock.quantity})`}
+          </span>
           <ImageWrapper>
             <LazyLoadImage
-              src={`/assets/${product.img}`}
+              style={{
+                width: '100%', height: '100%', marginTop: '5px',
+              }}
+              src={product.image ? product.image.filepath : `/assets/${product.image}`}
               alt="product"
               effect="blur"
               onError={({ currentTarget }) => {

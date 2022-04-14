@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import {
   Typography,
   CardContent,
@@ -9,7 +9,7 @@ import {
   Card,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { capitalizeFirstLetter } from '../../utils/CapitalizeFirstLetter';
 import { Creators as CreateBrandActions } from '../../redux/modules/Brands/ducks';
 import { Creators as CreateCategoryActions } from '../../redux/modules/Categories/ducks';
@@ -17,26 +17,53 @@ import { IState } from '../../redux/store';
 import { IBrand } from '../../redux/modules/Brands/types';
 import { ICategory } from '../../redux/modules/Categories/types';
 import { Subtitle } from './styles';
+import { Creators as CreateAction } from '../../redux/modules/Catalog/ducks';
+import { Creators as CreateLoadingAction } from '../../redux/modules/Loading/ducks/index';
+
+import { countAll } from '../../services/ProductsCatalog/productsCatalog';
 
 interface ISidebarProps {
   brands: IBrand[];
   categories: ICategory[];
 }
 
-const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISidebarProps) => {
-  const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useDispatch();
+interface ICheckedProps {
+  checked: boolean;
+  id: string;
+}
 
-  console.log('categories', categories);
+const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISidebarProps) => {
+  const [totalProducts, setTotalProducts] = useState(0);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(CreateBrandActions.getBrandsRequest());
     dispatch(CreateCategoryActions.getCategoriesRequest());
+    getTotalProducts();
+
+    async function getTotalProducts() {
+      const totalProductsReq = await countAll();
+      setTotalProducts(totalProductsReq.data);
+    }
   }, [dispatch]);
 
-  const handleOnChange = useCallback(() => {
-    console.log('ONCHANGE');
-  }, []);
+  const handleOnChangeCategory = useCallback((event: any) => {
+    if (event.target.checked) {
+      dispatch(CreateLoadingAction.loadingRequest());
+      dispatch(CreateAction.getProductsByCategoryRequest(event.target.value.toUpperCase()));
+    } else {
+      dispatch(CreateAction.uncheckProductsByCategory(event.target.value.toUpperCase()));
+    }
+  }, [dispatch]);
+
+  const handleOnChangeBrand = useCallback((event: any) => {
+    if (event.target.checked) {
+      dispatch(CreateLoadingAction.loadingRequest());
+      dispatch(CreateAction.getProductsByBrandRequest(event.target.value.toUpperCase()));
+    } else {
+      dispatch(CreateAction.uncheckProductsByBrand(event.target.value.toUpperCase()));
+    }
+  }, [dispatch]);
 
   return (
     <Card variant="outlined">
@@ -54,10 +81,15 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
             </Typography>
           </div>
           <div style={{
-            width: '50%',
+            width: '40%',
           }}
           >
-            <span style={{ textAlign: 'right', width: '100%' }}>1500 produtos</span>
+            <span style={{
+              fontWeight: 500, fontSize: '0.7rem', color: '#7f858d',
+            }}
+            >
+              {`${totalProducts} produtos cadastrados`}
+            </span>
 
           </div>
         </div>
@@ -72,7 +104,8 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
                   key={category.id}
                   control={<Checkbox />}
                   label={capitalizeFirstLetter(category.name)}
-                  onChange={handleOnChange}
+                  value={capitalizeFirstLetter(category.name)}
+                  onChange={handleOnChangeCategory}
                 />
               )) : <CircularProgress sx={{ margin: '0 auto' }} />
           }
@@ -89,7 +122,8 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
                   key={brand.id}
                   control={<Checkbox />}
                   label={capitalizeFirstLetter(brand.name)}
-                  onChange={handleOnChange}
+                  value={capitalizeFirstLetter(brand.name)}
+                  onChange={handleOnChangeBrand}
                 />
               )) : <CircularProgress sx={{ margin: '0 auto' }} />
           }

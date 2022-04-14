@@ -1,24 +1,21 @@
 import { AxiosResponse } from 'axios';
 import {
-  call, fork, put, takeLatest,
+  call, fork, put, takeEvery, takeLatest,
 } from 'redux-saga/effects';
 import { getAuthAxiosRequest } from '../../../services/Auth/auth';
 import { Creators as CreateAction, Types } from './ducks';
 import { Creators as CreateSnackbarAction } from '../Snackbar/ducks';
+import { IAuthResponse } from './types';
 
 type ActionType = ReturnType<typeof CreateAction.getUserLoginRequest>
 
-interface IAuthResponse {
-  token: string;
-}
-
 function* getUserLogin({ email, password }: ActionType): any {
   try {
-    console.log('action', email, password);
-
     const response: AxiosResponse<IAuthResponse> = yield call(
       getAuthAxiosRequest, email, password,
     );
+
+    localStorage.setItem('@teste', 'teste');
 
     yield put(CreateAction.getUserLoginSuccess(response.data));
     yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Login efetuado com sucesso !', variant: 'success' }));
@@ -30,7 +27,7 @@ function* getUserLogin({ email, password }: ActionType): any {
 }
 
 function* watchUserLogin(): any {
-  yield takeLatest(Types.GET_USER_LOGIN_REQUEST, getUserLogin);
+  yield takeEvery(Types.GET_USER_LOGIN_REQUEST, getUserLogin);
 }
 
 const authSagas = [fork(watchUserLogin)];

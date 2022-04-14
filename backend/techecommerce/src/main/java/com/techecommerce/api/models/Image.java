@@ -8,12 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.UUID;
 
 @Entity
 @Table(name = "images")
@@ -21,10 +17,11 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Image extends GenericEntity {
     @Column
     private String name;
-    private String filename;
+    private String filepath;
 
     @OneToOne(mappedBy = "image")
     private Product product;
