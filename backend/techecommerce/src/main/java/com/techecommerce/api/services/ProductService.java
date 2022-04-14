@@ -1,6 +1,7 @@
 package com.techecommerce.api.services;
 
 import com.techecommerce.api.dtos.ProductDTO;
+import com.techecommerce.api.dtos.filters.ProductFiltersDTO;
 import com.techecommerce.api.exceptions.ResourceNotFoundException;
 import com.techecommerce.api.models.Brand;
 import com.techecommerce.api.models.Category;
@@ -43,6 +44,9 @@ public class ProductService {
        return productRepository
                .findById(UUID.fromString(id))
                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    }
+    public List<Product> findByFilters(ProductFiltersDTO filters) {
+       return productRepository.findByFilters(filters);
     }
 
     public List<Product> findByFeaturedTrue() {

@@ -1,6 +1,7 @@
 package com.techecommerce.api.controllers;
 
 import com.techecommerce.api.dtos.ProductDTO;
+import com.techecommerce.api.dtos.filters.ProductFiltersDTO;
 import com.techecommerce.api.exceptions.ResourceNotFoundException;
 import com.techecommerce.api.models.Product;
 import com.techecommerce.api.services.ProductService;
@@ -62,6 +63,16 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> listProductById(@PathVariable String id) throws ResourceNotFoundException {
         var existentProduct = productService.findById(id);
+        if(Objects.isNull(existentProduct)) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+        return ResponseEntity.ok().body(productTransformer.toDTO(existentProduct));
+    }
+
+    @ApiOperation("Find products by filters")
+    @GetMapping("/filters")
+    public ResponseEntity<List<ProductDTO>> listProductByFilters(ProductFiltersDTO filters) throws ResourceNotFoundException {
+        var existentProduct = productService.findByFilters(filters);
         if(Objects.isNull(existentProduct)) {
             throw new ResourceNotFoundException("Product not found");
         }
