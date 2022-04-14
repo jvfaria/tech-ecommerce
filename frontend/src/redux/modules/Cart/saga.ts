@@ -27,9 +27,10 @@ function* checkProductStock({ product }: ActionType): any {
 
   if (availableStockResponse.data.quantity > currentQuantity) {
     yield put(CreateAction.addProductToCartSuccess(product));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: `Produto ${product.name} adicionado ao carrinho`, variant: 'success' }));
   } else {
     yield put(CreateAction.addProductToCartFail(product.id));
-    yield put(CreateSnackbarAction.enqueueSnackbar({ message: `Erro ao verificar estoque ${product.name}`, variant: 'error' }));
+    yield put(CreateSnackbarAction.enqueueSnackbar({ message: `Produto ${product.name} não tem quantidade suficiente em estoque`, variant: 'error' }));
   }
 }
 

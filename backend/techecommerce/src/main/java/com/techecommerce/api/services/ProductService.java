@@ -39,12 +39,32 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product findById(UUID id) throws ResourceNotFoundException {
-       return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    public Product findById(String id) throws ResourceNotFoundException {
+       return productRepository
+               .findById(UUID.fromString(id))
+               .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     public List<Product> findByFeaturedTrue() {
        return productRepository.findByFeaturedTrue();
+    }
+
+    public List<Product> findByCategoryName(String categoryName) throws ResourceNotFoundException {
+        if(Boolean.FALSE.equals(categoryRepository.existsByName(categoryName))) {
+            throw new ResourceNotFoundException("Category does not exists");
+        }
+       return productRepository.findByCategoryName(categoryName);
+    }
+
+    public List<Product> findByBrandName(String brandName) throws ResourceNotFoundException {
+        if(Boolean.FALSE.equals(brandRepository.existsByName(brandName))) {
+            throw new ResourceNotFoundException("Brand does not exists");
+        }
+       return productRepository.findByBrandName(brandName);
+    }
+
+    public Long countAll() {
+       return productRepository.count();
     }
 
     public Product create(ProductDTO productDTO) throws ResourceNotFoundException {

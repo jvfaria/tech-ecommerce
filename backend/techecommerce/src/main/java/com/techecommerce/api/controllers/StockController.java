@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/api/products")
+@RequestMapping("v1/api/stock")
 @Api(tags = "Stock")
 @RequiredArgsConstructor
 public class StockController {
     private final StockService stockService;
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("permitAll()")
     @ApiOperation("Update product stock balance")
     @PutMapping("/{productId}")
     public ResponseEntity<StockDTO> updateStock(@RequestBody StockDTO stockDTO, @PathVariable String productId) {

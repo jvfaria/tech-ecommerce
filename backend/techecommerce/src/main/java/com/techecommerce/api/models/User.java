@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,4 +45,8 @@ public class User extends GenericEntity {
             @JoinColumn(name = "role_id")
     })
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_info", referencedColumnName = "id")
+    UserInfo userInfo;
 }

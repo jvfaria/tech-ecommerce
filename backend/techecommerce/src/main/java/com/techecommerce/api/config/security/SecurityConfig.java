@@ -62,7 +62,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         paths.add("/v1/api/brands/**");
         paths.add("/v1/api/categories/**");
         paths.add("/v1/api/products/**");
+        paths.add("/v1/api/stock/**");
+        paths.add("/v1/api/user-info/**");
         paths.add("/v1/users");
+        paths.add("/v1/user-info/**");
+        paths.add("/v1/downloadFile/**");
+        paths.add("/downloadFile/**");
+        paths.add("/v1/downloadFile");
+        paths.add("/v1/api/downloadFile");
+        paths.add("/v1/api/downloadFile/**");
+        paths.add("/v1/api/images/**");
+        paths.add("/v1/api/images");
         paths.add("/configuration/ui");
         paths.add("/**/swagger-resources/**");
         paths.add("/configuration/");
@@ -72,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         paths.add("/**/swagger-ui.html");
         paths.add("/**/matrices");
 
-        return paths.stream().toArray(path -> new String[path]);
+        return paths.toArray(String[]::new);
     }
 
     @Override

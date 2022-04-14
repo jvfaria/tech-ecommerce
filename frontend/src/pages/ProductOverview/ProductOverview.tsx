@@ -1,5 +1,6 @@
+import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductOverviewCard from '../../components/ProductOverviewCard';
 import { IProduct } from '../../redux/modules/Cart/types';
@@ -10,54 +11,42 @@ type ProductParams = {
   id: string;
 }
 
-interface IProductOverviewProps {
-  products: IProduct[];
-}
-
-const ProductOverview: React.FC<IProductOverviewProps> = ({ products }: IProductOverviewProps) => {
+const ProductOverview: React.FC = () => {
   const { id } = useParams<ProductParams>();
-  const [existentProduct, setExistentProduct] = useState<IProduct | undefined>({} as IProduct);
-
-  const loadedProducts = useSelector((state: IState) => state.catalog.products);
+  const selectedProduct = useSelector((state: IState) => state.catalog.selectedProduct);
   const dispatch = useDispatch();
+  const [existentProduct, setExistentProduct] = useState(() => ({} as IProduct));
 
   useEffect(() => {
-    if (id) {
-      if (loadedProducts.length === 0) {
-        dispatch(CreateAction.getProductsCatalogRequest());
-        setExistentProduct(findProduct(parseInt(id, 10), 'dispatch'));
-      } else {
-        setExistentProduct(findProduct(parseInt(id, 10), 'loaded'));
-      }
-    }
+    dispatch(CreateAction.getProductByIdRequest({ isLoading: true, productId: id }));
 
-    function findProduct(productId: number, from: string) {
-      switch (from) {
-        case 'dispatch': {
-          return products.find(product => product.id === productId);
-        }
-        case 'loaded': {
-          return loadedProducts.find((product: { id: number; }) => product.id === productId);
-        }
-        default: {
-          return {} as IProduct;
-        }
-      }
+    if (selectedProduct.isLoading === false) {
+      setTimeout(() => { // Start the timer
+        setExistentProduct(selectedProduct.product);
+      }, 1000);
     }
-  }, [dispatch, loadedProducts, id, products]);
+  }, [selectedProduct.isLoading, dispatch, id, existentProduct]);
 
   return (
-    <ProductOverviewCard product={existentProduct || {} as IProduct} />
-
+    // <ProductOverviewCard product={loadedProduct || product} />
+    <>
+      { Object.keys(existentProduct).length === 0
+        ? (
+          <div style={{
+            margin: '0 auto',
+            width: '100%',
+            height: '50vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          >
+            <CircularProgress color="primary" sx={{ fontSize: '5rem' }} />
+          </div>
+        )
+        : (<ProductOverviewCard product={existentProduct} />)}
+    </>
   );
 };
 
-function mapStateToProps(state: IState) {
-  const { getProductsCatalogRequest } = CreateAction;
-  return {
-    getProductsCatalogRequest,
-    products: state.catalog.products,
-  };
-}
-
-export default connect(mapStateToProps)(ProductOverview);
+export default ProductOverview;

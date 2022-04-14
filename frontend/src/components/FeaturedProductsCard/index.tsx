@@ -19,7 +19,6 @@ interface IFeaturedProductsCard {
 const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
   { product } : IFeaturedProductsCard,
 ) => {
-  console.log('produto:', product);
   const dispatch = useDispatch();
 
   return (
@@ -64,7 +63,7 @@ const FeaturedProductsCard: React.FC<IFeaturedProductsCard> = (
 
               <LazyLoadImage
                 style={{ width: 140 }}
-                src={`/assets/${product.img}`}
+                src={product.image ? product.image.filepath : `/assets/${product.image}`}
                 alt="product"
                 effect="blur"
                 onError={({ currentTarget }) => {

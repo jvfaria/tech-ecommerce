@@ -20,3 +20,9 @@ export const FormWrapper = styled('form')`
     width: 100%;
   }
 `;
+
+export const ErrorInputMessage = styled.span`
+  font-size: '1rem';
+  color: '#b00020';
+  font-weight: 300;
+`;
