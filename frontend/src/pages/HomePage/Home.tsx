@@ -35,25 +35,10 @@ const carouselItems = [
 ];
 const Home: React.FC<IHomeProps> = ({ featuredProducts }: IHomeProps) => {
   const dispatch = useDispatch();
-  // const fetchFeaturedProductsCatalog = useCallback(async () => {
-  //   const a = await dispatch(CreateAction.getProductsCatalogRequest());
-  //   console.log('products request:', a);
-  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(CreateAction.getFeaturedProductsCatalogRequest());
-    // dispatch(CreateAction.getProductsCatalogRequest());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(CreateAction.getFeaturedProductsCatalogRequest());
-  //   // fetchProductsCatalog();
-
-  //   // Promise.resolve(fetchProductsCatalog()).then(
-  //   //   () => setFeaturedProducts(products.filter(product => product.featured === true)),
-  //   // ).catch(() =>
-  //   enqueueSnackbar('Erro ao carregar produtos em destaque', { variant: 'error' }));
-  // }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

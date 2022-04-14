@@ -53,19 +53,19 @@ const CustomPaginationActionsTable: React.FC<ICartTableProps> = ({ cart }: ICart
             <TableCell>Produto</TableCell>
             <TableCell>Marca</TableCell>
             <TableCell>Preço</TableCell>
+            <TableCell>Quantidade</TableCell>
             <TableCell>Subtotal</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
             ? cart.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : cart
-          ).map((cartItem) => (
-            <TableCollapse cartProduct={cartItem} />
-          ))}
+          ).map((cartItem) => (<TableCollapse cartProduct={cartItem} />))}
           {emptyRows > 0 && (
           <TableRow style={{ height: 53 * emptyRows }}>
-            <TableCell colSpan={5} />
+            <TableCell colSpan={6} />
           </TableRow>
           )}
         </TableBody>
@@ -93,7 +93,7 @@ const CustomPaginationActionsTable: React.FC<ICartTableProps> = ({ cart }: ICart
 
           <TableRow>
             <TableCell
-              colSpan={4}
+              colSpan={5}
               align="right"
               sx={{ backgroundColor: '#e6e6e6' }}
             >
@@ -120,59 +120,3 @@ function mapStateToProps(state: IState) {
 }
 
 export default connect(mapStateToProps)(CustomPaginationActionsTable);
-
-/* <React.Fragment>
-<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-  <TableCell>
-    <IconButton
-      aria-label="expand row"
-      size="small"
-      onClick={() => setOpen(!open)}
-    >
-      {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-    </IconButton>
-  </TableCell>
-  <TableCell component="th" scope="row">
-    {row.name}
-  </TableCell>
-  <TableCell align="right">{row.calories}</TableCell>
-  <TableCell align="right">{row.fat}</TableCell>
-  <TableCell align="right">{row.carbs}</TableCell>
-  <TableCell align="right">{row.protein}</TableCell>
-</TableRow>
-<TableRow>
-  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-    <Collapse in={open} timeout="auto" unmountOnExit>
-      <Box sx={{ margin: 1 }}>
-        <Typography variant="h6" gutterBottom component="div">
-          History
-        </Typography>
-        <Table size="small" aria-label="purchases">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Total price ($)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {row.history.map((historyRow) => (
-              <TableRow key={historyRow.date}>
-                <TableCell component="th" scope="row">
-                  {historyRow.date}
-                </TableCell>
-                <TableCell>{historyRow.customerId}</TableCell>
-                <TableCell align="right">{historyRow.amount}</TableCell>
-                <TableCell align="right">
-                  {Math.round(historyRow.amount * row.price * 100) / 100}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
-    </Collapse>
-  </TableCell>
-</TableRow>
-</React.Fragment> */

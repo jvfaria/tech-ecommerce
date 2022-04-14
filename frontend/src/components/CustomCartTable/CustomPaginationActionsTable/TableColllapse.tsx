@@ -12,7 +12,11 @@ import {
 } from '@mui/material';
 
 import {
-  KeyboardArrowUp, KeyboardArrowDown, Add, Remove,
+  KeyboardArrowUp,
+  KeyboardArrowDown,
+  Add,
+  Remove,
+  Delete,
 } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -37,13 +41,18 @@ const TableCollapse: React.FC<ICartProductProps> = ({ cartProduct }: ICartProduc
   }, [cartProduct.product, dispatch]);
 
   const handleIncrementQuantity = useCallback(() => {
-    if (cartProduct.quantity > cartProduct.product.quantity) {
+    if (cartProduct.quantity > cartProduct.product.stock.quantity) {
       enqueueSnackbar('Não é possível adicionar mais desse produto, estoque insuficiente !', { variant: 'error' });
       return;
     }
 
     dispatch(CreateAction.addProductToCartRequest(cartProduct.product));
   }, [cartProduct, dispatch, enqueueSnackbar]);
+
+  const handleRemoveProductFromCart = () => {
+    dispatch(CreateAction.removeProductAllQuantitiesFromCart(cartProduct));
+  };
+
   return (
     <>
       <TableRow>
@@ -59,10 +68,16 @@ const TableCollapse: React.FC<ICartProductProps> = ({ cartProduct }: ICartProduc
         <TableCell>
           {cartProduct.product.name}
         </TableCell>
-        <TableCell>{cartProduct.product.brand}</TableCell>
+        <TableCell>{cartProduct.product.brand.name}</TableCell>
         <TableCell>{formatNumberCurrency(cartProduct.product.price)}</TableCell>
+        <TableCell>{cartProduct.quantity}</TableCell>
         <TableCell>
           {formatNumberCurrency(cartProduct.product.price * cartProduct.quantity)}
+        </TableCell>
+        <TableCell>
+          <IconButton onClick={() => handleRemoveProductFromCart()}>
+            <Delete fontSize="small" color="error" />
+          </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -81,7 +96,8 @@ const TableCollapse: React.FC<ICartProductProps> = ({ cartProduct }: ICartProduc
                   >
                     <Grid item lg={3} md={3} xs={12}>
                       <LazyLoadImage
-                        src={`/assets/${cartProduct.product.img}`}
+                        src={cartProduct.product.image
+                          ? cartProduct.product.image.filepath : `/assets/${cartProduct.product.image}`}
                         alt="product"
                         effect="blur"
                         onError={({ currentTarget }) => {
@@ -108,7 +124,6 @@ const TableCollapse: React.FC<ICartProductProps> = ({ cartProduct }: ICartProduc
                       </Typography>
 
                       <PriceSpan style={{ fontSize: '1rem' }}>
-
                         {formatNumberCurrency(cartProduct.product.price * cartProduct.quantity)}
                       </PriceSpan>
                       <CustomTextField

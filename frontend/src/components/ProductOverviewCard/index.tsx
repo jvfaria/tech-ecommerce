@@ -1,16 +1,11 @@
 import {
-  ArrowBackIosNewRounded,
-  ArrowBackIosNewSharp,
-  ArrowForwardIosOutlined,
-  ArrowForwardIosRounded,
   ArrowForwardIosSharp,
 } from '@mui/icons-material';
 import {
-  Box, Grid, CardActionArea, Typography, Paper, TextField, Button,
+  Box, Grid, Typography, Paper, TextField, Button,
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Slider from 'react-slick';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { calculatePriceRoudingDown } from '../../utils/CalculatePriceRoundingDown';
 import { calculateInstallments } from '../../utils/CalculateInstallments';
@@ -20,57 +15,6 @@ import { ProductOverviewContainer, ProductOverviewPriceSpan } from './styles';
 interface IProductOverviewProps {
   product : IProduct;
 }
-
-const images = [
-  {
-    id: 1,
-    src:
-      'https://images.unsplash.com/photo-1627745193246-1fa1c9404b21?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    alt: 'The world',
-  },
-  {
-    id: 2,
-    src:
-      'https://images.unsplash.com/photo-1631116617822-e100bd7e6e06?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    alt: 'Train',
-  },
-  {
-    id: 3,
-    src:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80',
-    alt: 'Laptop',
-  },
-  {
-    id: 4,
-    src:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80',
-    alt: 'Laptop',
-  },
-  {
-    id: 5,
-    src:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80',
-    alt: 'Laptop',
-  },
-  {
-    id: 6,
-    src:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80',
-    alt: 'Laptop',
-  },
-  {
-    id: 7,
-    src:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80',
-    alt: 'Laptop',
-  },
-  {
-    id: 8,
-    src:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80',
-    alt: 'Laptop',
-  },
-];
 
 const settings = {
   className: 'center',
@@ -82,11 +26,12 @@ const settings = {
 const ProductOverviewCard: React.FC<IProductOverviewProps> = (
   { product }: IProductOverviewProps,
 ) => {
-  const [defaultCardImage, setDefaultCardImage] = useState(product.img);
+  console.log(product);
+  const [defaultCardImage, setDefaultCardImage] = useState(product.image.filepath);
 
   useEffect(() => {
-    setDefaultCardImage(product.img);
-  }, [product.img]);
+    setDefaultCardImage(product.image.filepath);
+  }, [product.image.filepath]);
 
   const handleChangeImage = useCallback((imgSrc: string) => {
     // eslint-disable-next-line no-param-reassign
@@ -107,40 +52,6 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
             display: 'flex',
           }}
         >
-          <Grid
-            item
-            lg={1}
-            md={1}
-            sx={{
-              padding: '0 5px',
-            }}
-          >
-            <div style={{
-              position: 'relative',
-              top: '50%',
-              left: '50%',
-              width: '330px',
-              height: 'auto',
-              transform: 'translateX(-50%) translateY(-50%) rotate(-90deg)',
-            }}
-            >
-
-              <Slider {...settings}>
-                {images.map((item) => (
-                  <CardActionArea
-                    onClick={() => handleChangeImage(item.src)}
-                    key={item.id}
-                    sx={{
-                      bgcolor: 'transparent', width: '5px', height: '100%', padding: '5px',
-                    }}
-                  >
-                    <img style={{ padding: 0 }} src={item.src} alt={item.alt} width="56" height="56" />
-                  </CardActionArea>
-                ))}
-              </Slider>
-
-            </div>
-          </Grid>
 
           <Grid item>
             <Typography gutterBottom variant="h4" component="div">{`${product.name} ${product.description}`}</Typography>
@@ -148,7 +59,7 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
               Fabricante:
               { ' ' }
               <strong>
-                {product.brand}
+                {product.brand.name}
               </strong>
             </Typography>
             <Grid
@@ -162,7 +73,7 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
                     width: '100%',
                     height: 'auto',
                   }}
-                  src={`/assets/${defaultCardImage}`}
+                  src={product.image.filepath}
                   alt="product"
                   effect="blur"
                   onError={({ currentTarget }) => {
@@ -234,3 +145,38 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
 };
 
 export default ProductOverviewCard;
+
+// <Grid
+//             item
+//             lg={1}
+//             md={1}
+//             sx={{
+//               padding: '0 5px',
+//             }}
+//           >
+//             <div style={{
+//               position: 'relative',
+//               top: '50%',
+//               left: '50%',
+//               width: '330px',
+//               height: 'auto',
+//               transform: 'translateX(-50%) translateY(-50%) rotate(-90deg)',
+//             }}
+//             >
+
+//               <Slider {...settings}>
+//                 {images.map((item) => (
+//                   <CardActionArea
+//                     onClick={() => handleChangeImage(item.src)}
+//                     key={item.id}
+//                     sx={{
+//                       bgcolor: 'transparent', width: '5px', height: '100%', padding: '5px',
+//                     }}
+//                   >
+//              <img style={{ padding: 0 }} src={item.src} alt={item.alt} width="56" height="56" />
+//                   </CardActionArea>
+//                 ))}
+//               </Slider>
+
+//             </div>
+//           </Grid>
