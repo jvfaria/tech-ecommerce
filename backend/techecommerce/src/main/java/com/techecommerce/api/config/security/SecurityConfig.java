@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         paths.add("/v1/api/products/**");
         paths.add("/v1/api/stock/**");
         paths.add("/v1/api/user-info/**");
-        paths.add("/v1/users");
+        paths.add("/v1/api/users");
         paths.add("/v1/user-info/**");
         paths.add("/v1/downloadFile/**");
         paths.add("/downloadFile/**");
