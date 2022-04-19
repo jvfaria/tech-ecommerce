@@ -1,27 +1,45 @@
+/* eslint-disable no-restricted-globals */
+import { ErrorOutline } from '@mui/icons-material';
 import {
   Typography, Grid, TextField, Button,
 } from '@mui/material';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { FormWrapper } from '../styles';
+import { useAuth } from '../../../hooks/auth';
+import { Creators as CreateLoadingAction } from '../../../redux/modules/Loading/ducks';
+import { IRegisterUserData } from '../../../services/Auth/types';
+import { ErrorContainer, FormWrapper } from '../styles';
+
+interface IValuesProps {
+  username: string;
+  signUpEmail: string;
+  signUpPassword: string;
+}
 
 const validationSchema = Yup.object({
   username: Yup
     .string()
-    .email('Insira um nome de usuário válido')
     .required('Nome de usuário é obrigatório'),
-  email: Yup
+  signUpEmail: Yup
     .string()
     .email('Insira um email válido')
     .required('Email é obrigatório'),
-  password: Yup
+  signUpPassword: Yup
     .string()
     .min(8, 'Senha deve possuir um mínimo de 8 caracteres')
     .required('Senha é obrigatória'),
+  confirmPassword: Yup
+    .string()
+    .oneOf([Yup.ref('signUpPassword'), null], 'As senhas devem ser iguais'),
 });
 
 const SignUp: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { register } = useAuth();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -33,9 +51,33 @@ const SignUp: React.FC = () => {
     validationSchema,
 
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      dispatch(CreateLoadingAction.loadingRequest());
+      handleSubmit(values);
     },
   });
+
+  const handleSubmit = useCallback(async (values: IValuesProps) => {
+    const newUserData: IRegisterUserData = {
+      username: values.username,
+      email: values.signUpEmail,
+      password: values.signUpPassword,
+    };
+
+    register(newUserData);
+
+    setTimeout(() => {
+      location.reload();
+    }, 3000);
+
+    setTimeout(() => {
+      dispatch(CreateLoadingAction.loadingSuccess());
+    }, 3000);
+
+    setTimeout(() => {
+      navigate('/login');
+    }, 3000);
+  }, [dispatch, navigate, register]);
+
   return (
     <>
       <Typography variant="h5" sx={{ color: '#003A4D', paddingBottom: '1.5rem' }}>QUERO ME CADASTRAR</Typography>
@@ -53,6 +95,13 @@ const SignUp: React.FC = () => {
               onChange={formik.handleChange}
               error={formik.touched.username && Boolean(formik.errors.username)}
             />
+            {formik.errors.username && (
+            <ErrorContainer>
+              <ErrorOutline sx={{ fontSize: '1.2rem', paddingRight: '3px' }} />
+              {formik.errors.username}
+            </ErrorContainer>
+
+            )}
           </Grid>
           <Grid item>
             <TextField
@@ -66,6 +115,13 @@ const SignUp: React.FC = () => {
               onChange={formik.handleChange}
               error={formik.touched.signUpEmail && Boolean(formik.errors.signUpEmail)}
             />
+            {formik.errors.signUpEmail && (
+            <ErrorContainer>
+              <ErrorOutline sx={{ fontSize: '1.2rem', paddingRight: '3px' }} />
+              {formik.errors.signUpEmail}
+            </ErrorContainer>
+
+            )}
           </Grid>
 
           <Grid item>
@@ -81,6 +137,13 @@ const SignUp: React.FC = () => {
               onChange={formik.handleChange}
               error={formik.touched.signUpPassword && Boolean(formik.errors.signUpPassword)}
             />
+            {formik.errors.signUpPassword && (
+            <ErrorContainer>
+              <ErrorOutline sx={{ fontSize: '1.2rem', paddingRight: '3px' }} />
+              {formik.errors.signUpPassword}
+            </ErrorContainer>
+
+            )}
           </Grid>
 
           <Grid item>
@@ -96,6 +159,13 @@ const SignUp: React.FC = () => {
               onChange={formik.handleChange}
               error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
             />
+            {formik.errors.confirmPassword && (
+            <ErrorContainer>
+              <ErrorOutline sx={{ fontSize: '1.2rem', paddingRight: '3px' }} />
+              {formik.errors.confirmPassword}
+            </ErrorContainer>
+
+            )}
           </Grid>
         </Grid>
         <Button fullWidth sx={{ marginTop: '1rem', height: '3rem' }} type="submit" color="primary" variant="contained">

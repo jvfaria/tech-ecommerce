@@ -15,6 +15,10 @@ export default createTypes(`
   GET_USER_LOGIN_REQUEST
   GET_USER_LOGIN_SUCCESS
   GET_USER_LOGIN_FAIL
+
+  REGISTER_USER_REQUEST
+  REGISTER_USER_FAIL
+
   GET_USER_LOCAL_STORAGE_CREDENTIALS
 
   LOGOUT_USER
@@ -24,6 +28,10 @@ export const { Types, Creators } = createActions({
   getUserLoginRequest: ['email', 'password'],
   getUserLoginSuccess: ['user'],
   getUserLoginFail: ['error'],
+
+  registerUserRequest: ['data'],
+  registerUserSuccess: ['user'],
+  registerUserFail: ['error'],
 
   getUserLocalStorageCredentials: [],
 
@@ -40,9 +48,8 @@ const getLoginSuccess = (
 });
 
 const logoutUser = (
-  state = INITIAL_STATE, action: AnyAction,
+  state = INITIAL_STATE,
 ) => produce(state, (draft) => {
-  console.log('action', action);
   if (draft.user) {
     draft.user = {} as any;
   }
@@ -50,7 +57,7 @@ const logoutUser = (
 });
 
 const getUserLocalStorageCredentials = (
-  state = INITIAL_STATE, action: AnyAction,
+  state = INITIAL_STATE,
 ) => produce(state, (draft) => {
   const userStorage = localStorage.getItem('@TechEcommerce:user');
   if (userStorage) {

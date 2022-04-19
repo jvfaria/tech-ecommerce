@@ -26,3 +26,13 @@ export const ErrorInputMessage = styled.span`
   color: '#b00020';
   font-weight: 300;
 `;
+
+export const ErrorContainer = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+  color: #b00020;
+  font-weight: 400;
+  margin-top: 3px;
+`;

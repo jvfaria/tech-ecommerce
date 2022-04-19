@@ -127,7 +127,7 @@ const AccountDashboard: React.FC = () => {
             <Typography variant="body1" sx={{ lineHeight: '2.5rem' }}>
               <strong>Tipo de conta:</strong>
               { ' ' }
-              {auth.user.authorities[0].substring(5)}
+              {auth.user.authorities.length !== 0 && auth.user.authorities[0].substring(5)}
             </Typography>
           </Grid>
         </Grid>
