@@ -14,6 +14,6 @@ export default function* rootSaga(): any {
     catalogSagas,
     ...brandSagas,
     ...categorySagas,
-    ...authSagas,
+    authSagas,
     snackbarSagas]);
 }

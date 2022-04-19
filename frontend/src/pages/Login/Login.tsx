@@ -3,37 +3,26 @@ import {
   Backdrop,
   Box, Button, CircularProgress, Grid, TextField, Typography,
 } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
-  Link, useLocation, useNavigate,
+  Link, useNavigate,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorOutline } from '@mui/icons-material';
-import { ErrorInputMessage, FormWrapper, LoginContainer } from './styles';
+import {
+  ErrorContainer, FormWrapper, LoginContainer,
+} from './styles';
 import SignUp from './SignUp/SignUp';
 import { useAuth } from '../../hooks/auth';
 import { IState } from '../../redux/store';
-import { IAuthResponse } from '../../redux/modules/Auth/types';
-import AccountDashboard from '../AccountDashboard/AccountDashboard';
 import { Creators as CreateLoadingAction } from '../../redux/modules/Loading/ducks';
 
 interface IValuesProps {
   email: string;
   password: string;
-}
-interface ILocationProps {
-  state: {
-    from: {
-      pathname: string;
-    };
-  }
-}
-
-interface ILoginProps {
-  auth: IAuthResponse
 }
 
 const validationSchema = Yup.object({
@@ -49,14 +38,12 @@ const validationSchema = Yup.object({
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const loc = useLocation() as unknown as ILocationProps;
   const { login } = useAuth();
   const { isLoading } = useSelector((state: IState) => state.loading);
 
   const dispatch = useDispatch();
 
   const handleSubmit = useCallback(async (values: IValuesProps) => {
-    const from = loc.state?.from?.pathname || '/';
     login(values);
     setTimeout(() => {
       navigate('/');
@@ -69,7 +56,7 @@ const Login: React.FC = () => {
     setTimeout(() => {
       dispatch(CreateLoadingAction.loadingSuccess());
     }, 3000);
-  }, [dispatch, loc.state?.from?.pathname, login, navigate]);
+  }, [dispatch, login, navigate]);
 
   const formik = useFormik({
     initialValues: {
@@ -157,19 +144,11 @@ const Login: React.FC = () => {
                       error={formik.touched.email && Boolean(formik.errors.email)}
                     />
                     {formik.errors.email && (
-                      <span style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        fontSize: '0.8rem',
-                        color: '#b00020',
-                        fontWeight: '400',
-                        marginTop: '3px',
-                      }}
-                      >
+                      <ErrorContainer>
                         <ErrorOutline sx={{ fontSize: '1.2rem', paddingRight: '3px' }} />
                         {formik.errors.email}
-                      </span>
+                      </ErrorContainer>
+
                     )}
                   </Grid>
                   <Grid item>

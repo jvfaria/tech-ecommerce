@@ -7,11 +7,13 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { Creators as CreateAuthAction } from '../redux/modules/Auth/ducks';
 import { IAuthProps, ILoginCredentials } from '../redux/modules/Auth/types';
+import { IRegisterUserData } from '../services/Auth/types';
 
 interface IAuthContextData {
   auth: IAuthProps;
   login(credentials: ILoginCredentials): void;
   logout(user: IAuthProps): void;
+  register(userData: IRegisterUserData): void;
 }
 
 export const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
@@ -39,8 +41,15 @@ export const AuthProvider: React.FC = (
     dispatch(CreateAuthAction.logoutUser(user));
   }, [dispatch]);
 
+  const register = useCallback((userData: IRegisterUserData): void => {
+    dispatch(CreateAuthAction.registerUserRequest(userData));
+  }, [dispatch]);
+
   return (
-    <AuthContext.Provider value={{ auth: data, login, logout }}>
+    <AuthContext.Provider value={{
+      auth: data, login, logout, register,
+    }}
+    >
       {children}
     </AuthContext.Provider>
   );
