@@ -50,7 +50,9 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
   const handleOnChangeCategory = useCallback((event: any) => {
     if (event.target.checked) {
       dispatch(CreateLoadingAction.loadingRequest());
-      dispatch(CreateAction.getProductsByCategoryRequest(event.target.value.toUpperCase()));
+      setTimeout(() => {
+        dispatch(CreateAction.getProductsByCategoryRequest(event.target.value.toUpperCase()));
+      }, 1000);
     } else {
       dispatch(CreateAction.uncheckProductsByCategory(event.target.value.toUpperCase()));
     }
@@ -59,7 +61,9 @@ const ProductSidebar: React.FC<ISidebarProps> = ({ brands, categories }: ISideba
   const handleOnChangeBrand = useCallback((event: any) => {
     if (event.target.checked) {
       dispatch(CreateLoadingAction.loadingRequest());
-      dispatch(CreateAction.getProductsByBrandRequest(event.target.value.toUpperCase()));
+      setTimeout(() => {
+        dispatch(CreateAction.getProductsByBrandRequest(event.target.value.toUpperCase()));
+      }, 1000);
     } else {
       dispatch(CreateAction.uncheckProductsByBrand(event.target.value.toUpperCase()));
     }
