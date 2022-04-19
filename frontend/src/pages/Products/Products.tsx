@@ -1,77 +1,35 @@
+/* eslint-disable no-restricted-globals */
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  ArrowBack, ArrowForward, Clear, Search,
+  ArrowBack, ArrowForward, Cached, Clear, Search,
 } from '@mui/icons-material';
 import {
   Grid,
   Typography,
-  TextField,
   IconButton,
-  InputAdornment,
   Box,
   Pagination,
   PaginationItem,
   Stack,
-  Backdrop,
   CircularProgress,
 } from '@mui/material';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductSidebar from '../../components/ProductSidebar';
-import { IProduct } from '../../redux/modules/Cart/types';
 import { IState } from '../../redux/store';
-import Catalog from '../../components/Catalog';
 import { Creators as CreateCatalogAction } from '../../redux/modules/Catalog/ducks/index';
 import { Creators as CreateLoadingAction } from '../../redux/modules/Loading/ducks/index';
+import ProductCard from '../../components/ProductCard';
+import { IProduct } from '../../redux/modules/Cart/types';
 
-interface IProductsProps {
-  products: IProduct[],
-  filteredProducts: IProduct[],
-}
-
-interface IValuesProps {
-  filters: {
-    productName: string;
-  }
-}
-
-const Products: React.FC<IProductsProps> = (
-  { products }: IProductsProps,
-) => {
-  const [initialProducts, setInitialProducts] = useState<IProduct[]>([]);
+const Products: React.FC = () => {
   const { isLoading } = useSelector((state:IState) => state.loading);
+  const { products } = useSelector((state: IState) => state.catalog);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(CreateLoadingAction.loadingRequest());
     dispatch(CreateCatalogAction.getProductsCatalogRequest());
-
-    setInitialProducts(products);
   }, [dispatch, products]);
-
-  const formik = useFormik({
-    initialValues: {
-      productName: '',
-    },
-
-    onSubmit: (values) => {
-      dispatch(CreateLoadingAction.loadingRequest());
-      handleSubmit({
-        filters: {
-          productName: values.productName,
-        },
-      });
-    },
-    validateOnBlur: false,
-    validateOnChange: false,
-  });
-
-  const handleSubmit = useCallback((values: IValuesProps) => {
-    setTimeout(() => {
-      dispatch(CreateCatalogAction.getProductsByFiltersRequest(values.filters));
-    }, 1000);
-  }, [dispatch]);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
 
@@ -80,6 +38,9 @@ const Products: React.FC<IProductsProps> = (
           variant="h2"
           sx={{
             textAlign: 'left',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             marginTop: '4rem',
             marginBottom: '2rem',
             borderRadius: '5px',
@@ -92,38 +53,12 @@ const Products: React.FC<IProductsProps> = (
           }}
         >
           Catálogo de produtos
+
+          <IconButton onClick={() => location.reload()}>
+            <Cached fontSize="large" sx={{ color: '#FFF' }} />
+          </IconButton>
         </Typography>
 
-        <form onSubmit={formik.handleSubmit}>
-          <TextField
-            sx={{
-              width: '100%',
-              background: '#fff',
-              marginBottom: '2rem',
-            }}
-            fullWidth
-            id="productName"
-            name="productName"
-            label="Pesquisar produto"
-            value={formik.values.productName}
-            onChange={formik.handleChange}
-            error={formik.touched.productName && Boolean(formik.errors.productName)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  {
-                formik.values.productName.length === 0 ? (<Search />)
-                  : (
-                    <IconButton onClick={() => formik.resetForm()}>
-                      <Clear />
-                    </IconButton>
-                  )
-              }
-                </InputAdornment>
-              ),
-            }}
-          />
-        </form>
         <Grid
           container
           direction="row"
@@ -152,7 +87,22 @@ const Products: React.FC<IProductsProps> = (
                 )
                 : (
                   <>
-                    <Catalog products={products} />
+                    <Grid
+                      sx={{ marginBottom: 20 }}
+                      container
+                      rowSpacing={2}
+                      columnSpacing={{
+                        lg: 0, md: 2, xs: 2, sm: 2,
+                      }}
+                    >
+                      {
+                        products && products.map((product: IProduct) => (
+                          <Grid item lg={3} md={4} xs={12} sm={4} key={product.id}>
+                            <ProductCard product={product} />
+                          </Grid>
+                        ))
+                      }
+                    </Grid>
 
                     <Stack spacing={2} sx={{ position: 'relative', bottom: 120 }}>
                       <Pagination
@@ -177,14 +127,4 @@ const Products: React.FC<IProductsProps> = (
   );
 };
 
-function mapStateToProps(state: IState) {
-  const { getProductsCatalogRequest } = CreateCatalogAction;
-
-  return {
-    getProductsCatalogRequest,
-    products: state.catalog.products,
-    filteredProducts: state.catalog.filteredProducts ? state.catalog.filteredProducts : [],
-    loading: state.loading,
-  };
-}
-export default connect(mapStateToProps)(Products);
+export default Products;

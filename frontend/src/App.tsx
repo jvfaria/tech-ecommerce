@@ -8,7 +8,6 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { CustomContainer, GlobalStyle } from './styles/globalStyle';
 import SnackbarComponent from './components/SnackbarComponent';
 
 const themeLight = createTheme({
@@ -26,12 +25,9 @@ const App: React.FC = () => (
   <Provider store={store}>
     <SnackbarComponent />
     <ThemeProvider theme={themeLight}>
-      <CustomContainer>
-        <CssBaseline>
-          <GlobalStyle />
-          <Routes />
-        </CssBaseline>
-      </CustomContainer>
+      <CssBaseline>
+        <Routes />
+      </CssBaseline>
     </ThemeProvider>
   </Provider>
 );

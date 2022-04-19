@@ -78,8 +78,10 @@ function* getProductById({ product }: ActionGetProductId) {
       getProductByIdAxiosRequest, product.productId,
     );
     yield put(CreateAction.getProductByIdSuccess(response.data));
+    yield put(CreateLoadingAction.loadingSuccess());
   } catch (error) {
     yield put(CreateSnackbarAction.enqueueSnackbar({ message: 'Erro ao carregar produto, produto não encontrado', variant: 'error' }));
+    yield put(CreateLoadingAction.loadingSuccess());
   }
 }
 
@@ -103,7 +105,7 @@ export default all([
   takeLatest(Types.GET_PRODUCTS_BY_CATEGORY_REQUEST, getFilteredProductsByCategory),
   takeLatest(Types.GET_PRODUCTS_BY_BRAND_REQUEST, getFilteredProductsByBrand),
 
-  takeEvery(Types.GET_PRODUCT_BY_ID_REQUEST, getProductById),
+  takeLatest(Types.GET_PRODUCT_BY_ID_REQUEST, getProductById),
 
   takeEvery(Types.GET_PRODUCTS_BY_FILTERS_REQUEST, getProductsByFilters),
 ]);

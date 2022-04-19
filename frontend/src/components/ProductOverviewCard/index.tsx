@@ -6,11 +6,14 @@ import {
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useDispatch, useSelector } from 'react-redux';
 import { IProduct } from '../../redux/modules/Cart/types';
 import { calculatePriceRoudingDown } from '../../utils/CalculatePriceRoundingDown';
 import { calculateInstallments } from '../../utils/CalculateInstallments';
 import { formatNumberCurrency } from '../../utils/FormatNumberCurrency';
 import { ProductOverviewContainer, ProductOverviewPriceSpan } from './styles';
+import { Creators as CreateCartAction } from '../../redux/modules/Cart/ducks';
+import { IState } from '../../redux/store';
 
 interface IProductOverviewProps {
   product : IProduct;
@@ -23,21 +26,17 @@ const settings = {
   centerPadding: '60px',
   nextArrow: <ArrowForwardIosSharp sx={{ bgcolor: '#000', borderRadius: '50%', color: 'white' }} />,
 };
-const ProductOverviewCard: React.FC<IProductOverviewProps> = (
-  { product }: IProductOverviewProps,
-) => {
-  console.log(product);
-  const [defaultCardImage, setDefaultCardImage] = useState(product.image.filepath);
+const ProductOverviewCard: React.FC = () => {
+  const product = useSelector((state: IState) => state.catalog.selectedProduct.product);
+  // const [defaultCardImage, setDefaultCardImage] = useState(product.image.filepath);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    setDefaultCardImage(product.image.filepath);
-  }, [product.image.filepath]);
-
-  const handleChangeImage = useCallback((imgSrc: string) => {
-    // eslint-disable-next-line no-param-reassign
-    setDefaultCardImage(imgSrc);
-    console.log(defaultCardImage);
-  }, [defaultCardImage]);
+  // TODO
+  // const handleChangeImage = useCallback((imgSrc: string) => {
+  //   // eslint-disable-next-line no-param-reassign
+  //   setDefaultCardImage(imgSrc);
+  //   console.log(defaultCardImage);
+  // }, [defaultCardImage]);
 
   return (
     <ProductOverviewContainer>
@@ -62,6 +61,18 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
                 {product.brand.name}
               </strong>
             </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 'bold', color: 'gray', position: 'relative', bottom: 0, right: 0,
+              }}
+            >
+              Em estoque:
+              { ' ' }
+              <strong>
+                {product.stock.quantity}
+              </strong>
+            </Typography>
             <Grid
               container
             >
@@ -73,7 +84,7 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
                     width: '100%',
                     height: 'auto',
                   }}
-                  src={product.image.filepath}
+                  src={product.image ? product.image.filepath : `/assets/${product.image}`}
                   alt="product"
                   effect="blur"
                   onError={({ currentTarget }) => {
@@ -124,7 +135,9 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
               >
 
                 <Grid item>
-                  <p style={{ color: 'rgb(127, 133, 141)', fontWeight: 'bold' }}><del>{formatNumberCurrency(product.price)}</del></p>
+                  <p style={{ color: 'rgb(127, 133, 141)', fontWeight: 'bold' }}>
+                    <del>{formatNumberCurrency(product.price)}</del>
+                  </p>
                   <ProductOverviewPriceSpan>
                     {calculatePriceRoudingDown(product.price)}
                   </ProductOverviewPriceSpan>
@@ -133,7 +146,15 @@ const ProductOverviewCard: React.FC<IProductOverviewProps> = (
                 <Typography variant="caption" fontSize={16}>À vista no PIX com até 10% OFF</Typography>
                 <Typography variant="caption" fontSize={14}>{`Em até 12x de ${calculateInstallments(product.price)} sem juros no cartão`}</Typography>
                 <Grid item sx={{ marginTop: 6 }}>
-                  <Button variant="contained" color="success" sx={{ width: '20rem', height: '56px' }}>COMPRAR</Button>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    sx={{ width: '20rem', height: '56px' }}
+                    onClick={() => dispatch(CreateCartAction.addProductToCartRequest(product))}
+                  >
+                    COMPRAR
+
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
