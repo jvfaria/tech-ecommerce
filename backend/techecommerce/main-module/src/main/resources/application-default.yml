@@ -1,0 +1,73 @@
+spring:
+  project:
+    version: v1
+  application-name: main-module
+  swagger:
+    enabled: true
+  datasource:
+    username: "postgres"
+    password: "postgres"
+    url: "jdbc:postgresql://localhost:5432/techecommerce"
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
+    show-sql: 'false'
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  sql:
+    init:
+      platform: postgres
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    connection-timeout: 5000
+    requested-heartbeat: 60
+    publisher-confirms: true
+    listener:
+      simple:
+        concurrency: 3 # Minimum consumers
+        max-concurrency: 10 # Max number of consumers
+        acknowledge-mode: auto
+        prefetch: 1     # Number of messages to fetch at once
+app:
+  rabbitmq:
+    exchange:
+      order-exchange: ORDER-EXCHANGE
+    queues:
+      order-queue: ORDER-SERVICE-QUEUE
+    routing-keys:
+      order: order.routing.key
+sql:
+  init:
+    platform: postgres
+order:
+  queue-name: ORDER-SERVICE-QUEUE
+  max-retry-attempts: 3
+
+file:
+  upload-dir: /static/uploads
+
+server:
+  servlet:
+    context-path: /api
+    multipart:
+      max-file-size: 15MB
+      enabled: 'true'
+      max-request-size: 15MB
+      file-size-threshold: 2KB
+  port: 8082
+
+#logging:
+#  level:
+#    org.springframework.amqp: DEBUG
+#    springfox.documentation: DEBUG
