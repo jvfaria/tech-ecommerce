@@ -1,0 +1,13 @@
+spring:
+  config:
+    import: "optional:classpath:/application-default.yml"
+  application:
+    name: order-service
+
+#logging:
+#  level:
+#    root: INFO
+#    com.your.package.orderservice: DEBUG
+
+#order-service:
+#  default-timeout: 3000 # Example for a custom configuration

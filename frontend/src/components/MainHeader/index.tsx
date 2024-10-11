@@ -1,25 +1,38 @@
-import { FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+  Clear, FavoriteBorderRounded, Search, ShoppingCartOutlined,
+} from '@mui/icons-material';
 import { TabContext, TabList } from '@mui/lab';
 import {
   Avatar,
-  Grid, IconButton, Menu, MenuItem, Tooltip,
+  Grid, IconButton, InputAdornment, Menu, MenuItem, TextField, Tooltip,
 } from '@mui/material';
+import { useFormik } from 'formik';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import { IAuthProps } from '../../redux/modules/Auth/types';
+import { Creators as CreateLoadingAction } from '../../redux/modules/Loading/ducks';
+import { Creators as CreateCatalogAction } from '../../redux/modules/Catalog/ducks';
 import { IState } from '../../redux/store';
 import {
   CustomTab, StyledBadge,
 } from './styles';
+
+interface IValuesProps {
+  filters: {
+    productName: string;
+  }
+}
 
 export interface ICounterProps {
   counter: number;
 }
 const MainHeader: React.FC = () => {
   const cartCounter = useSelector<IState, number>(state => state.cart.counter);
+  const dispatch = useDispatch();
   const [storagedCounter, setStoragedCounter] = useState(0);
+  const [selectedNavTab, setSelectedNavTab] = useState('/home');
   const [avatar, setAvatar] = useState(null);
   const [actualURLPath] = useState(useLocation().pathname);
   const navigate = useNavigate();
@@ -45,12 +58,13 @@ const MainHeader: React.FC = () => {
   }, [actualURLPath, storagedCounter]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    localStorage.setItem('Selected::navbar', newValue);
+    setSelectedNavTab(newValue);
+    // localStorage.setItem('Selected::navbar', newValue);
     navigate(`/${newValue}`);
   };
 
   const goToNavTabIndicator = useCallback((path: string) => {
-    localStorage.setItem('Selected::navbar', path);
+    setSelectedNavTab(path);
   }, []);
 
   const handleNavigate = useCallback((path: string) => {
@@ -74,19 +88,48 @@ const MainHeader: React.FC = () => {
     location.reload();
   };
 
+  const formik = useFormik({
+    initialValues: {
+      productName: '',
+    },
+
+    onSubmit: (values) => {
+      dispatch(CreateLoadingAction.loadingRequest());
+      handleSubmit({
+        filters: {
+          productName: values.productName,
+        },
+      });
+    },
+    validateOnBlur: false,
+    validateOnChange: false,
+  });
+
+  const handleSubmit = useCallback((values: IValuesProps) => {
+    setTimeout(() => {
+      navigate('/products');
+      setSelectedNavTab('products');
+      dispatch(CreateCatalogAction.getProductsByFiltersRequest(values.filters));
+    }, 1000);
+
+    formik.resetForm();
+  }, [dispatch, formik, navigate]);
+
   return (
     <Grid
       container
       direction="row"
-      spacing={3}
-      alignItems="center"
+      alignItems="flex-start"
+      sx={{
+        width: '100%', padding: '3rem', borderRadius: '1px', boxShadow: '0 4px 2px -2px #969696',
+      }}
     >
-      <Grid item xs={12} md={3} sx={{ width: '100vw' }}>
-        <img src="/assets/techecommerce.png" alt="logo" style={{ maxWidth: '287px' }} />
+      <Grid item xs={12} md={3}>
+        <img src="/assets/techecommercecopy.png" alt="logo" style={{ maxWidth: '287px' }} />
       </Grid>
 
       <Grid item xs={10} md={6}>
-        <TabContext value={localStorage.getItem('Selected::navbar') || '/home'}>
+        <TabContext value={selectedNavTab}>
 
           <TabList
             centered
@@ -162,7 +205,11 @@ const MainHeader: React.FC = () => {
                   }}
                 >
                   <MenuItem onClick={handleClose}>
-                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to="/account-dashboard" onClick={() => goToNavTabIndicator('/account-dashboard')}>
+                    <Link
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                      to="/account-dashboard"
+                      onClick={() => goToNavTabIndicator('/account-dashboard')}
+                    >
                       Minha conta
                     </Link>
                   </MenuItem>
@@ -180,6 +227,44 @@ const MainHeader: React.FC = () => {
               )
           }
         </Grid>
+      </Grid>
+      <Grid
+        container
+        item
+        alignItems="center"
+        justifyContent="center"
+        xs={12}
+        md={12}
+        lg={12}
+      >
+        <form onSubmit={formik.handleSubmit} style={{ width: '50%' }}>
+          <TextField
+            sx={{
+              width: '100%',
+              background: '#fff',
+              marginTop: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            fullWidth
+            id="productName"
+            name="productName"
+            label="Pesquise aqui"
+            value={formik.values.productName}
+            onChange={formik.handleChange}
+            error={formik.touched.productName && Boolean(formik.errors.productName)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <IconButton type="submit">
+                    <Search />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </form>
       </Grid>
     </Grid>
 

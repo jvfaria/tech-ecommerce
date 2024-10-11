@@ -1,0 +1,8 @@
+spring:
+  config:
+    import: "optional:classpath:/application-default.yml"
+  application:
+    name: api
+  fox:
+    swagger:
+      base-url: /api

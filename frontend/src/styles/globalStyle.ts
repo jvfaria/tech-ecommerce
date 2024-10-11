@@ -1,12 +1,4 @@
-import styled, { createGlobalStyle } from 'styled-components';
-
-export const GlobalStyle = createGlobalStyle`
-
-  body {
-    background: rgba(99, 210, 232, 0.5);
-  }
-
-`;
+import styled from 'styled-components';
 
 export const CustomContainer = styled('div')`
   width: 90%;
