@@ -67,7 +67,9 @@ server:
       file-size-threshold: 2KB
   port: 8082
 
-#logging:
-#  level:
+logging:
+  level:
+    logging.level.org.hibernate.SQL: DEBUG
+    logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 #    org.springframework.amqp: DEBUG
 #    springfox.documentation: DEBUG

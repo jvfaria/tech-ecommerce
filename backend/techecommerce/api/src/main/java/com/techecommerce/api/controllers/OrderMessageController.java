@@ -1,7 +1,7 @@
 package com.techecommerce.api.controllers;
 
 import com.techecommerce.main.dtos.OrderDTO;
-import com.techecommerce.orderservice.OrderService;
+import com.techecommerce.orderservice.services.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,9 @@ public class OrderMessageController {
 
     @PostMapping("/send-order")
     @ApiOperation("Send order message")
-    public ResponseEntity<String> sendOrder(@RequestBody OrderDTO order) {
+    public ResponseEntity<OrderDTO> sendOrder(@RequestBody OrderDTO order) {
         log.info("Processing order ... {}", order);
 
-        return service.processOrder(order);
+        return service.sendOrder(order);
     }
 }

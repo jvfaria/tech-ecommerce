@@ -1,4 +1,4 @@
-package com.techecommerce.orderservice;
+package com.techecommerce.orderservice.services;
 
 
 import com.techecommerce.main.dtos.OrderDTO;
@@ -37,13 +37,13 @@ public class OrderValidationService implements ValidationService<OrderDTO> {
     @Override
     public boolean validateStock(OrderDTO orderDTO) {
         List<OrderProductDTO> products = orderDTO.getProducts();
-        List<String> productIds = products.stream().map(OrderProductDTO::getProductId).collect(Collectors.toList());
+        List<UUID> productIds = products.stream().map(OrderProductDTO::getProductId).collect(Collectors.toList());
         List<StockDTO> dtos = stockService.listStockByProductIds(productIds);
 
         return dtos.stream().anyMatch(stockDTO -> products.stream().anyMatch(product -> {
             UUID stockProductId = stockDTO.getProduct().getId();
             if (Objects.nonNull(stockProductId)) {
-                return product.getProductId().equals(stockProductId.toString())
+                return product.getProductId().equals(stockProductId)
                         && stockDTO.getQuantity() >= product.getQuantity();
             }
             return false;
