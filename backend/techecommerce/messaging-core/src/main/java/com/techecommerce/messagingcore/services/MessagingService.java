@@ -2,14 +2,16 @@ package com.techecommerce.messagingcore.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techecommerce.messagingcore.interfaces.MessagingContract;
+import com.techecommerce.messagingcore.dtos.MessageDTO;
+import com.techecommerce.messagingcore.dtos.MessageDefinitionDTO;
+import com.techecommerce.messagingcore.interfaces.MessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class MessagingService implements MessagingContract<Object> {
+public class MessagingService implements MessageSender {
     @Autowired
     ObjectMapper objectMapper;
 
@@ -17,17 +19,18 @@ public class MessagingService implements MessagingContract<Object> {
     private RabbitMQProducer producer;
 
     @Override
-    public String sendMessage(Object data) {
+    public void sendMessage(MessageDefinitionDTO messageDefinition, Object message) {
         try {
-            String message = transformMessageObjectToString(data);
+            String payload = transformMessageObjectToString(message);
+            String type = messageDefinition.getMessageType();
 
-            return producer.sendMessage(message);
+            MessageDTO messageDTO = MessageDTO.builder().payload(payload).type(type).build();
+
+            producer.sendMessage(messageDefinition, transformMessageObjectToString(messageDTO));
         } catch (JsonProcessingException ex) {
             log.error("Error when trying to convert JSON object to string, message was not sent");
             ex.printStackTrace();
         }
-
-        return "";
     }
 
     private String transformMessageObjectToString(Object messageObject) throws JsonProcessingException {

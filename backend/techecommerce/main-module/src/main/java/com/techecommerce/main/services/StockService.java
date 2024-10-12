@@ -31,11 +31,9 @@ public class StockService {
                         .orElseThrow(() -> new EntityNotFoundException("Product stock not found")));
     }
 
-    public List<StockDTO> listStockByProductIds(List<String> ids) {
-        List<UUID> uuidList = ids.stream().map(UUID::fromString).collect(Collectors.toList());
-
+    public List<StockDTO> listStockByProductIds(List<UUID> ids) {
         List<Stock> stockProducts = stockRepository
-                .findByProductIdIn(uuidList).orElseThrow(() -> new EntityNotFoundException("Nothing found on stock table"));
+                .findByProductIdIn(ids).orElseThrow(() -> new EntityNotFoundException("Nothing found on stock table"));
 
 
         return stockTransformer.toDTO(stockProducts);

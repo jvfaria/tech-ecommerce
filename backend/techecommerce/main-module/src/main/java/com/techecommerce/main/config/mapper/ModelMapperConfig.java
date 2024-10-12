@@ -15,7 +15,7 @@ public class ModelMapperConfig {
         modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)
-                .setPropertyCondition(Conditions.isNotNull());
+                .setPropertyCondition(context -> context.getSource() != null);
         return modelMapper;
     }
 }

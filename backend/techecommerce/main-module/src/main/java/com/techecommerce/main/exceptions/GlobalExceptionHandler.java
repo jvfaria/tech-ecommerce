@@ -59,6 +59,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({MessageProcessingException.class})
+    public ResponseEntity<ErrorDetails> handleException(MessageProcessingException exception, HttpServletRequest req) {
+        LocalDateTime now = LocalDateTime.now();
+        ErrorDetails errorDetails = new ErrorDetails(
+                now,
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
+                req.getRequestURL().toString(),
+                exception.getMessage()
+        );
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleException(UserNotFoundException exception, HttpServletRequest req) {
         LocalDateTime now = LocalDateTime.now();
