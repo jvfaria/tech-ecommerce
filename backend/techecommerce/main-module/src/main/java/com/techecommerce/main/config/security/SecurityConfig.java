@@ -81,6 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         paths.add("/**/swagger-ui.html");
         paths.add("/**/matrices");
         paths.add("/v1/messages/send-order");
+        paths.add("/v1/admin/**");
+
 
         return paths.toArray(String[]::new);
     }

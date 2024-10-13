@@ -16,9 +16,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,16 +37,8 @@ public class User extends GenericEntity {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.READ_ONLY)
-    @JoinTable(name = "user_roles", joinColumns = {
-            @JoinColumn(name = "user_id")
-    },
-            inverseJoinColumns = {
-            @JoinColumn(name = "role_id")
-    })
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserRole> roles;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_info", referencedColumnName = "id")

@@ -5,9 +5,9 @@ spring:
   swagger:
     enabled: true
   datasource:
-    username: "postgres"
-    password: "postgres"
-    url: "jdbc:postgresql://localhost:5432/techecommerce"
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/techecommerce}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
   jpa:
     properties:
       hibernate:
@@ -66,6 +66,9 @@ server:
       max-request-size: 15MB
       file-size-threshold: 2KB
   port: 8082
+
+flyway:
+  mixed: true
 
 logging:
   level:
