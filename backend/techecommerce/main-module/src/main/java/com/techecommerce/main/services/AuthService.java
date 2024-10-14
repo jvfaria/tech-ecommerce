@@ -2,7 +2,7 @@ package com.techecommerce.main.services;
 
 import com.techecommerce.main.exceptions.BadCredentialsException;
 import com.techecommerce.main.exceptions.UserNotFoundException;
-import com.techecommerce.main.dtos.LoginUserDTO;
+import com.techecommerce.main.dto.LoginUserDTO;
 import com.techecommerce.main.models.User;
 import com.techecommerce.main.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;

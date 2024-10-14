@@ -2,9 +2,8 @@ package com.techecommerce.orderservice.transformers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techecommerce.main.dtos.OrderDTO;
-import com.techecommerce.messagingcore.dtos.ResultDTO;
-import com.techecommerce.messagingcore.interfaces.MessageTransformer;
+import com.techecommerce.main.dto.OrderDTO;
+import com.techecommerce.messagingcore.dto.ResultDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

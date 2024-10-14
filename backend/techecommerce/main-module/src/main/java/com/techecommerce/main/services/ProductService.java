@@ -1,7 +1,7 @@
 package com.techecommerce.main.services;
 
-import com.techecommerce.main.dtos.ProductDTO;
-import com.techecommerce.main.dtos.filters.ProductFiltersDTO;
+import com.techecommerce.main.dto.ProductDTO;
+import com.techecommerce.main.dto.filters.ProductFiltersDTO;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Brand;
 import com.techecommerce.main.models.Category;

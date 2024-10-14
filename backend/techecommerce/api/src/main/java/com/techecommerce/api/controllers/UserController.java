@@ -1,7 +1,7 @@
 package com.techecommerce.api.controllers;
 
-import com.techecommerce.main.dtos.UserCreateDTO;
-import com.techecommerce.main.dtos.UserDTO;
+import com.techecommerce.main.dto.UserCreateDTO;
+import com.techecommerce.main.dto.UserDTO;
 import com.techecommerce.main.exceptions.EmailExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.exceptions.UserNotFoundException;

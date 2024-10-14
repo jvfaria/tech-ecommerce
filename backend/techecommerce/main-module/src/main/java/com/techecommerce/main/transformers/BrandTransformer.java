@@ -1,6 +1,6 @@
 package com.techecommerce.main.transformers;
 
-import com.techecommerce.main.dtos.BrandDTO;
+import com.techecommerce.main.dto.BrandDTO;
 import com.techecommerce.main.models.Brand;
 import org.springframework.stereotype.Component;
 

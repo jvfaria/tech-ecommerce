@@ -1,6 +1,6 @@
 package com.techecommerce.main.services;
 
-import com.techecommerce.main.dtos.BrandDTO;
+import com.techecommerce.main.dto.BrandDTO;
 import com.techecommerce.main.exceptions.BrandNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Brand;
@@ -20,13 +20,13 @@ public class BrandService {
     private final BrandRepository brandRepository;
     private final BrandTransformer brandTransformer;
 
-    public Brand create(BrandDTO brandDTO) throws BrandNameExistsException {
+    public BrandDTO create(BrandDTO brandDTO) throws BrandNameExistsException {
         if(brandRepository.existsByName(brandDTO.getName().toUpperCase(Locale.ROOT))) {
             throw new BrandNameExistsException("Brand name already exists, duplicated names not allowed");
         }
-        var category = brandTransformer.toEntity(brandDTO);
-        category.setName(category.getName().toUpperCase(Locale.ROOT));
-        return brandRepository.save(category);
+        var brand = brandTransformer.toEntity(brandDTO);
+        brand.setName(brand.getName().toUpperCase(Locale.ROOT));
+        return brandTransformer.toDTO(brandRepository.save(brand));
     }
 
     public Brand update(BrandDTO brandDTO) throws BrandNameExistsException, ResourceNotFoundException {

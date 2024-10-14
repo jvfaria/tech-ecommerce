@@ -1,6 +1,6 @@
 package com.techecommerce.main.services;
 
-import com.techecommerce.main.dtos.CategoryDTO;
+import com.techecommerce.main.dto.CategoryDTO;
 import com.techecommerce.main.exceptions.CategoryNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Category;

@@ -1,6 +1,6 @@
 package com.techecommerce.main.transformers;
 
-import com.techecommerce.main.dtos.UserCreateDTO;
+import com.techecommerce.main.dto.UserCreateDTO;
 import com.techecommerce.main.models.User;
 import org.springframework.stereotype.Component;
 

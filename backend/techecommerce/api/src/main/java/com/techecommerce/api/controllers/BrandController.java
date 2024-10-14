@@ -1,6 +1,6 @@
 package com.techecommerce.api.controllers;
 
-import com.techecommerce.main.dtos.BrandDTO;
+import com.techecommerce.main.dto.BrandDTO;
 import com.techecommerce.main.exceptions.BrandNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Brand;
@@ -34,9 +34,9 @@ public class BrandController {
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @ApiOperation("Create a new brand")
     @PostMapping
-    public ResponseEntity<Brand> createBrand(@RequestBody BrandDTO brandDTO) throws BrandNameExistsException {
-        Brand createdCategory = brandService.create(brandDTO);
-        URI location = URI.create(String.format("categories/%s", brandDTO.getId()));
+    public ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) throws BrandNameExistsException {
+        BrandDTO createdCategory = brandService.create(brandDTO);
+        URI location = URI.create(String.format("brands/%s", brandDTO.getId()));
         return ResponseEntity.created(location).body(createdCategory);
     }
 

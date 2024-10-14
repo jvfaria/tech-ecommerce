@@ -1,9 +1,9 @@
 package com.techecommerce.orderservice.services;
 
 
-import com.techecommerce.main.dtos.OrderDTO;
-import com.techecommerce.main.dtos.OrderProductDTO;
-import com.techecommerce.main.dtos.StockDTO;
+import com.techecommerce.main.dto.OrderDTO;
+import com.techecommerce.main.dto.OrderProductDTO;
+import com.techecommerce.main.dto.StockDTO;
 import com.techecommerce.main.models.UserInfo;
 import com.techecommerce.main.services.StockService;
 import com.techecommerce.main.services.UserInfoService;

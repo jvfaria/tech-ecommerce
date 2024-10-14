@@ -1,6 +1,6 @@
 package com.techecommerce.api.controllers;
 
-import com.techecommerce.main.dtos.StockDTO;
+import com.techecommerce.main.dto.StockDTO;
 import com.techecommerce.main.services.StockService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

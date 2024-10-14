@@ -1,9 +1,15 @@
 package com.techecommerce.main.config.jwt;
 
+import com.techecommerce.main.config.security.CustomUserDetailsService;
 import com.techecommerce.main.services.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,66 +20,59 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.Resource;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Resource(name = "userService")
-    private UserService userDetailsService;
+    @Resource(name = "customUserDetailsService")
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private TokenProvider jwtTokenUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
-            throws ServletException, IOException, UsernameNotFoundException {
-        String header = req.getHeader(HttpHeaders.AUTHORIZATION);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         String username = null;
         String authToken = null;
-        if(!Objects.isNull(header) && header.startsWith(JwtUtil.JWT_PROVIDER)) {
-            authToken = header.replace(JwtUtil.JWT_PROVIDER, "");
+
+        // Check for the JWT in the header
+        if (header != null && header.startsWith(JwtUtil.JWT_PROVIDER)) {
+            authToken = header.substring(JwtUtil.JWT_PROVIDER.length()).trim(); // Remove "Bearer " prefix
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
                 logger.error(JwtUtil.ILLEGAL_ARGUMENT_EXCEPTION, e);
             } catch (ExpiredJwtException e) {
                 logger.warn(JwtUtil.JWT_TOKEN_EXPIRED_EXCEPTION, e);
-            } catch (SignatureException e) {
+            } catch (SignatureException | MalformedJwtException e) {
                 logger.error(JwtUtil.AUTH_FAILED, e);
-            } catch (MalformedJwtException e) {
-                logger.error(JwtUtil.MALFORMED_JWT, e);
             }
         }
-//        else {
-//            logger.warn(JwtUtil.BEARER_HEADER_NOT_FOUND);
-//        }
 
-        if(!Objects.isNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+        // If the username is valid and no authentication exists in the security context
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = null;
             try {
                 userDetails = userDetailsService.loadUserByUsername(username);
             } catch (UsernameNotFoundException e) {
-                logger.error(e.getMessage());
+                logger.error("User not found: " + username, e);
             }
 
+            // Validate token and set authentication in the security context
+            if (userDetails != null && jwtTokenUtil.validateToken(authToken, userDetails)) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            if(jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken auth =
-                        jwtTokenUtil.getAuthenticationToken(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-
-                logger.info("Authenticated user: " + username + ", setting security context...");
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                logger.info("Authenticated user: " + username);
             }
         }
 
-        filterChain.doFilter(req, res);
+        // Proceed with the filter chain
+        filterChain.doFilter(request, response);
     }
 }
