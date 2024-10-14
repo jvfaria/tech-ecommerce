@@ -1,0 +1,31 @@
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop # Creates tables for each test and drops them after the test runs.
+    show-sql: false
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/techecommerce}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+#  flyway:
+#    schemas: test_techecommerce
+file:
+  upload-dir: /tmp/uploads/test
+
+#flyway:
+#  enabled: true
+#  locations: classpath:db/migration
+#logging:
+#  level:
+#    root: WARN
+#    org.hibernate.SQL: DEBUG
+#    org.springframework.amqp: WARN

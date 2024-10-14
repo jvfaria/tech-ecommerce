@@ -1,0 +1,314 @@
+{
+  "brands" : [
+    {
+      "id": 1,
+      "name": "ASUS"
+    },
+
+    {
+      "id": 2,
+      "name": "AOC"
+    },
+
+    {
+      "id": 3,
+      "name": "XPG"
+    },
+
+    {
+      "id": 4,
+      "name": "SAMSUNG"
+    },
+
+    {
+      "id": 5,
+      "name": "LG"
+    },
+
+    {
+      "id": 6,
+      "name": "ACER"
+    },
+
+    {
+      "id": 7,
+      "name": "HIPERX"
+    },
+
+    {
+      "id": 8,
+      "name": "REDRAGON"
+    }
+  ],
+
+  "categories": [
+    {
+      "id": 10,
+      "categoryName": "PERIFERICOS",
+      "random": "test"
+    },
+
+    {
+      "id": 5,
+      "categoryName": "PLACAS DE VIDEO",
+      "random": "test"
+    },
+
+    {
+      "id": 4,
+      "categoryName": "MONITORES",
+      "random": "test"
+    },
+
+    {
+      "id": 2,
+      "categoryName": "CONSOLES",
+      "random": "test"
+    },
+
+    {
+      "id": 1,
+      "categoryName": "MEMORIA RAM",
+      "random": "test"
+    }
+  ],
+
+  "products": [
+    {
+      "id": 1,
+      "name": "Monitor ASUS 23.8' IPS",
+      "brand": "Asus",
+      "description": "IPS, Wide, 144Hz e Adaptive Sync",
+      "price": 2299.34,
+      "img": "asus.jpg",
+      "featured": true
+    },
+
+    {
+      "id": 2,
+      "name": "Monitor Samsung Curve 24'",
+      "brand": "SAMSUNG",
+      "description": "Monitor curvo samsung 24 polegadas",
+      "price": 1589.90,
+      "img": "src/assets/products/samsungCard.jpg",
+      "featured": false
+    },
+
+    {
+      "id": 3,
+      "name": "Monitor TV LG Q1",
+      "brand": "LG",
+      "description": "Monitor TV LG 32' Wide 60Hz",
+      "price": 3198.00,
+      "img": "monitorLg.jpg",
+      "featured": true
+    },
+
+    {
+      "id": 4,
+      "name": "Produto 4",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 2500.00,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 5,
+      "name": "Monitor ACER 28'",
+      "brand": "ACER",
+      "description": "Monitor Acer Nitro painel IPS 165Hz, Full HD",
+      "price": 834.99,
+      "img": "acerNitro.jpg",
+      "featured": true
+    },
+
+    {
+      "id": 6,
+      "name": "Monitor Gamer AOC Legend 27'",
+      "brand": "AOC",
+      "description": "Curvo, 240Hz, Full HD",
+      "price": 1800.24,
+      "img": "AOC.jpg",
+      "featured": true
+    },
+
+    {
+      "id": 7,
+      "name": "Monitor Gamer Samsung Odyssey 27'",
+      "brand": "SAMSUNG",
+      "description": "LED, Curvo, Wide, 240 Hz, Full HD, G-Sync, HDMI/DisplayPort",
+      "price": 3000.00,
+      "img": "odissey.jpg",
+      "featured": true
+    },
+
+    {
+      "id": 8,
+      "name": "Produto 8",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 2123.50,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 9,
+      "name": "Produto 9",
+      "brand": "",
+      "description": "Nono produto criado",
+      "price": 1.50,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 10,
+      "name": "Produto 10",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 1200.50,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 11,
+      "name": "Produto 11",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 5.50,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 12,
+      "name": "Produto 12",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 4.50,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 13,
+      "name": "Produto 13",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 3.50,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 14,
+      "name": "Produto 14",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 7.10,
+      "img": "",
+      "featured": false
+    },
+
+    {
+      "id": 15,
+      "name": "Produto 15",
+      "brand": "",
+      "description": "Quarto produto criado",
+      "price": 900.00,
+      "img": "",
+      "featured": false
+    }
+  ],
+
+  "stock": [
+    {
+      "id": 1,
+      "quantity": 8
+    },
+
+    {
+      "id": 2,
+      "quantity": 3
+    },
+
+    {
+      "id": 3,
+      "quantity": 1
+    },
+
+    {
+      "id": 4,
+      "quantity": 23
+
+    },
+
+    {
+      "id": 5,
+      "quantity": 12
+    },
+
+    {
+      "id": 6,
+      "quantity": 4
+
+    },
+
+    {
+      "id": 7,
+      "quantity": 0
+    },
+
+    {
+      "id": 8,
+      "quantity": 1
+
+    },
+
+    {
+      "id": 9,
+      "quantity": 1
+
+    },
+
+    {
+      "id": 10,
+      "quantity": 2
+
+    },
+
+    {
+      "id": 11,
+      "quantity": 0
+
+    },
+
+    {
+      "id": 12,
+      "quantity": 0
+
+    },
+
+    {
+      "id": 13,
+      "quantity": 0
+
+    },
+
+    {
+      "id": 14,
+      "quantity": 0
+
+    },
+
+    {
+      "id": 15,
+      "quantity": 0
+
+    }
+  ]
+}
