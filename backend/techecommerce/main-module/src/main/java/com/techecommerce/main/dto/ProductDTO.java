@@ -1,4 +1,4 @@
-package com.techecommerce.main.dtos;
+package com.techecommerce.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

@@ -1,24 +1,23 @@
 package common;
 
 import com.techecommerce.main.RoleEnum;
-import com.techecommerce.main.dtos.AuthToken;
-import com.techecommerce.main.dtos.LoginUserDTO;
+import com.techecommerce.main.dto.AuthToken;
+import com.techecommerce.main.dto.LoginUserDTO;
 import com.techecommerce.main.models.Role;
 import com.techecommerce.main.models.User;
 import com.techecommerce.main.repositories.RoleRepository;
+import jakarta.activation.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.PostgreSQLContainer;
-
-import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

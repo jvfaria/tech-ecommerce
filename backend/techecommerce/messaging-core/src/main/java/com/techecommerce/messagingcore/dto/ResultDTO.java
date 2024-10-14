@@ -1,4 +1,4 @@
-package com.techecommerce.messagingcore.dtos;
+package com.techecommerce.messagingcore.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.techecommerce.main.transformers;
 
-import com.techecommerce.main.dtos.OrderDTO;
+import com.techecommerce.main.dto.OrderDTO;
 import com.techecommerce.main.models.Order;
 import org.springframework.stereotype.Component;
 

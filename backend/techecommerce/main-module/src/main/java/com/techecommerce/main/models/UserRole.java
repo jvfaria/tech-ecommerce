@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "user_roles")
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRole {
+public class UserRole implements GrantedAuthority {
     @EmbeddedId
     private UserRoleId id;
 
@@ -32,4 +33,8 @@ public class UserRole {
     @JoinColumn(name = "role_id", nullable = false, referencedColumnName = "id")
     private Role role;
 
+    @Override
+    public String getAuthority() {
+        return role.getName();
+    }
 }

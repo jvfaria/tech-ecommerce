@@ -1,20 +1,16 @@
-package com.techecommerce.main.dtos;
+package com.techecommerce.main.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AuthToken {
+public class UserCreateDTO {
     private String username;
-    private String token;
-    private List<String> authorities;
+    private String email;
+    private String password;
 }

@@ -1,13 +1,14 @@
 spring:
   project:
     version: v1
-  application-name: main-module
+  application:
+    name: api
   swagger:
     enabled: true
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/techecommerce}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/techecommerce_local
+    username: postgres
+    password: postgres
   jpa:
     properties:
       hibernate:
@@ -39,6 +40,11 @@ spring:
         max-concurrency: 10 # Max number of consumers
         acknowledge-mode: auto
         prefetch: 1     # Number of messages to fetch at once
+
+  fox:
+    swagger:
+      base-url: /api
+
 app:
   rabbitmq:
     exchange:
@@ -66,13 +72,15 @@ server:
       max-request-size: 15MB
       file-size-threshold: 2KB
   port: 8082
-
 flyway:
+  url: jdbc:postgresql://localhost:5432/techecommerce
+  user: postgres
+  password: postgres
   mixed: true
 
 logging:
   level:
     logging.level.org.hibernate.SQL: DEBUG
     logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-#    org.springframework.amqp: DEBUG
+    org.springframework.amqp: DEBUG
 #    springfox.documentation: DEBUG

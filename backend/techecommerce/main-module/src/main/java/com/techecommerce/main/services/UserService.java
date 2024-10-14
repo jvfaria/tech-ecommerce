@@ -2,7 +2,7 @@ package com.techecommerce.main.services;
 
 import com.techecommerce.main.RoleEnum;
 import com.techecommerce.main.config.security.CustomPasswordEncoder;
-import com.techecommerce.main.dtos.UserCreateDTO;
+import com.techecommerce.main.dto.UserCreateDTO;
 import com.techecommerce.main.exceptions.EmailExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.exceptions.UserNotFoundException;
@@ -14,21 +14,12 @@ import com.techecommerce.main.repositories.UserRepository;
 import com.techecommerce.main.transformers.UserCreateTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     @Autowired
     CustomPasswordEncoder passwordEncoder;
 
@@ -119,16 +110,5 @@ public class UserService implements UserDetailsService {
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRole().getName())));
 
         return authorities;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if(Objects.isNull(user)) {
-            throw new UsernameNotFoundException("User not found !");
-        }
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities(user));
-        return userDetails;
     }
 }

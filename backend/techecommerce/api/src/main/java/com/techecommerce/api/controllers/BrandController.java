@@ -1,6 +1,6 @@
 package com.techecommerce.api.controllers;
 
-import com.techecommerce.main.dtos.BrandDTO;
+import com.techecommerce.main.dto.BrandDTO;
 import com.techecommerce.main.exceptions.BrandNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Brand;

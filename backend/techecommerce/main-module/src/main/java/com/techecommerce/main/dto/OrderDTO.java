@@ -1,4 +1,4 @@
-package com.techecommerce.main.dtos;
+package com.techecommerce.main.dto;
 
 import lombok.Getter;
 import lombok.Setter;

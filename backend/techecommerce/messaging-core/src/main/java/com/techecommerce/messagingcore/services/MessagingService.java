@@ -2,8 +2,8 @@ package com.techecommerce.messagingcore.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techecommerce.messagingcore.dtos.MessageDTO;
-import com.techecommerce.messagingcore.dtos.MessageDefinitionDTO;
+import com.techecommerce.messagingcore.dto.MessageDTO;
+import com.techecommerce.messagingcore.dto.MessageDefinitionDTO;
 import com.techecommerce.messagingcore.interfaces.MessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

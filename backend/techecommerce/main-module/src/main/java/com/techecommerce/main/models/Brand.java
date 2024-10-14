@@ -3,16 +3,13 @@ package com.techecommerce.main.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
 import java.util.List;
 
 @Entity
@@ -27,7 +24,7 @@ public class Brand extends GenericEntity {
     private String name;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
-    @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.READ_ONLY, hidden = true)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, hidden = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonIgnore
     private List<Product> products;

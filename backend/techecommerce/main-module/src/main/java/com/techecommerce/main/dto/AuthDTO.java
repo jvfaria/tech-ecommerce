@@ -1,4 +1,4 @@
-package com.techecommerce.main.dtos;
+package com.techecommerce.main.dto;
 
 import com.techecommerce.main.models.Role;
 import lombok.AllArgsConstructor;

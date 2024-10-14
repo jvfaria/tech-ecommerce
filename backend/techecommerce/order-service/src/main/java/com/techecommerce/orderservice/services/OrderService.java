@@ -1,8 +1,8 @@
 package com.techecommerce.orderservice.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techecommerce.main.dtos.OrderDTO;
-import com.techecommerce.main.dtos.OrderProductDTO;
+import com.techecommerce.main.dto.OrderDTO;
+import com.techecommerce.main.dto.OrderProductDTO;
 import com.techecommerce.main.exceptions.EmptyProductsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Order;
@@ -16,19 +16,18 @@ import com.techecommerce.main.repositories.UserInfoRepository;
 import com.techecommerce.main.transformers.OrderProductTransformer;
 import com.techecommerce.main.transformers.OrderTransformer;
 import com.techecommerce.messagingcore.configs.RabbitMQConfig;
-import com.techecommerce.messagingcore.dtos.MessageDefinitionDTO;
+import com.techecommerce.messagingcore.dto.MessageDefinitionDTO;
 import com.techecommerce.messagingcore.services.MessagingService;
 import com.techecommerce.orderservice.events.OrderSavedEvent;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;

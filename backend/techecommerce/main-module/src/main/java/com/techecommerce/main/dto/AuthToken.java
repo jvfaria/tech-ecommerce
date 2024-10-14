@@ -1,6 +1,7 @@
-package com.techecommerce.main.dtos;
+package com.techecommerce.main.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+@Builder
+public class AuthToken {
     private String username;
-    private String email;
-    private List<RoleDTO> roles;
+    private String token;
+    private List<String> authorities;
 }

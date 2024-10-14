@@ -1,10 +1,9 @@
 package integration;
 
-import com.techecommerce.main.dtos.BrandDTO;
-import com.techecommerce.main.dtos.UserCreateDTO;
+import com.techecommerce.main.dto.BrandDTO;
+import com.techecommerce.main.dto.UserCreateDTO;
 import com.techecommerce.main.exceptions.EmailExistsException;
 import com.techecommerce.main.models.User;
-import com.techecommerce.main.repositories.RoleRepository;
 import com.techecommerce.main.services.UserService;
 import common.AbstractContainerTest;
 import common.IntegrationTest;

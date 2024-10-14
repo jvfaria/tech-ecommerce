@@ -1,16 +1,15 @@
 package com.techecommerce.main.services;
 
-import com.techecommerce.main.dtos.StockDTO;
+import com.techecommerce.main.dto.StockDTO;
 import com.techecommerce.main.models.Stock;
 import com.techecommerce.main.repositories.StockRepository;
 import com.techecommerce.main.transformers.StockTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

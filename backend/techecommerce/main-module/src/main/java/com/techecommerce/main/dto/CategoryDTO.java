@@ -1,4 +1,4 @@
-package com.techecommerce.main.dtos;
+package com.techecommerce.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,9 +9,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ImageDTO {
+public class CategoryDTO {
     @JsonIgnore
     private UUID id;
     private String name;
-    private String filepath;
 }

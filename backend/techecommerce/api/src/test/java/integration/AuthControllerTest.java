@@ -1,9 +1,9 @@
 package integration;
 
 
-import com.techecommerce.main.dtos.AuthToken;
-import com.techecommerce.main.dtos.LoginUserDTO;
-import com.techecommerce.main.dtos.UserCreateDTO;
+import com.techecommerce.main.dto.AuthToken;
+import com.techecommerce.main.dto.LoginUserDTO;
+import com.techecommerce.main.dto.UserCreateDTO;
 import com.techecommerce.main.exceptions.EmailExistsException;
 import com.techecommerce.main.models.User;
 import com.techecommerce.main.services.UserService;

@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Created-By: Maven Jar Plugin 3.2.0
-Build-Jdk-Spec: 11
-Specification-Title: api
-Specification-Version: 1.1
-Implementation-Title: api
-Implementation-Version: 1.1.0
-Main-Class: com.techecommerce.api.TechecommerceApplication
-

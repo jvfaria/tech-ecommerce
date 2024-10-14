@@ -1,21 +1,21 @@
 version: '3.8'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  rabbitmq:
+    image: rabbitmq:management
     ports:
-      - "8082:8082"
-    depends_on:
-      - db
+      - "5672:5672"
+      - "15672:15672"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/techecommerce
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:15672/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
-      - mynetwork
+      - techecommerce_network
 
   db:
     image: postgres:14
@@ -33,13 +33,31 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - techecommerce_network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/techecommerce
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
 
     networks:
-      - mynetwork
-
+      - techecommerce_network
 volumes:
   pg_data:
 
 networks:
-  mynetwork:
+  techecommerce_network:
     driver: bridge

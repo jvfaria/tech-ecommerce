@@ -1,7 +1,7 @@
 package com.techecommerce.api.controllers;
 
-import com.techecommerce.main.dtos.ProductDTO;
-import com.techecommerce.main.dtos.filters.ProductFiltersDTO;
+import com.techecommerce.main.dto.ProductDTO;
+import com.techecommerce.main.dto.filters.ProductFiltersDTO;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Product;
 import com.techecommerce.main.services.ProductService;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;

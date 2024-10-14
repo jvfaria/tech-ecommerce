@@ -1,8 +1,8 @@
 package com.techecommerce.api.controllers;
 
 import com.techecommerce.main.config.jwt.TokenProvider;
-import com.techecommerce.main.dtos.AuthToken;
-import com.techecommerce.main.dtos.LoginUserDTO;
+import com.techecommerce.main.dto.AuthToken;
+import com.techecommerce.main.dto.LoginUserDTO;
 import com.techecommerce.main.exceptions.UserNotFoundException;
 import com.techecommerce.main.services.AuthService;
 import com.techecommerce.main.services.UserService;
