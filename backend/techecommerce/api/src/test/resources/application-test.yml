@@ -16,8 +16,6 @@ spring:
     username: guest
     password: guest
     virtual-host: /
-#  flyway:
-#    schemas: test_techecommerce
 file:
   upload-dir: /tmp/uploads/test
 

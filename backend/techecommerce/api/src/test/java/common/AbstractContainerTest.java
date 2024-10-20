@@ -9,6 +9,7 @@ import com.techecommerce.main.exceptions.EmailExistsException;
 import com.techecommerce.main.models.Role;
 import com.techecommerce.main.models.User;
 import com.techecommerce.main.repositories.BrandRepository;
+import com.techecommerce.main.repositories.CategoryRepository;
 import com.techecommerce.main.repositories.RoleRepository;
 import com.techecommerce.main.repositories.UserRepository;
 import com.techecommerce.main.repositories.UserRoleRepository;
@@ -25,6 +26,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.sql.DataSource;
@@ -51,13 +54,16 @@ public abstract class AbstractContainerTest {
     UserRoleRepository userRoleRepository;
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     BrandRepository brandRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     public static final String BASE_URL = "http://localhost:";
     public static final String USER_EMAIL_TEST = "randomemail@email.com";
@@ -83,6 +89,7 @@ public abstract class AbstractContainerTest {
         userRepository.deleteAll();
         roleRepository.deleteAll();
         brandRepository.deleteAll();
+        categoryRepository.deleteAll();
 
         Role superAdmin = new Role();
         superAdmin.setName(RoleEnum.SUPER_ADMIN.getRoleName());
