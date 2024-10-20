@@ -1,8 +1,10 @@
 package com.techecommerce.api.controllers;
 
+import com.techecommerce.main.dto.ApiResponse;
 import com.techecommerce.main.dto.CategoryDTO;
 import com.techecommerce.main.exceptions.CategoryNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
+import com.techecommerce.main.models.Brand;
 import com.techecommerce.main.models.Category;
 import com.techecommerce.main.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,23 +34,28 @@ public class CategoryController {
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @Operation(summary = "Create a new category")
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody CategoryDTO categoryDTO) throws CategoryNameExistsException {
-        Category createdCategory = categoryService.create(categoryDTO);
-        URI location = URI.create(String.format("categories/%s", categoryDTO.getId()));
-        return ResponseEntity.created(location).body(createdCategory);
+    public ResponseEntity<ApiResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
+        CategoryDTO createdCategory = categoryService.create(categoryDTO);
+        URI location = URI.create(String.format("categories/%s", createdCategory.getId()));
+        return ResponseEntity.created(location).body(new ApiResponse<>(createdCategory));
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @Operation(summary = "Update category's name")
     @PutMapping
-    public ResponseEntity<Category> updateCategory(@RequestBody CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
-        return new ResponseEntity<>(categoryService.update(categoryDTO), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<CategoryDTO>> updateCategory(@RequestBody CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
+        CategoryDTO updatedCategory = categoryService.update(categoryDTO);
+
+        ApiResponse<CategoryDTO> apiResponse = ApiResponse
+                .<CategoryDTO>builder().data(updatedCategory).error(null).message(null).build();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @Operation(summary = "Delete a category")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Category> deleteCategory(@PathVariable UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable UUID id) throws ResourceNotFoundException {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -56,21 +63,21 @@ public class CategoryController {
     @PreAuthorize("permitAll()")
     @Operation(summary = "List all categories")
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> findAllCategories() {
-        return ResponseEntity.ok().body(categoryService.findAll());
+    public ResponseEntity<ApiResponse<List<CategoryDTO>>> findAllCategories() {
+        return categoryService.listAllCategories();
     }
 
     @PreAuthorize("permitAll()")
     @Operation(summary = "Find category by id")
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> findById(@PathVariable String id) throws ResourceNotFoundException {
-        return ResponseEntity.ok().body(categoryService.findById(id));
+    public ResponseEntity<ApiResponse<CategoryDTO>> findById(@PathVariable String id) throws ResourceNotFoundException {
+        return categoryService.findById(id);
     }
 
-//    @PreAuthorize("permitAll()")
-//    @Operation(summary = "Find category by name")
-//    @GetMapping("/{name}")
-//    public ResponseEntity<Category> findByName(@PathVariable String name) throws ResourceNotFoundException {
-//        return new ResponseEntity<>(categoryService.findByName(name), HttpStatus.OK);
-//    }
+    @PreAuthorize("permitAll()")
+    @Operation(summary = "Find category by name")
+    @GetMapping("/name/{name}")
+    public ResponseEntity<ApiResponse<CategoryDTO>> findByName(@PathVariable String name) throws ResourceNotFoundException {
+        return categoryService.findByName(name);
+    }
 }

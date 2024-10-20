@@ -1,5 +1,6 @@
 package com.techecommerce.main.services;
 
+import com.techecommerce.main.dto.ApiResponse;
 import com.techecommerce.main.dto.CategoryDTO;
 import com.techecommerce.main.exceptions.CategoryNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
@@ -8,6 +9,8 @@ import com.techecommerce.main.repositories.CategoryRepository;
 import com.techecommerce.main.transformers.CategoryTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,44 +23,65 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryTransformer categoryTransformer;
 
-    public Category create(CategoryDTO categoryDTO) throws CategoryNameExistsException {
-        if(categoryRepository.existsByName(categoryDTO.getName().toUpperCase(Locale.ROOT))) {
-            throw new CategoryNameExistsException("Category name already exists, duplicated names not allowed");
-        }
+    public CategoryDTO create(CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
+        validateCategory(categoryDTO);
         var category = categoryTransformer.toEntity(categoryDTO);
         category.setName(category.getName().toUpperCase(Locale.ROOT));
-        return categoryRepository.save(category);
+        return categoryTransformer.toDTO(categoryRepository.save(category));
     }
 
-    public Category update(CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
-        if(categoryRepository.existsByName(categoryDTO.getName())) {
-            throw new CategoryNameExistsException("Existent Category record with same name, duplicated names not allowed");
-        }
+    public CategoryDTO update(CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
+        validateCategory(categoryDTO);
 
         var existentCategory = categoryRepository.findById(categoryDTO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid category id, entity not found"));
 
         BeanUtils.copyProperties(categoryDTO, existentCategory);
-        return categoryRepository.save(existentCategory);
+        return categoryTransformer.toDTO(categoryRepository.save(existentCategory));
+    }
+
+    private void validateCategory(CategoryDTO categoryDTO) throws CategoryNameExistsException {
+        var categoryExists = categoryRepository.existsByName(categoryDTO.getName().toUpperCase(Locale.ROOT));
+        if (categoryExists) {
+            throw new CategoryNameExistsException("Category name already exists, duplicated names not allowed");
+        }
     }
 
     public void delete(UUID id) throws ResourceNotFoundException {
-        if(!categoryRepository.existsById(id)) {
+        if (!categoryRepository.existsById(id)) {
             throw new ResourceNotFoundException("Category ID not found: " + id);
         }
 
         categoryRepository.deleteById(id);
     }
 
-    public List<CategoryDTO> findAll() {
-        return categoryTransformer.toDTO(categoryRepository.findAll());
+    public ResponseEntity<ApiResponse<List<CategoryDTO>>> listAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(HttpStatus.NOT_FOUND.name(), "No categories found"));
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(categoryTransformer.toDTO(categories)));
     }
 
-    public CategoryDTO findById(String id) throws ResourceNotFoundException {
-        var existentCategory = categoryRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-        return categoryTransformer.toDTO(existentCategory);
+    public ResponseEntity<ApiResponse<CategoryDTO>> findById(String id) throws ResourceNotFoundException {
+        var existentCategory = categoryRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(categoryTransformer.toDTO(existentCategory)));
     }
-    public Category findByName(String name) throws ResourceNotFoundException {
-        return categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+    public ResponseEntity<ApiResponse<CategoryDTO>> findByName(String name) throws ResourceNotFoundException {
+        Category category = categoryRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(categoryTransformer.toDTO(category)));
     }
 }
