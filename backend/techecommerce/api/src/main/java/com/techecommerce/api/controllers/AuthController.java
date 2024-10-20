@@ -1,13 +1,13 @@
 package com.techecommerce.api.controllers;
 
 import com.techecommerce.main.config.jwt.TokenProvider;
+import com.techecommerce.main.dto.ApiResponse;
 import com.techecommerce.main.dto.AuthToken;
 import com.techecommerce.main.dto.LoginUserDTO;
 import com.techecommerce.main.exceptions.UserNotFoundException;
 import com.techecommerce.main.services.AuthService;
 import com.techecommerce.main.services.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +27,16 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/auth")
-@Api(tags = "Authentication")
 public class AuthController {
     final AuthenticationManager authenticationManager;
     final AuthService authService;
     final TokenProvider jwtTokenProvider;
     final UserService userService;
 
-    @ApiOperation("Login")
+    @Operation(summary = "Login")
     @PreAuthorize("permitAll()")
     @PostMapping
-    public ResponseEntity<AuthToken> generateToken(@RequestBody LoginUserDTO login) throws UserNotFoundException {
+    public ResponseEntity<ApiResponse<AuthToken>> generateToken(@RequestBody LoginUserDTO login) throws UserNotFoundException {
         Authentication auth = authService.authManagerAuthenticate(login);
         final String token = jwtTokenProvider.generateToken(auth);
         String username = null;
@@ -53,6 +52,9 @@ public class AuthController {
                         .stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .build();
 
-        return new ResponseEntity<>(authToken, HttpStatus.OK);
+        ApiResponse<AuthToken> apiResponse =
+                ApiResponse.<AuthToken>builder().data(authToken).error(null).message(null).build();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

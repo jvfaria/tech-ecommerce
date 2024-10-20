@@ -1,13 +1,18 @@
 package com.techecommerce.main.config.jwt;
 
 import com.techecommerce.main.utils.DateUtils;
-import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
+
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -17,10 +22,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
-import io.jsonwebtoken.Jwts;
-
 @Component
+@RequiredArgsConstructor
 public class TokenProvider implements Serializable {
+    private final Key key;
+
+    public TokenProvider() {
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -45,7 +54,7 @@ public class TokenProvider implements Serializable {
                 .claim(JwtUtil.JWT_ROLE_KEY, authorities)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(DateUtils.formatExpirationDateToken())
-                .signWith(SignatureAlgorithm.HS512, JwtUtil.JWT_SECRET)
+                .signWith(key)
                 .compact();
     }
 
@@ -55,8 +64,9 @@ public class TokenProvider implements Serializable {
     }
 
     public Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(JwtUtil.JWT_SECRET)
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -67,8 +77,10 @@ public class TokenProvider implements Serializable {
     }
 
     UsernamePasswordAuthenticationToken getAuthenticationToken(final String token, final Authentication existingAuth, final UserDetails userDetails) {
-        final JwtParser jwtParser = Jwts.parser().setSigningKey(JwtUtil.JWT_SECRET);
-        final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
+        final Jws<Claims> claimsJws = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
         final Claims claims = claimsJws.getBody();
 
         final Collection<? extends GrantedAuthority> authorities =

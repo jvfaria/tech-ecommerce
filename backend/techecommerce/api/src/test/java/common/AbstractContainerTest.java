@@ -1,23 +1,34 @@
 package common;
 
-import com.techecommerce.main.RoleEnum;
+import com.techecommerce.main.dto.ApiResponse;
 import com.techecommerce.main.dto.AuthToken;
 import com.techecommerce.main.dto.LoginUserDTO;
+import com.techecommerce.main.dto.UserCreateDTO;
+import com.techecommerce.main.enums.RoleEnum;
+import com.techecommerce.main.exceptions.EmailExistsException;
 import com.techecommerce.main.models.Role;
 import com.techecommerce.main.models.User;
+import com.techecommerce.main.repositories.BrandRepository;
 import com.techecommerce.main.repositories.RoleRepository;
-import jakarta.activation.DataSource;
+import com.techecommerce.main.repositories.UserRepository;
+import com.techecommerce.main.repositories.UserRoleRepository;
+import com.techecommerce.main.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.PostgreSQLContainer;
+
+import javax.sql.DataSource;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,10 +47,22 @@ public abstract class AbstractContainerTest {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    BrandRepository brandRepository;
+
     public static final String BASE_URL = "http://localhost:";
-    public static final String SUPER_USER_EMAIL_TEST = "randomemail@email.com";
-    public static final String SUPER_USER_NAME_TEST = "username";
-    public static final String SUPER_PASSWORD_TEST = "password";
+    public static final String USER_EMAIL_TEST = "randomemail@email.com";
+    public static final String USER_NAME_TEST = "username";
+    public static final String PASSWORD_TEST = "password";
 
     static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:13")
             .withDatabaseName("techecommerce")
@@ -56,6 +79,11 @@ public abstract class AbstractContainerTest {
 
     @BeforeEach
     void initSqlCreateDefaultRoles() {
+        userRoleRepository.deleteAll();
+        userRepository.deleteAll();
+        roleRepository.deleteAll();
+        brandRepository.deleteAll();
+
         Role superAdmin = new Role();
         superAdmin.setName(RoleEnum.SUPER_ADMIN.getRoleName());
         roleRepository.save(superAdmin);
@@ -69,17 +97,60 @@ public abstract class AbstractContainerTest {
         return BASE_URL + port + "/api/v1" + uri;
     }
 
-    public String authenticateAsSuperAdmin(User user) {
-        LoginUserDTO loginUserDTO = new LoginUserDTO(user.getEmail(), user.getPassword());
-        HttpEntity<LoginUserDTO> request = new HttpEntity<>(loginUserDTO);
-        ResponseEntity<AuthToken> response = restTemplate.exchange(
+    public String authenticate(RoleEnum userType) {
+        LoginUserDTO loginUserDTO = null;
+        if(RoleEnum.SUPER_ADMIN.equals(userType)) {
+            loginUserDTO = new LoginUserDTO(USER_EMAIL_TEST, PASSWORD_TEST);
+        } else {
+            loginUserDTO = new LoginUserDTO(USER_EMAIL_TEST, PASSWORD_TEST);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<LoginUserDTO> request = new HttpEntity<>(loginUserDTO, headers);
+
+        ResponseEntity<ApiResponse<AuthToken>> response = restTemplate.exchange(
                 createUrlRequest("/auth"),
                 HttpMethod.POST,
                 request,
-                AuthToken.class
+                new ParameterizedTypeReference<ApiResponse<AuthToken>>() {}
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        return response.getBody().getToken();
+        return Objects.requireNonNull(response.getBody()).getData().getToken();
     }
+
+
+    protected void createSuperAdminUser() {
+        var newUser = new UserCreateDTO();
+        newUser.setEmail(USER_EMAIL_TEST);
+        newUser.setUsername(USER_NAME_TEST);
+        newUser.setPassword(PASSWORD_TEST);
+        User user = null;
+
+        try {
+            user = userService.createSuperAdminUser(newUser);
+            assertThat(user).isNotNull();
+        } catch (EmailExistsException e) {
+            log.info("Test failed because tried to create user with existing email");
+        }
+        assertThat(user).isNotNull();
+    }
+
+    protected void createCommonUser() {
+        var newUser = new UserCreateDTO();
+        newUser.setEmail(USER_EMAIL_TEST);
+        newUser.setUsername(USER_NAME_TEST);
+        newUser.setPassword(PASSWORD_TEST);
+        User user = null;
+
+        try {
+            user = userService.create(newUser);
+        } catch (EmailExistsException e) {
+            log.info("Test failed because tried to create user with existing email");
+        }
+
+        assertThat(user).isNotNull();
+    }
+
+
 }

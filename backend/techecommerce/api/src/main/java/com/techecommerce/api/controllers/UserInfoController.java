@@ -5,8 +5,8 @@ import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.UploadFileResponse;
 import com.techecommerce.main.services.FileStorageService;
 import com.techecommerce.main.services.UserInfoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Api(tags = "User info")
 @RestController
 @RequestMapping("v1/user-info")
 @RequiredArgsConstructor
@@ -37,7 +35,7 @@ public class UserInfoController {
     @Autowired
     FileStorageService fileStorageService;
 
-    @ApiOperation("Upload user avatar")
+    @Operation(summary = "Upload user avatar")
     @PostMapping("/avatar/upload")
     public ResponseEntity<UploadFileResponse> uploadUserAvatar(@RequestParam("file") MultipartFile imageFile) throws FileStorageException {
         String fileName = fileStorageService.storeFile(imageFile);
@@ -51,7 +49,7 @@ public class UserInfoController {
                 imageFile.getContentType(), imageFile.getSize()), HttpStatus.CREATED);
     }
 
-    @ApiOperation("Get file user avatar")
+    @Operation(summary = "Get file user avatar")
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadAvatar(@PathVariable String fileName, HttpServletRequest request) throws FileStorageException {
         Resource resource = fileStorageService.loadFileAsResource(fileName);
@@ -73,7 +71,7 @@ public class UserInfoController {
                 .body(resource);
     }
 
-    @ApiOperation("Get user avatar filename")
+    @Operation(summary = "Get user avatar filename")
     @GetMapping("/avatar/{userId}")
     public ResponseEntity<String> getAvatarFilename(@PathVariable String userId) throws ResourceNotFoundException {
         return ResponseEntity.ok().body(userInfoService.getUserAvatarFilenameByUserId(userId));

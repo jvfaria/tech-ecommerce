@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class ErrorDetails {
-    private LocalDateTime timestamp;
+    private String timestamp;
     private Integer status;
     private String error;
     private String path;

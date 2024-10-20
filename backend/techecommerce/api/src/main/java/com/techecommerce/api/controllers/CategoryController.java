@@ -5,8 +5,7 @@ import com.techecommerce.main.exceptions.CategoryNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Category;
 import com.techecommerce.main.services.CategoryService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +26,11 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/categories")
-@Api(tags = "Category")
 public class CategoryController {
     private final CategoryService categoryService;
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Create a new category")
+    @Operation(summary = "Create a new category")
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody CategoryDTO categoryDTO) throws CategoryNameExistsException {
         Category createdCategory = categoryService.create(categoryDTO);
@@ -41,14 +39,14 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Update category's name")
+    @Operation(summary = "Update category's name")
     @PutMapping
     public ResponseEntity<Category> updateCategory(@RequestBody CategoryDTO categoryDTO) throws CategoryNameExistsException, ResourceNotFoundException {
         return new ResponseEntity<>(categoryService.update(categoryDTO), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Delete a category")
+    @Operation(summary = "Delete a category")
     @DeleteMapping("/{id}")
     public ResponseEntity<Category> deleteCategory(@PathVariable UUID id) throws ResourceNotFoundException {
         categoryService.delete(id);
@@ -56,21 +54,21 @@ public class CategoryController {
     }
 
     @PreAuthorize("permitAll()")
-    @ApiOperation("List all categories")
+    @Operation(summary = "List all categories")
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAllCategories() {
         return ResponseEntity.ok().body(categoryService.findAll());
     }
 
     @PreAuthorize("permitAll()")
-    @ApiOperation("Find category by id")
+    @Operation(summary = "Find category by id")
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> findById(@PathVariable String id) throws ResourceNotFoundException {
         return ResponseEntity.ok().body(categoryService.findById(id));
     }
 
 //    @PreAuthorize("permitAll()")
-//    @ApiOperation("Find category by name")
+//    @Operation(summary = "Find category by name")
 //    @GetMapping("/{name}")
 //    public ResponseEntity<Category> findByName(@PathVariable String name) throws ResourceNotFoundException {
 //        return new ResponseEntity<>(categoryService.findByName(name), HttpStatus.OK);

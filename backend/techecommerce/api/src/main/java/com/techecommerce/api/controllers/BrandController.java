@@ -1,12 +1,12 @@
 package com.techecommerce.api.controllers;
 
+import com.techecommerce.main.dto.ApiResponse;
 import com.techecommerce.main.dto.BrandDTO;
 import com.techecommerce.main.exceptions.BrandNameExistsException;
 import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.Brand;
 import com.techecommerce.main.services.BrandService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,56 +21,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/brands")
-@Api(tags = "Brand")
 public class BrandController {
     private final BrandService brandService;
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Create a new brand")
+    @Operation(summary = "Create a new brand")
     @PostMapping
-    public ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) throws BrandNameExistsException {
-        BrandDTO createdCategory = brandService.create(brandDTO);
+    public ResponseEntity<ApiResponse<BrandDTO>> createBrand(@RequestBody BrandDTO brandDTO) throws BrandNameExistsException, ResourceNotFoundException {
+        BrandDTO createdBrand = brandService.create(brandDTO);
         URI location = URI.create(String.format("brands/%s", brandDTO.getId()));
-        return ResponseEntity.created(location).body(createdCategory);
+        return ResponseEntity.created(location).body(new ApiResponse<>(createdBrand));
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Update brand's name")
+    @Operation(summary = "Update brand's name")
     @PutMapping
-    public ResponseEntity<Brand> updateBrand(@RequestBody BrandDTO brandDTO) throws ResourceNotFoundException, BrandNameExistsException {
-        return new ResponseEntity<>(brandService.update(brandDTO), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<Brand>> updateBrand(@RequestBody BrandDTO brandDTO) throws ResourceNotFoundException, BrandNameExistsException {
+        Brand updatedBrand = brandService.update(brandDTO);
+        ApiResponse<Brand> apiResponse = ApiResponse
+                .<Brand>builder().data(updatedBrand).error(null).message(null).build();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Delete a brand")
+    @Operation(summary = "Delete a brand")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Brand> deleteBrand(@PathVariable UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<Void>> deleteBrand(@PathVariable UUID id) throws ResourceNotFoundException {
         brandService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("permitAll()")
-    @ApiOperation("List all brands")
+    @Operation(summary = "List all brands")
     @GetMapping
-    public ResponseEntity<List<BrandDTO>> findAllBrands() {
-        return ResponseEntity.ok().body(brandService.findAll());
+    public ResponseEntity<ApiResponse<Object>> findAllBrands() {
+        return brandService.listAllBrands();
     }
 
-    @ApiOperation("Find brand by id")
-    @GetMapping("/{id}")
-    public ResponseEntity<BrandDTO> findById(@PathVariable String id) throws ResourceNotFoundException {
-        return ResponseEntity.ok().body(brandService.findById(id));
+    @Operation(summary = "Find brand by id")
+    @GetMapping("/id/{id}")
+    public ResponseEntity<ApiResponse<BrandDTO>> findById(@PathVariable String id) throws ResourceNotFoundException {
+        return brandService.findById(id);
     }
-//
-//    @ApiOperation("Find brand by name")
-//    @GetMapping("/{name}")
-//    public ResponseEntity<Brand> findByName(@PathVariable String name) throws ResourceNotFoundException {
-//        return new ResponseEntity<>(brandService.findByName(name), HttpStatus.OK);
-//    }
+
+    @Operation(summary = "Find brand by name")
+    @GetMapping("/name/{name}")
+    public ResponseEntity<ApiResponse<BrandDTO>> findByName(@PathVariable String name) throws ResourceNotFoundException {
+        return brandService.findByName(name);
+    }
 }
