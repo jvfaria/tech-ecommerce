@@ -1,3 +1,3 @@
 INSERT INTO roles ("name") VALUES
-	 ('USER'),
-	 ('SUPER_ADMIN');
+	 ('ROLE_USER'),
+	 ('ROLE_SUPER_ADMIN');

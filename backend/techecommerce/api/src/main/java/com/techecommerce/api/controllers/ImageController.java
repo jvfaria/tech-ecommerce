@@ -5,8 +5,8 @@ import com.techecommerce.main.exceptions.ResourceNotFoundException;
 import com.techecommerce.main.models.UploadFileResponse;
 import com.techecommerce.main.services.FileStorageService;
 import com.techecommerce.main.services.ImageService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/images")
-@Api(tags = "Images")
 @Slf4j
 public class ImageController {
     private final ImageService imageService;
@@ -38,7 +36,7 @@ public class ImageController {
     @Autowired
     FileStorageService fileStorageService;
 
-    @ApiOperation("Upload product image")
+    @Operation(summary = "Upload product image")
     @PostMapping("/product/upload/{productId}")
     public ResponseEntity<UploadFileResponse> uploadUserAvatar(@PathVariable String productId, @RequestParam("file") MultipartFile imageFile) throws FileStorageException, ResourceNotFoundException {
         String fileName = fileStorageService.storeFile(imageFile);
@@ -53,7 +51,7 @@ public class ImageController {
                 imageFile.getContentType(), imageFile.getSize()), HttpStatus.CREATED);
     }
 
-    @ApiOperation("Get file user avatar")
+    @Operation(summary = "Get file user avatar")
     @GetMapping("products/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadProductImage(@PathVariable String fileName, HttpServletRequest request) throws FileStorageException {
         Resource resource = fileStorageService.loadFileAsResource(fileName);

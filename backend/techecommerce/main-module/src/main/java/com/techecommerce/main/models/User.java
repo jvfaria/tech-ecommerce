@@ -24,7 +24,7 @@ public class User extends GenericEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserRole> roles;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

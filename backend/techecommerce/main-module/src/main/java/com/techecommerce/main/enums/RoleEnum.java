@@ -1,11 +1,11 @@
-package com.techecommerce.main;
+package com.techecommerce.main.enums;
 
 import lombok.Getter;
 
 @Getter
 public enum RoleEnum {
-    USER("USER"),
-    SUPER_ADMIN("SUPER_ADMIN");
+    USER("ROLE_USER"),
+    SUPER_ADMIN("ROLE_SUPER_ADMIN");
 
     private final String roleName;
 

@@ -9,8 +9,7 @@ import com.techecommerce.main.models.User;
 import com.techecommerce.main.repositories.UserRepository;
 import com.techecommerce.main.services.UserService;
 import com.techecommerce.main.transformers.UserTransformer;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-@Api(tags = "Users")
+
 @RestController
 @RequestMapping("v1/users")
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class UserController {
     final UserTransformer transformer;
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("List all Users")
+    @Operation(summary = "List all Users")
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         var users = userRepository.findAll();
@@ -47,21 +46,21 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Find User by ID")
+    @Operation(summary = "Find User by ID")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) throws UserNotFoundException {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Find User by email")
+    @Operation(summary = "Find User by email")
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException {
         var user = userService.findByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @ApiOperation("Create new User")
+    @Operation(summary = "Create new User")
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody UserCreateDTO user) throws EmailExistsException {
         var createdUser = userService.create(user);
@@ -70,7 +69,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @ApiOperation("Delete existent User")
+    @Operation(summary = "Delete existent User")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) throws ResourceNotFoundException {
         userService.delete(id);
